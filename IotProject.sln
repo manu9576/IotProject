@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotProject", "IotProject\IotProject.csproj", "{A52849A6-6E62-4FD3-BE6B-D9481E817CFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IotProject", "IotProject\IotProject.csproj", "{A52849A6-6E62-4FD3-BE6B-D9481E817CFD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrovePiDevice", "GrovePiDevice\GrovePiDevice.csproj", "{93241456-3BD6-4E72-8A00-04632476C8C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A52849A6-6E62-4FD3-BE6B-D9481E817CFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A52849A6-6E62-4FD3-BE6B-D9481E817CFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A52849A6-6E62-4FD3-BE6B-D9481E817CFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93241456-3BD6-4E72-8A00-04632476C8C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93241456-3BD6-4E72-8A00-04632476C8C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93241456-3BD6-4E72-8A00-04632476C8C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93241456-3BD6-4E72-8A00-04632476C8C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

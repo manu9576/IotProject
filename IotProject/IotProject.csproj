@@ -18,4 +18,7 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.9.0" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrovePiDevice\GrovePiDevice.csproj" />
+  </ItemGroup>
 </Project>
