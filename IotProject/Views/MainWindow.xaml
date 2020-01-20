@@ -6,12 +6,16 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="IotProject.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
+        FontSize="40"
         Title="IotProject">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,Auto,Auto,Auto,*"  Margin="4">
 
-</Window>
+    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding TimeOfDay}"/>
+
+  </Grid>
+  </Window>
