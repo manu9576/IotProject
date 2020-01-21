@@ -30,7 +30,7 @@ namespace IotProject.ViewModels
 
                 TimeOfDay = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
                 _dhtSensor.Read();
-                Sensors = $"Humidité = {_dhtSensor.LastRelativeHumidity} % \nTempérature = {_dhtSensor.LastTemperature} °C";
+                Sensors = $"Température = {_dhtSensor.LastTemperature} °C (Humidité = {_dhtSensor.LastRelativeHumidity} %)";
                 Thread.Sleep(1000);
             }
         }
