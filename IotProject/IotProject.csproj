@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -19,6 +19,6 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GrovePiDevice\GrovePiDevice.csproj" />
+    <ProjectReference Include="..\Sensors\Sensors.csproj" />
   </ItemGroup>
 </Project>

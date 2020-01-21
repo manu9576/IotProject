@@ -4,7 +4,6 @@ using Iot.Device.GrovePiDevice.Sensors;
 using ReactiveUI;
 using System;
 using System.Device.I2c;
-using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 
