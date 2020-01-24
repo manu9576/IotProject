@@ -7,11 +7,11 @@ using System.Linq;
 namespace Sensors.GrovePi
 {
 
-    public class GrovePiSensorBuilder
+    public static class GrovePiSensorBuilder
     {
         private static readonly List<GrovePort> _usedPort = new List<GrovePort>();
-        private static Dictionary<GrovePort, DhtSensor> _dhtSensor = new Dictionary<GrovePort, DhtSensor>();
-        private static Iot.Device.GrovePiDevice.GrovePi _grovePi = GrovePiDevice.GetDevice();
+        private static readonly Dictionary<GrovePort, DhtSensor> _dhtSensor = new Dictionary<GrovePort, DhtSensor>();
+        private static readonly Iot.Device.GrovePiDevice.GrovePi _grovePi = GrovePiDevice.GetDevice();
 
         public static IGrovePiSensor CreateSensor(SensorType sensorType, GrovePort port, string name)
 
