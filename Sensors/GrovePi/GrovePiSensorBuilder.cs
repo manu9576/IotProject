@@ -9,35 +9,40 @@ namespace Sensors.GrovePi
 
     public class GrovePiSensorBuilder
     {
-        private static Dictionary<GrovePort, object> _existingSensor = new Dictionary<GrovePort, object>();
+        private static readonly List<GrovePort> _usedPort = new List<GrovePort>();
+        private static Dictionary<GrovePort, DhtSensor> _dhtSensor = new Dictionary<GrovePort, DhtSensor>();
+        private static Iot.Device.GrovePiDevice.GrovePi _grovePi = GrovePiDevice.GetDevice();
 
         public static IGrovePiSensor CreateSensor(SensorType sensorType, GrovePort port, string name)
-        {
-            var grovePi = GrovePiDevice.GetDevice();
 
+        {
             switch (sensorType)
             {
                 case SensorType.AnalogSensor:
                     ThrowExceptionIfPortIsUsed(port);
-                    return new GrovePiAnalogSensor(new AnalogSensor(grovePi, port), name);
+                    _usedPort.Add(port);
+                    return new GrovePiAnalogSensor(new AnalogSensor(_grovePi, port), name);
 
                 case SensorType.DhtTemperatureSensor:
-                    return new GrovePiDthTemperatureSensor(grovePi, port);
+                    return new GrovePiDthTemperatureSensor(GetDhtSensor(port), name);
 
                 case SensorType.DhtHumiditySensor:
-                    return new GrovePiDthTemperatureSensor(grovePi, port);
+                    return new GrovePiDthHumiditySensor(GetDhtSensor(port), name);
 
                 case SensorType.PotentiometerSensor:
                     ThrowExceptionIfPortIsUsed(port);
-                    return new GrovePiAnalogPotentiometer(new PotentiometerSensor(grovePi, port), name);
+                    _usedPort.Add(port);
+                    return new GrovePiAnalogPotentiometer(new PotentiometerSensor(_grovePi, port), name);
 
                 case SensorType.UltrasonicSensor:
                     ThrowExceptionIfPortIsUsed(port);
-                    return new GrovePiAnalogUltrasonic(new UltrasonicSensor(grovePi, port), name);
+                    _usedPort.Add(port);
+                    return new GrovePiAnalogUltrasonic(new UltrasonicSensor(_grovePi, port), name);
 
                 case SensorType.GrooveTemperartureSensor:
                     ThrowExceptionIfPortIsUsed(port);
-                    return new GrovePiAnalogTemperature(new GroveTemperatureSensor(grovePi, port), name);
+                    _usedPort.Add(port);
+                    return new GrovePiAnalogTemperature(new GroveTemperatureSensor(_grovePi, port), name);
 
                 case SensorType.LightSensor:
                 case SensorType.SoundSensor:
@@ -48,10 +53,25 @@ namespace Sensors.GrovePi
 
         private static void ThrowExceptionIfPortIsUsed(GrovePort port)
         {
-            if (_existingSensor.Keys.Contains(port))
+            if (_usedPort.Contains(port))
             {
                 throw new Exception("The port '" + port + "' is already used.");
             }
         }
+
+        private static DhtSensor GetDhtSensor(GrovePort port)
+        {
+            if (_dhtSensor.Keys.Contains(port))
+            {
+                return _dhtSensor[port];
+            }
+
+            ThrowExceptionIfPortIsUsed(port);
+
+            _usedPort.Add(port);
+
+            return new DhtSensor(_grovePi, port, DhtType.Dht11);
+        }
+
     }
 }
