@@ -6,17 +6,54 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="IotProject.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        FontSize="60"
+       WindowState="Maximized"
+        HasSystemDecorations="False"
+
         Title="IotProject">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
 
-  <Grid ColumnDefinitions="*,Auto,*" RowDefinitions="*,Auto,*,Auto,*"  Margin="4">
+  </Design.DataContext>
 
-    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Sensors}"/>
-    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding TimeOfDay}"/>
+  <Grid ColumnDefinitions="*" 
+        RowDefinitions="auto,*,auto"
+        Margin="10">
+
+    <Button Grid.Row="0"
+            Background="Red"
+            Width="60"
+            Height="30"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding Close}">
+      X
+    </Button>
+
+    <ListBox Grid.Row="1"
+             Items="{Binding SensorsViewModel}"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             Margin="15,20">
+      
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Border BorderBrush="Red" 
+                  BorderThickness="2" 
+                  CornerRadius="4" 
+                  Margin="10"
+                  Padding="4">
+            <TextBlock Text="{Binding Text}"  FontSize="60" TextAlignment="Center"/>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <TextBlock Grid.Row="4" 
+               Grid.Column="2"
+               TextAlignment="Right"
+               Text="{Binding TimeOfDay}"
+               FontSize="20"
+               VerticalAlignment="Bottom"/>
 
   </Grid>
-  </Window>
+</Window>

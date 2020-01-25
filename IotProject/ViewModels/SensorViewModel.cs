@@ -9,6 +9,12 @@ namespace IotProject.ViewModels
         private readonly IGrovePiSensor sensor;
         private string text;
 
+        // Fake constructor for designer
+        public SensorViewModel()
+        {
+            this.sensor = GrovePiSensorBuilder.CreateSensor(SensorType.DhtTemperatureSensor, GrovePort.DigitalPin7, "Température");
+        }
+
         public SensorViewModel(IGrovePiSensor sensor)
         {
             this.sensor = sensor;
@@ -27,7 +33,7 @@ namespace IotProject.ViewModels
 
         public void Refresh()
         {
-            Text = sensor.Name + ": " + sensor.Value + " " + sensor.Unit;
+            Text = sensor.Name + ": " + sensor.Value.ToString("0.0") + " " + sensor.Unit;
         }
     }
 }

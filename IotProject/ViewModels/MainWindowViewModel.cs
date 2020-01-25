@@ -1,11 +1,9 @@
-﻿using Iot.Device.GrovePiDevice;
-using Iot.Device.GrovePiDevice.Models;
-using Iot.Device.GrovePiDevice.Sensors;
+﻿using Iot.Device.GrovePiDevice.Models;
 using ReactiveUI;
 using Sensors.GrovePi;
 using System;
 using System.Collections.Generic;
-using System.Device.I2c;
+using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +19,8 @@ namespace IotProject.ViewModels
                 new SensorViewModel(SensorType.DhtHumiditySensor, GrovePort.DigitalPin7, "Humidité")
             };
             Task.Run(() => UpdateValues());
+
+            Close = ReactiveCommand.Create(RunClose);
         }
 
         private void UpdateValues()
@@ -44,12 +44,18 @@ namespace IotProject.ViewModels
             private set;
         }
 
-
         public string TimeOfDay
         {
             get => _timeOfDay;
             set => this.RaiseAndSetIfChanged(ref _timeOfDay, value);
         }
 
+        public ReactiveCommand<Unit, Unit> Close { get; }
+
+        void RunClose()
+        {
+            Environment.Exit(0);
+        }
     }
+
 }
