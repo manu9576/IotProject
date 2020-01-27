@@ -8,11 +8,11 @@ using System.Text;
 namespace Sensors
 {
 
-    public class SensorsManager
+    public static class SensorsManager
     {
-        public ObservableCollection<ISensor> Sensors { private set; get; }
+        public static ObservableCollection<ISensor> Sensors { private set; get; }
 
-        public SensorsManager()
+        static SensorsManager()
         {
             Sensors = new ObservableCollection<ISensor>
             {

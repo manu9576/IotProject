@@ -13,15 +13,12 @@ namespace IotProject.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly SensorsManager sensorManager;
 
         public MainWindowViewModel()
         {
-            sensorManager = new SensorsManager();
-
             SensorsViewModel = new ObservableCollection<SensorViewModel>();
 
-            foreach (var sensor in sensorManager.Sensors)
+            foreach (var sensor in SensorsManager.Sensors)
             {
                 SensorsViewModel.Add(new SensorViewModel(sensor));
             }
