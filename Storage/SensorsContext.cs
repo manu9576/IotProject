@@ -8,8 +8,8 @@ namespace Storage
     public class SensorsContext : DbContext
     {
         public DbSet<Device> Devices { get; set; }
-        public DbSet<Sensor> Posts { get; set; }
-        public DbSet<Mesurment> Blogs { get; set; }
+        public DbSet<Sensor> Sensors { get; set; }
+        public DbSet<Mesurment> Mesurments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

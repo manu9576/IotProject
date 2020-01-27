@@ -1,9 +1,6 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
 using Sensors.GrovePi;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace Sensors
 {

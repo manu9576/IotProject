@@ -1,9 +1,7 @@
-﻿using Iot.Device.GrovePiDevice.Models;
-using ReactiveUI;
+﻿using ReactiveUI;
 using Sensors;
-using Sensors.GrovePi;
+using Storage;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading;
@@ -26,6 +24,8 @@ namespace IotProject.ViewModels
             Task.Run(() => UpdateValues());
 
             Close = ReactiveCommand.Create(RunClose);
+
+            SensorsStorage.GetInstance().Start(10);
         }
 
         private void UpdateValues()
