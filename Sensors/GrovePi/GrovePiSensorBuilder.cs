@@ -12,7 +12,7 @@ namespace Sensors.GrovePi
         private static readonly List<GrovePort> _usedPort = new List<GrovePort>();
         private static readonly Dictionary<GrovePort, DhtSensor> _dhtSensor = new Dictionary<GrovePort, DhtSensor>();
 
-        public static IGrovePiSensor CreateSensor(SensorType sensorType, GrovePort port, string name)
+        public static ISensor CreateSensor(SensorType sensorType, GrovePort port, string name)
         {
 #if DEBUG
             return new GrovePiFakeSensor(sensorType, name);
@@ -74,7 +74,9 @@ namespace Sensors.GrovePi
 
             _usedPort.Add(port);
 
-            return new DhtSensor(grovePi, port, DhtType.Dht11);
+            _dhtSensor.Add(port, new DhtSensor(grovePi, port, DhtType.Dht11));
+
+            return _dhtSensor[port];
         }
 
     }

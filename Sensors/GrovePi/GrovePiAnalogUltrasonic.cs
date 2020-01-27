@@ -2,7 +2,7 @@
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiAnalogUltrasonic : IGrovePiSensor
+    internal class GrovePiAnalogUltrasonic : ISensor
     {
         private UltrasonicSensor _ultrasonicSensor;
 

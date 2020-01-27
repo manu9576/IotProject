@@ -2,7 +2,7 @@
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiAnalogPotentiometer : GrovePiAnalogSensor, IGrovePiSensor
+    internal class GrovePiAnalogPotentiometer : GrovePiAnalogSensor, ISensor
     {
 
         internal GrovePiAnalogPotentiometer(PotentiometerSensor analogSensor, string name) :

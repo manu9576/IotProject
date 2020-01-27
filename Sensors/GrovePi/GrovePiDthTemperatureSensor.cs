@@ -2,7 +2,7 @@
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiDthTemperatureSensor : GrovePiDthBaseSensor, IGrovePiSensor
+    internal class GrovePiDthTemperatureSensor : GrovePiDthBaseSensor, ISensor
     {
 
         public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name) : base(dhtSensor,name)

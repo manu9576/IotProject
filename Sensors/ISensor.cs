@@ -1,6 +1,6 @@
-﻿namespace Sensors.GrovePi
+﻿namespace Sensors
 {
-    public interface IGrovePiSensor
+    public interface ISensor
     {
         string Name { get; }
         double Value { get; }

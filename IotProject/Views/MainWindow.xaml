@@ -6,9 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="IotProject.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-       WindowState="Maximized"
-        HasSystemDecorations="False"
-
+        WindowState="Maximized"
         Title="IotProject">
 
   <Design.DataContext>

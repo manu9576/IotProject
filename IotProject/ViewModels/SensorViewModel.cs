@@ -1,12 +1,13 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
 using ReactiveUI;
+using Sensors;
 using Sensors.GrovePi;
 
 namespace IotProject.ViewModels
 {
     public class SensorViewModel : ViewModelBase
     {
-        private readonly IGrovePiSensor sensor;
+        private readonly ISensor sensor;
         private string text;
 
         // Fake constructor for designer
@@ -15,14 +16,9 @@ namespace IotProject.ViewModels
             this.sensor = GrovePiSensorBuilder.CreateSensor(SensorType.DhtTemperatureSensor, GrovePort.DigitalPin7, "Température");
         }
 
-        public SensorViewModel(IGrovePiSensor sensor)
+        public SensorViewModel(ISensor sensor)
         {
             this.sensor = sensor;
-        }
-
-        public SensorViewModel(SensorType sensorType, GrovePort port, string name)
-        {
-            this.sensor = GrovePiSensorBuilder.CreateSensor(sensorType, port, name);
         }
 
         public string Text

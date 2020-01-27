@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sensors.GrovePi
 {
-    public class GrovePiFakeSensor : IGrovePiSensor
+    public class GrovePiFakeSensor : ISensor
     {
         private readonly SensorType sensorType;
         private readonly Random rand;

@@ -1,8 +1,10 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
 using ReactiveUI;
+using Sensors;
 using Sensors.GrovePi;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,13 +13,19 @@ namespace IotProject.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly SensorsManager sensorManager;
+
         public MainWindowViewModel()
         {
-            SensorsViewModel = new List<SensorViewModel>
+            sensorManager = new SensorsManager();
+
+            SensorsViewModel = new ObservableCollection<SensorViewModel>();
+
+            foreach (var sensor in sensorManager.Sensors)
             {
-                new SensorViewModel(SensorType.DhtTemperatureSensor, GrovePort.DigitalPin7, "Température"),
-                new SensorViewModel(SensorType.DhtHumiditySensor, GrovePort.DigitalPin7, "Humidité")
-            };
+                SensorsViewModel.Add(new SensorViewModel(sensor));
+            }
+
             Task.Run(() => UpdateValues());
 
             Close = ReactiveCommand.Create(RunClose);
@@ -38,7 +46,7 @@ namespace IotProject.ViewModels
 
         private string _timeOfDay;
 
-        public List<SensorViewModel> SensorsViewModel
+        public ObservableCollection<SensorViewModel> SensorsViewModel
         {
             get;
             private set;
