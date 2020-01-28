@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage.Models
 {
-    public class Mesurment
+    public class Measure
     {
         [Key]
-        public int MesurmentId { get; set; }
+        public int MeasureId { get; set; }
         public DateTime DateTime { get; set; }
         public double Value { get; set; }
 

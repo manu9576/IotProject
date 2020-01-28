@@ -9,7 +9,7 @@ namespace Storage
     {
         public DbSet<Device> Devices { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
-        public DbSet<Mesurment> Mesurments { get; set; }
+        public DbSet<Measure> Measures { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

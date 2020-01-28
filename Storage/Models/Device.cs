@@ -7,7 +7,9 @@ namespace Storage.Models
     public class Device
     {
         [Key]
+        public int DeviceId { get; set; }
         public string Name { get; set; }
-        public List<Sensor> Sensors { get; } = new List<Sensor>();
+
+        public ICollection<Sensor> Sensors { get; } = new List<Sensor>();
     }
 }

@@ -59,7 +59,7 @@ namespace Storage
 
             foreach (var sensor in deviceSensors)
             {
-                if (!device.Sensors.Any(dbSensor => dbSensor.Name == sensor.Name))
+                if (!db.Sensors.Any(dbSensor => dbSensor.Name == sensor.Name && dbSensor.Device == device))
                 {
                     dbSensor = new Sensor
                     {
@@ -72,7 +72,7 @@ namespace Storage
                 }
                 else
                 {
-                    dbSensor = device.Sensors.First(dbSensor => dbSensor.Name == sensor.Name);
+                    dbSensor = db.Sensors.First(dbSensor => dbSensor.Name == sensor.Name && dbSensor.Device == device);
                 }
 
                 sensors.Add(dbSensor, sensor);
@@ -112,7 +112,7 @@ namespace Storage
 
             foreach (var sensor in sensors.Keys)
             {
-                sensor.Mesurements.Add(new Mesurment
+                sensor.Measures.Add(new Measure
                 {
                     Value = sensors[sensor].Value,
                     DateTime = dateTime

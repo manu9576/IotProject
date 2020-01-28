@@ -11,9 +11,9 @@ namespace Storage.Models
         public string Name { get; set; }
         public string Unit { get; set; }
 
-        public string DeviceName { get; set; }
+        public int DeviceId { get; set; }
         public Device Device { get; set; }
 
-        public List<Mesurment> Mesurements { get; } = new List<Mesurment>();
+        public ICollection<Measure> Measures { get; } = new List<Measure>();
     }
 }
