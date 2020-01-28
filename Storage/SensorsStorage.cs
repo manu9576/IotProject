@@ -12,7 +12,6 @@ namespace Storage
     {
         private static SensorsStorage sensorsStorage = null;
 
-        private Device device;
         private readonly Dictionary<Sensor, ISensor> sensors;
         private CancellationTokenSource cancellationTokenSource;
         private SensorsContext db;
@@ -35,6 +34,8 @@ namespace Storage
 
         public void Start(int intervalInSeconds)
         {
+            Device device;
+
             string deviceName = Environment.MachineName;
 
             db = new SensorsContext();
@@ -59,7 +60,12 @@ namespace Storage
 
             foreach (var sensor in deviceSensors)
             {
-                if (!db.Sensors.Any(dbSensor => dbSensor.Name == sensor.Name && dbSensor.Device == device))
+
+                dbSensor = db.Sensors.FirstOrDefault(sens => 
+                sens.Name == sensor.Name && 
+                sens.Device == device);
+
+                if (dbSensor == null)
                 {
                     dbSensor = new Sensor
                     {
@@ -70,15 +76,9 @@ namespace Storage
                     device.Sensors.Add(dbSensor);
                     db.SaveChanges();
                 }
-                else
-                {
-                    dbSensor = db.Sensors.First(dbSensor => dbSensor.Name == sensor.Name && dbSensor.Device == device);
-                }
 
                 sensors.Add(dbSensor, sensor);
-
             }
-
 
             cancellationTokenSource = new CancellationTokenSource();
             PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);

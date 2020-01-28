@@ -10,6 +10,12 @@ namespace IotProject.ViewModels
         private readonly ISensor sensor;
         private string text;
 
+        public string Text
+        {
+            get => text;
+            set => this.RaiseAndSetIfChanged(ref text, value);
+        }
+
         // Fake constructor for designer
         public SensorViewModel()
         {
@@ -19,12 +25,6 @@ namespace IotProject.ViewModels
         public SensorViewModel(ISensor sensor)
         {
             this.sensor = sensor;
-        }
-
-        public string Text
-        {
-            get => text;
-            set => this.RaiseAndSetIfChanged(ref text, value);
         }
 
         public void Refresh()
