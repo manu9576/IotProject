@@ -33,7 +33,7 @@ namespace Storage
             return sensorsStorage;
         }
 
-        public void Start(int intervalInSecond)
+        public void Start(int intervalInSeconds)
         {
             string deviceName = Environment.MachineName;
 
@@ -81,7 +81,7 @@ namespace Storage
 
 
             cancellationTokenSource = new CancellationTokenSource();
-            PeriodicMesureAsync(new TimeSpan(0, 0, intervalInSecond), cancellationTokenSource.Token);
+            PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
 
         }
 
@@ -91,14 +91,17 @@ namespace Storage
             db.Dispose();
         }
 
-        private async Task PeriodicMesureAsync(TimeSpan interval, CancellationToken cancellationToken)
+        void PeriodicMesureTask(int intervalInMS, CancellationToken cancellationToken)
         {
-            await Task.Run(async () =>
+
+            Task.Run(async () =>
             {
                 while (true)
                 {
+
                     Mesure();
-                    await Task.Delay(interval, cancellationToken);
+
+                    await Task.Delay(intervalInMS , cancellationToken);
 
                     if (cancellationToken.IsCancellationRequested)
                         break;

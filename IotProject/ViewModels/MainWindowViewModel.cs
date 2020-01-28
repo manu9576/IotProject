@@ -25,6 +25,7 @@ namespace IotProject.ViewModels
 
             Close = ReactiveCommand.Create(RunClose);
 
+            // TODO: Add a try catch for connection error to the DB
             SensorsStorage.GetInstance().Start(10);
         }
 
