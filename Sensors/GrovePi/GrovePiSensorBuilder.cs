@@ -3,6 +3,7 @@ using Iot.Device.GrovePiDevice.Sensors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Sensors.GrovePi
 {
@@ -11,6 +12,8 @@ namespace Sensors.GrovePi
     {
         private static readonly List<GrovePort> _usedPort = new List<GrovePort>();
         private static readonly Dictionary<GrovePort, DhtSensor> _dhtSensor = new Dictionary<GrovePort, DhtSensor>();
+        private static readonly List<ISensor> Sensors = new List<ISensor>();
+        private static CancellationTokenSource cancellationTokenSource;
 
         public static ISensor CreateSensor(SensorType sensorType, GrovePort port, string name)
         {
@@ -25,7 +28,9 @@ namespace Sensors.GrovePi
                 case SensorType.AnalogSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
-                    return new GrovePiAnalogSensor(new AnalogSensor(grovePi, port), name);
+                    var sensor = new GrovePiAnalogSensor(new AnalogSensor(grovePi, port), name)
+                    Sensors.Add(sensor);
+                    return sensor
 
                 case SensorType.DhtTemperatureSensor:
                     return new GrovePiDthTemperatureSensor(GetDhtSensor(grovePi, port), name);
@@ -73,7 +78,6 @@ namespace Sensors.GrovePi
             ThrowExceptionIfPortIsUsed(port);
 
             _usedPort.Add(port);
-
             _dhtSensor.Add(port, new DhtSensor(grovePi, port, DhtType.Dht11));
 
             return _dhtSensor[port];

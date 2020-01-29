@@ -9,6 +9,7 @@ namespace Sensors.GrovePi
         private readonly SensorType sensorType;
         private readonly Random rand;
         private readonly double maxValue;
+        private double value;
 
         public GrovePiFakeSensor(SensorType sensorType, string name)
         {
@@ -49,7 +50,7 @@ namespace Sensors.GrovePi
         {
             get
             {
-                return rand.NextDouble() * maxValue;
+                return value;
             }
         }
 
@@ -79,6 +80,11 @@ namespace Sensors.GrovePi
                         throw new Exception("Sensor type '" + sensorType + "' is not implemented");   
                 }
             }
+        }
+
+        public void Refresh()
+        {
+            value = rand.NextDouble() * maxValue;
         }
     }
 }

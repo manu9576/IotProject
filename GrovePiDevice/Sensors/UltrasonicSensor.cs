@@ -15,12 +15,12 @@ namespace Iot.Device.GrovePiDevice.Sensors
     /// </summary>
     public class UltrasonicSensor
     {
-        private GrovePi _grovePi;
+        private readonly GrovePi _grovePi;
 
         /// <summary>
         /// grove sensor port
         /// </summary>
-        private GrovePort _port;
+        private readonly GrovePort _port;
 
         /// <summary>
         /// UltrasonicSensor constructor

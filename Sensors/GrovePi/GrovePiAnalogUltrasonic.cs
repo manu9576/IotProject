@@ -4,7 +4,8 @@ namespace Sensors.GrovePi
 {
     internal class GrovePiAnalogUltrasonic : ISensor
     {
-        private UltrasonicSensor _ultrasonicSensor;
+        private readonly UltrasonicSensor _ultrasonicSensor;
+        private double value;
 
         internal GrovePiAnalogUltrasonic(UltrasonicSensor ultrasonicSensor, string name)
         {
@@ -18,10 +19,15 @@ namespace Sensors.GrovePi
         {
             get
             {
-                return _ultrasonicSensor.Value;
+                return value;
             }
         }
 
         public string Unit => "cm";
+
+        public void Refresh()
+        {
+            value = _ultrasonicSensor.Value;
+        }
     }
 }

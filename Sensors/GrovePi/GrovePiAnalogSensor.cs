@@ -5,6 +5,7 @@ namespace Sensors.GrovePi
     internal class GrovePiAnalogSensor : ISensor
     {
         protected AnalogSensor _analogSensor;
+        private double value;
 
         internal GrovePiAnalogSensor(AnalogSensor analogSensor, string name)
         {
@@ -18,10 +19,15 @@ namespace Sensors.GrovePi
         {
             get
             {
-                return _analogSensor.Value;
+                return value;
             }
         }
 
         public virtual string Unit => "V";
+
+        public virtual void Refresh()
+        {
+            value = _analogSensor.Value;
+        }
     }
 }

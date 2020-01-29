@@ -13,6 +13,7 @@ namespace IotProject.ViewModels
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private string _timeOfDay;
+        private readonly SensorsStorage sensorsStorage;
 
         public ObservableCollection<SensorViewModel> SensorsViewModel
         {
@@ -26,6 +27,8 @@ namespace IotProject.ViewModels
             set => this.RaiseAndSetIfChanged(ref _timeOfDay, value);
         }
 
+        public ReactiveCommand<Unit, Unit> Close { get; }
+
         public MainWindowViewModel()
         {
             cancellationTokenSource = new CancellationTokenSource();
@@ -36,13 +39,20 @@ namespace IotProject.ViewModels
                 SensorsViewModel.Add(new SensorViewModel(sensor));
             }
 
-            Task.Run(() => UpdateValues(1000, cancellationTokenSource.Token));
+            Task.Run(() => UpdateValues(900, cancellationTokenSource.Token));
 
             Close = ReactiveCommand.Create(RunClose);
 
             // TODO: Add a try catch for connection error to the DB
+#if DEBUG
             sensorsStorage = SensorsStorage.GetInstance();
             sensorsStorage.Start(10);
+
+#else
+            sensorsStorage = SensorsStorage.GetInstance();
+            sensorsStorage.Start(1800);
+
+#endif
         }
 
         private void UpdateValues(int intervalInMS, CancellationToken cancellationToken)
@@ -65,10 +75,6 @@ namespace IotProject.ViewModels
                 }
             });
         }
-
-        public ReactiveCommand<Unit, Unit> Close { get; }
-
-        private SensorsStorage sensorsStorage;
 
         void RunClose()
         {

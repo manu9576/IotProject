@@ -4,6 +4,7 @@ namespace Sensors.GrovePi
 {
     internal class GrovePiDthHumiditySensor : GrovePiDthBaseSensor, ISensor
     {
+        private double value;
 
         public GrovePiDthHumiditySensor(DhtSensor dhtSensor, string name) : base(dhtSensor, name)
         {
@@ -15,9 +16,14 @@ namespace Sensors.GrovePi
         {
             get
             {
-                dhtSensor.Read();
-                return dhtSensor.LastRelativeHumidity;
+                return value;
             }
+        }
+
+        public void Refresh()
+        {
+            dhtSensor.Read();
+            value = dhtSensor.LastRelativeHumidity;
         }
     }
 }
