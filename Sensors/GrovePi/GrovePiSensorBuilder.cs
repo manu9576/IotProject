@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sensors.GrovePi
 {
@@ -17,6 +18,10 @@ namespace Sensors.GrovePi
 
         public static ISensor CreateSensor(SensorType sensorType, GrovePort port, string name)
         {
+
+            cancellationTokenSource = new CancellationTokenSource();
+
+            PeriodicRefreshTask(1000, cancellationTokenSource.Token);
 #if DEBUG
             return new GrovePiFakeSensor(sensorType, name);
 #endif
@@ -28,9 +33,9 @@ namespace Sensors.GrovePi
                 case SensorType.AnalogSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
-                    var sensor = new GrovePiAnalogSensor(new AnalogSensor(grovePi, port), name)
-                    Sensors.Add(sensor);
-                    return sensor
+                    var analogSensor = new GrovePiAnalogSensor(new AnalogSensor(grovePi, port), name);
+                    Sensors.Add(analogSensor);
+                    return analogSensor;
 
                 case SensorType.DhtTemperatureSensor:
                     return new GrovePiDthTemperatureSensor(GetDhtSensor(grovePi, port), name);
@@ -41,17 +46,23 @@ namespace Sensors.GrovePi
                 case SensorType.PotentiometerSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
-                    return new GrovePiAnalogPotentiometer(new PotentiometerSensor(grovePi, port), name);
+                    var potentiometreSensor = new GrovePiAnalogPotentiometer(new PotentiometerSensor(grovePi, port), name);
+                    Sensors.Add(potentiometreSensor);
+                    return potentiometreSensor;
 
                 case SensorType.UltrasonicSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
-                    return new GrovePiAnalogUltrasonic(new UltrasonicSensor(grovePi, port), name);
+                    var ultrasonicSensor= new GrovePiAnalogUltrasonic(new UltrasonicSensor(grovePi, port), name);
+                    Sensors.Add(ultrasonicSensor);
+                    return ultrasonicSensor;
 
                 case SensorType.GrooveTemperartureSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
-                    return new GrovePiAnalogTemperature(new GroveTemperatureSensor(grovePi, port), name);
+                    var temperatureSensor = new GrovePiAnalogTemperature(new GroveTemperatureSensor(grovePi, port), name);
+                    Sensors.Add(temperatureSensor);
+                    return temperatureSensor;
 
                 case SensorType.LightSensor:
                 case SensorType.SoundSensor:
@@ -83,5 +94,23 @@ namespace Sensors.GrovePi
             return _dhtSensor[port];
         }
 
+        private static void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
+        {
+
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+
+                    foreach (var sensor in Sensors)
+                        sensor.Refresh();
+
+                    await Task.Delay(intervalInMS, cancellationToken);
+
+                    if (cancellationToken.IsCancellationRequested)
+                        break;
+                }
+            });
+        }
     }
 }

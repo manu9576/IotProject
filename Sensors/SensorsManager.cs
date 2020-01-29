@@ -20,28 +20,6 @@ namespace Sensors
                 GrovePiSensorBuilder.CreateSensor(SensorType.DhtHumiditySensor, GrovePort.DigitalPin7, "Humidité")
             };
 
-            cancellationTokenSource = new CancellationTokenSource();
-
-            PeriodicRefreshTask(1000, cancellationTokenSource.Token);
-        }
-
-        private static void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
-        {
-
-            Task.Run(async () =>
-            {
-                while (true)
-                {
-
-                    foreach (var sensor in Sensors)
-                        sensor.Refresh();
-
-                    await Task.Delay(intervalInMS, cancellationToken);
-
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
-                }
-            });
         }
     }
 }
