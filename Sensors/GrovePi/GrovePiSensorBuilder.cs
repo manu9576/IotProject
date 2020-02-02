@@ -3,8 +3,6 @@ using Iot.Device.GrovePiDevice.Sensors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Sensors.GrovePi
 {
@@ -13,15 +11,11 @@ namespace Sensors.GrovePi
     {
         private static readonly List<GrovePort> _usedPort = new List<GrovePort>();
         private static readonly Dictionary<GrovePort, DhtSensor> _dhtSensor = new Dictionary<GrovePort, DhtSensor>();
-        private static readonly List<ISensor> Sensors = new List<ISensor>();
-        private static CancellationTokenSource cancellationTokenSource;
+        private static readonly Refresher refresher = new Refresher();
 
         public static ISensor CreateSensor(SensorType sensorType, GrovePort port, string name)
         {
 
-            cancellationTokenSource = new CancellationTokenSource();
-
-            PeriodicRefreshTask(1000, cancellationTokenSource.Token);
 #if DEBUG
             return new GrovePiFakeSensor(sensorType, name);
 #endif
@@ -34,7 +28,7 @@ namespace Sensors.GrovePi
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
                     var analogSensor = new GrovePiAnalogSensor(new AnalogSensor(grovePi, port), name);
-                    Sensors.Add(analogSensor);
+                    refresher.AddSensor(analogSensor);
                     return analogSensor;
 
                 case SensorType.DhtTemperatureSensor:
@@ -47,21 +41,21 @@ namespace Sensors.GrovePi
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
                     var potentiometreSensor = new GrovePiAnalogPotentiometer(new PotentiometerSensor(grovePi, port), name);
-                    Sensors.Add(potentiometreSensor);
+                    refresher.AddSensor(potentiometreSensor);
                     return potentiometreSensor;
 
                 case SensorType.UltrasonicSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
                     var ultrasonicSensor= new GrovePiAnalogUltrasonic(new UltrasonicSensor(grovePi, port), name);
-                    Sensors.Add(ultrasonicSensor);
+                    refresher.AddSensor(ultrasonicSensor);
                     return ultrasonicSensor;
 
                 case SensorType.GrooveTemperartureSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     _usedPort.Add(port);
                     var temperatureSensor = new GrovePiAnalogTemperature(new GroveTemperatureSensor(grovePi, port), name);
-                    Sensors.Add(temperatureSensor);
+                    refresher.AddSensor(temperatureSensor);
                     return temperatureSensor;
 
                 case SensorType.LightSensor:
@@ -90,27 +84,10 @@ namespace Sensors.GrovePi
 
             _usedPort.Add(port);
             _dhtSensor.Add(port, new DhtSensor(grovePi, port, DhtType.Dht11));
+            refresher.AddSensor(_dhtSensor[port]);
 
             return _dhtSensor[port];
         }
 
-        private static void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
-        {
-
-            Task.Run(async () =>
-            {
-                while (true)
-                {
-
-                    foreach (var sensor in Sensors)
-                        sensor.Refresh();
-
-                    await Task.Delay(intervalInMS, cancellationToken);
-
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
-                }
-            });
-        }
     }
 }

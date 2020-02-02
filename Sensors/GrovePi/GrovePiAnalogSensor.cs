@@ -6,11 +6,13 @@ namespace Sensors.GrovePi
     {
         protected AnalogSensor _analogSensor;
         private double value;
+        private readonly Refresher refresh;
 
         internal GrovePiAnalogSensor(AnalogSensor analogSensor, string name)
         {
             Name = name;
             _analogSensor = analogSensor;
+            refresh = new Refresher(this);
         }
 
         public string Name { get; private set; }
