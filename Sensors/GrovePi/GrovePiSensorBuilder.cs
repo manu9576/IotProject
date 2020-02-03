@@ -12,14 +12,22 @@ namespace Sensors.GrovePi
         private static readonly List<GrovePiSensor> _sensors = new List<GrovePiSensor>();
         private static readonly Refresher refresher = new Refresher();
 
+        static GrovePiSensorBuilder()
+        {
+            refresher.Start();
+        }
+
         public static ISensor CreateSensor(SensorType sensorType, GrovePort port, string name)
         {
 
 #if DEBUG
-            return new GrovePiFakeSensor(sensorType, name);
+            var fakeSensor =  new GrovePiFakeSensor(sensorType, name);
+            refresher.AddSensor(fakeSensor);
+            return fakeSensor;
 #endif
 
             var grovePi = GrovePiDevice.GetDevice();
+
 
             switch (sensorType)
             {
@@ -30,10 +38,14 @@ namespace Sensors.GrovePi
                     return analogSensor;
 
                 case SensorType.DhtTemperatureSensor:
-                    return new GrovePiDthTemperatureSensor(GetDhtSensor(grovePi, port, SensorType.DhtTemperatureSensor), name, port); ;
+                    var dthTemperatureSensor = new GrovePiDthTemperatureSensor(GetDhtSensor(grovePi, port, SensorType.DhtTemperatureSensor), name, port);
+                    refresher.AddSensor(dthTemperatureSensor);
+                    return dthTemperatureSensor;
 
                 case SensorType.DhtHumiditySensor:
-                    return new GrovePiDthHumiditySensor(GetDhtSensor(grovePi, port, SensorType.DhtHumiditySensor), name, port);
+                    var dhtHumiditySensor = new GrovePiDthHumiditySensor(GetDhtSensor(grovePi, port, SensorType.DhtHumiditySensor), name, port);
+                    refresher.AddSensor(dhtHumiditySensor);
+                    return dhtHumiditySensor;
 
                 case SensorType.PotentiometerSensor:
                     ThrowExceptionIfPortIsUsed(port);
@@ -43,7 +55,7 @@ namespace Sensors.GrovePi
 
                 case SensorType.UltrasonicSensor:
                     ThrowExceptionIfPortIsUsed(port);
-                    var ultrasonicSensor= new GrovePiAnalogUltrasonic(new UltrasonicSensor(grovePi, port), name, port);
+                    var ultrasonicSensor = new GrovePiAnalogUltrasonic(new UltrasonicSensor(grovePi, port), name, port);
                     refresher.AddSensor(ultrasonicSensor);
                     return ultrasonicSensor;
 
@@ -62,7 +74,7 @@ namespace Sensors.GrovePi
 
         private static void ThrowExceptionIfPortIsUsed(GrovePort port)
         {
-            if (_sensors.Any(sen => sen.Port ==port))
+            if (_sensors.Any(sen => sen.Port == port))
             {
                 throw new Exception("The port '" + port + "' is already used.");
             }
@@ -72,17 +84,23 @@ namespace Sensors.GrovePi
         {
             var sensorPort = _sensors.Where(sen => sen.Port == port).ToList();
 
-            if(sensorPort.Count >1)
+            if (sensorPort.Count > 1)
             {
                 throw new Exception("The port '" + port + "' is already used.");
             }
 
-            if(sensorType == SensorType.DhtHumiditySensor)
+            if (sensorType == SensorType.DhtHumiditySensor)
             {
-                if(sensorPort.Count == 1 && 
-                    sensorPort[0].SensorType == SensorType.DhtTemperatureSensor)
+                if (sensorPort.Count == 1)
                 {
-                    return (sensorPort[0] as GrovePiDthTemperatureSensor).DhtSensor;
+                    if (sensorPort[0].SensorType == SensorType.DhtTemperatureSensor)
+                    {
+                        return (sensorPort[0] as GrovePiDthTemperatureSensor).DhtSensor;
+                    }
+                    else
+                    {
+                        throw new Exception("The port '" + port + "' is already used.");
+                    }
                 }
 
                 return new DhtSensor(grovePi, port, DhtType.Dht11);
@@ -90,10 +108,16 @@ namespace Sensors.GrovePi
 
             else if (sensorType == SensorType.DhtTemperatureSensor)
             {
-                if (sensorPort.Count == 1 &&
-                    sensorPort[0].SensorType == SensorType.DhtHumiditySensor)
+                if (sensorPort.Count == 1)
                 {
-                    return (sensorPort[0] as GrovePiDthHumiditySensor).DhtSensor;
+                    if (sensorPort[0].SensorType == SensorType.DhtHumiditySensor)
+                    {
+                        return (sensorPort[0] as GrovePiDthHumiditySensor).DhtSensor;
+                    }
+                    else
+                    {
+                        throw new Exception("The port '" + port + "' is already used.");
+                    }
                 }
 
                 return new DhtSensor(grovePi, port, DhtType.Dht11);
@@ -101,6 +125,5 @@ namespace Sensors.GrovePi
 
             throw new Exception("Type " + sensorType + " is not compatible for DhtSensor");
         }
-
     }
 }

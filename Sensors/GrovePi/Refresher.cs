@@ -47,7 +47,10 @@ namespace Sensors.GrovePi
                 while (true)
                 {
                     foreach (var sensor in sensors)
+                    {
                         sensor.Refresh();
+                        Console.WriteLine(sensor.Name + " : " + sensor.Value);
+                    }
 
                     await Task.Delay(intervalInMS, cancellationToken);
 
