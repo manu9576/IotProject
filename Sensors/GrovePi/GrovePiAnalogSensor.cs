@@ -1,35 +1,21 @@
-﻿using Iot.Device.GrovePiDevice.Sensors;
+﻿using Iot.Device.GrovePiDevice.Models;
+using Iot.Device.GrovePiDevice.Sensors;
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiAnalogSensor : ISensor
+    internal class GrovePiAnalogSensor : GrovePiSensor
     {
         protected AnalogSensor _analogSensor;
-        private double value;
-        private readonly Refresher refresh;
+        protected double value;
 
-        internal GrovePiAnalogSensor(AnalogSensor analogSensor, string name)
+        internal GrovePiAnalogSensor(AnalogSensor analogSensor, string name, GrovePort port):
+            base(name,"V",SensorType.AnalogSensor, port)
         {
-            Name = name;
             _analogSensor = analogSensor;
-            refresh = new Refresher(this);
         }
 
-        public string Name { get; private set; }
-
-        public virtual double Value
-        {
-            get
-            {
-                return value;
-            }
-        }
-
-        public virtual string Unit => "V";
-
-        public virtual void Refresh()
-        {
-            value = _analogSensor.Value;
-        }
+        public override double Value => value;
+        public override void Refresh() => value = _analogSensor.Value;
+       
     }
 }

@@ -1,30 +1,21 @@
-﻿using Iot.Device.GrovePiDevice.Sensors;
+﻿using Iot.Device.GrovePiDevice.Models;
+using Iot.Device.GrovePiDevice.Sensors;
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiAnalogTemperature : GrovePiAnalogSensor, ISensor
+    internal class GrovePiAnalogTemperature : GrovePiAnalogSensor
     {
-        private double value;
 
-        internal GrovePiAnalogTemperature(GroveTemperatureSensor analogSensor, string name) :
-            base(analogSensor, name)
+        internal GrovePiAnalogTemperature(GroveTemperatureSensor analogSensor, string name, GrovePort port) 
+            : base(analogSensor, name, port)
         {
         }
 
-        public override double Value
-        {
-            get
-            {
-                return value;
-            }
-        }
+        public override double Value => value;
 
         public override void Refresh()
         {
             value = (_analogSensor as GroveTemperatureSensor).Temperature; 
         }
-
-
-        public override string Unit => "°C";
     }
 }

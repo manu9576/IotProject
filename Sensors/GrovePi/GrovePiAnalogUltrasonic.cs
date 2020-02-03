@@ -1,31 +1,22 @@
-﻿using Iot.Device.GrovePiDevice.Sensors;
+﻿using Iot.Device.GrovePiDevice.Models;
+using Iot.Device.GrovePiDevice.Sensors;
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiAnalogUltrasonic : ISensor
+    internal class GrovePiAnalogUltrasonic : GrovePiSensor
     {
         private readonly UltrasonicSensor _ultrasonicSensor;
         private double value;
 
-        internal GrovePiAnalogUltrasonic(UltrasonicSensor ultrasonicSensor, string name)
+        internal GrovePiAnalogUltrasonic(UltrasonicSensor ultrasonicSensor, string name ,GrovePort port)
+            : base(name,"cm",SensorType.UltrasonicSensor, port)
         {
             _ultrasonicSensor = ultrasonicSensor;
-            Name = name;
         }
 
-        public string Name { get; private set; }
+        public override double Value => value;
 
-        public double Value
-        {
-            get
-            {
-                return value;
-            }
-        }
-
-        public string Unit => "cm";
-
-        public void Refresh()
+        public override void Refresh()
         {
             value = _ultrasonicSensor.Value;
         }

@@ -1,29 +1,28 @@
-﻿using Iot.Device.GrovePiDevice.Sensors;
+﻿using Iot.Device.GrovePiDevice.Models;
+using Iot.Device.GrovePiDevice.Sensors;
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiDthTemperatureSensor : GrovePiDthBaseSensor, ISensor
+    internal class GrovePiDthTemperatureSensor : GrovePiSensor
     {
+        private readonly DhtSensor dhtSensor;
         public double value;
 
-        public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name) : base(dhtSensor,name)
+        public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name, GrovePort port)
+            : base(name, "°C", SensorType.DhtTemperatureSensor, port)
         {
+            this.dhtSensor = dhtSensor;
         }
 
-        public string Unit => "°C";
 
-        public double Value
-        {
-            get
-            {
-                return value;
-            }
-        }
+        public override double Value => value;
 
-        public void Refresh()
+        public DhtSensor DhtSensor => dhtSensor;
+
+        public override void Refresh()
         {
-            dhtSensor.Read();
-            value = dhtSensor.LastTemperature;
+            DhtSensor.Read();
+            value = DhtSensor.LastTemperature;
         }
     }
 }

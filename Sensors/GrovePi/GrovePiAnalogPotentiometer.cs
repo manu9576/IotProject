@@ -1,29 +1,18 @@
-﻿using Iot.Device.GrovePiDevice.Sensors;
+﻿using Iot.Device.GrovePiDevice.Models;
+using Iot.Device.GrovePiDevice.Sensors;
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiAnalogPotentiometer : GrovePiAnalogSensor, ISensor
+    internal class GrovePiAnalogPotentiometer : GrovePiAnalogSensor
     {
-        private double value;
-
-        internal GrovePiAnalogPotentiometer(PotentiometerSensor analogSensor, string name) :
-            base(analogSensor, name)
+        internal GrovePiAnalogPotentiometer(PotentiometerSensor analogSensor, string name, GrovePort port)
+            : base(analogSensor, name, port)
         {
-        }
-
-        public override double Value
-        {
-            get
-            {
-                return value;
-            }
         }
 
         public override void Refresh()
         {
             value = (_analogSensor as PotentiometerSensor).ValueAsPercent;
         }
-
-        public override string Unit => "%";
     }
 }
