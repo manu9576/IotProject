@@ -35,34 +35,35 @@ namespace Sensors.GrovePi
                     ThrowExceptionIfPortIsUsed(port);
                     var analogSensor = new GrovePiAnalogSensor(new AnalogSensor(grovePi, port), name, port);
                     refresher.AddSensor(analogSensor);
+                    _sensors.Add(analogSensor);
                     return analogSensor;
 
                 case SensorType.DhtTemperatureSensor:
-                    var dthTemperatureSensor = new GrovePiDthTemperatureSensor(GetDhtSensor(grovePi, port, SensorType.DhtTemperatureSensor), name, port);
-                    refresher.AddSensor(dthTemperatureSensor);
-                    return dthTemperatureSensor;
+                    return GetDhtSensor(grovePi, port, SensorType.DhtTemperatureSensor, name);
 
                 case SensorType.DhtHumiditySensor:
-                    var dhtHumiditySensor = new GrovePiDthHumiditySensor(GetDhtSensor(grovePi, port, SensorType.DhtHumiditySensor), name, port);
-                    refresher.AddSensor(dhtHumiditySensor);
-                    return dhtHumiditySensor;
+                    return GetDhtSensor(grovePi, port, SensorType.DhtHumiditySensor, name);
 
                 case SensorType.PotentiometerSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     var potentiometreSensor = new GrovePiAnalogPotentiometer(new PotentiometerSensor(grovePi, port), name, port);
                     refresher.AddSensor(potentiometreSensor);
+                    _sensors.Add(potentiometreSensor);
                     return potentiometreSensor;
 
                 case SensorType.UltrasonicSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     var ultrasonicSensor = new GrovePiAnalogUltrasonic(new UltrasonicSensor(grovePi, port), name, port);
                     refresher.AddSensor(ultrasonicSensor);
+                    _sensors.Add(ultrasonicSensor);
+
                     return ultrasonicSensor;
 
                 case SensorType.GrooveTemperartureSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     var temperatureSensor = new GrovePiAnalogTemperature(new GroveTemperatureSensor(grovePi, port), name, port);
                     refresher.AddSensor(temperatureSensor);
+                    _sensors.Add(temperatureSensor);
                     return temperatureSensor;
 
                 case SensorType.LightSensor:
@@ -80,7 +81,7 @@ namespace Sensors.GrovePi
             }
         }
 
-        private static DhtSensor GetDhtSensor(Iot.Device.GrovePiDevice.GrovePi grovePi, GrovePort port, SensorType sensorType)
+        private static ISensor GetDhtSensor(Iot.Device.GrovePiDevice.GrovePi grovePi, GrovePort port, SensorType sensorType, string name)
         {
             var sensorPort = _sensors.Where(sen => sen.Port == port).ToList();
 
@@ -95,7 +96,9 @@ namespace Sensors.GrovePi
                 {
                     if (sensorPort[0].SensorType == SensorType.DhtTemperatureSensor)
                     {
-                        return (sensorPort[0] as GrovePiDthTemperatureSensor).DhtSensor;
+                        var humiditySensor = new GrovePiDthHumiditySensor((sensorPort[0] as GrovePiDthTemperatureSensor).DhtSensor, name, port);
+                        _sensors.Add(humiditySensor);
+                        return humiditySensor;
                     }
                     else
                     {
@@ -103,7 +106,10 @@ namespace Sensors.GrovePi
                     }
                 }
 
-                return new DhtSensor(grovePi, port, DhtType.Dht11);
+                var dhtHumiditySensor = new GrovePiDthHumiditySensor(new DhtSensor(grovePi, port, DhtType.Dht11), name, port);
+                refresher.AddSensor(dhtHumiditySensor);
+                _sensors.Add(dhtHumiditySensor);
+                return dhtHumiditySensor;
             }
 
             else if (sensorType == SensorType.DhtTemperatureSensor)
@@ -112,7 +118,9 @@ namespace Sensors.GrovePi
                 {
                     if (sensorPort[0].SensorType == SensorType.DhtHumiditySensor)
                     {
-                        return (sensorPort[0] as GrovePiDthHumiditySensor).DhtSensor;
+                        var temperatureSensor = new GrovePiDthTemperatureSensor((sensorPort[0] as GrovePiDthHumiditySensor).DhtSensor, name, port);
+                        _sensors.Add(temperatureSensor);
+                        return temperatureSensor;
                     }
                     else
                     {
@@ -120,7 +128,12 @@ namespace Sensors.GrovePi
                     }
                 }
 
-                return new DhtSensor(grovePi, port, DhtType.Dht11);
+                var dhtTemperatureSensor = new GrovePiDthTemperatureSensor(new DhtSensor(grovePi, port, DhtType.Dht11), name, port);
+
+                refresher.AddSensor(dhtTemperatureSensor);
+                _sensors.Add(dhtTemperatureSensor);
+
+                return dhtTemperatureSensor;
             }
 
             throw new Exception("Type " + sensorType + " is not compatible for DhtSensor");

@@ -5,23 +5,19 @@ namespace Sensors.GrovePi
 {
     internal class GrovePiDthHumiditySensor : GrovePiSensor
     {
-        private readonly DhtSensor dhtSensor;
-        private double value;
-
         public GrovePiDthHumiditySensor(DhtSensor dhtSensor, string name, GrovePort port)
             : base(name, "%", SensorType.DhtHumiditySensor, port)
         {
-            this.dhtSensor = dhtSensor;
+            this.DhtSensor = dhtSensor;
         }
 
-        public override double Value => value;
+        public override double Value => DhtSensor.LastRelativeHumidity;
 
-        public DhtSensor DhtSensor => dhtSensor;
+        public DhtSensor DhtSensor { get; }
 
         public override void Refresh()
         {
-            dhtSensor.Read();
-            value = dhtSensor.LastRelativeHumidity;
+            DhtSensor.Read();
         }
     }
 }
