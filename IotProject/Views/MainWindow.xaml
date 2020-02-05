@@ -7,6 +7,8 @@
         x:Class="IotProject.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         WindowState="Maximized"
+        Topmost="True"
+        HasSystemDecorations="False"
         Title="IotProject">
 
   <Design.DataContext>
