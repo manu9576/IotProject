@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IotProject": {
+      "commandName": "Project",
+      "commandLineArgs": "consoleMode"
+    }
+  }
+}
