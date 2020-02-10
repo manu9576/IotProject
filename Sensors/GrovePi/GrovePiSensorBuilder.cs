@@ -28,6 +28,8 @@ namespace Sensors.GrovePi
 
             var grovePi = GrovePiDevice.GetDevice();
 
+            
+
 
             switch (sensorType)
             {
