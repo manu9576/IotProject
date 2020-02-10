@@ -26,7 +26,7 @@ namespace Sensors.GrovePi
             return fakeSensor;
 #endif
 
-            var grovePi = GrovePiDevice.GetDevice();
+            var grovePi = GrovePiDevice.GetGrovePi();
 
             
 
