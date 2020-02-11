@@ -8,6 +8,7 @@ namespace Iot.Device.GrovePiDevice.Models
     /// The supported Digital Grove Ports
     /// See README.md files for the exact location of each Port
     /// </summary>
+    [System.Flags]
     public enum GrovePort
     {
         /// <summary>Analog pin 0 (A0)</summary>

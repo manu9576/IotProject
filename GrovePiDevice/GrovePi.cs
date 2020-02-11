@@ -226,8 +226,9 @@ namespace Iot.Device.GrovePiDevice
                 var inArray = ReadCommand(GrovePiCommand.AnalogRead, pin);
                 return BinaryPrimitives.ReadInt16BigEndian(inArray.AsSpan(1, 2));
             }
-            catch (IOException)
+            catch (IOException ex)
             {
+                Console.WriteLine("Error at reading analog channel : " + ex.Message);
                 return -1;
             }
         }

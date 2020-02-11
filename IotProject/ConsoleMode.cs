@@ -11,8 +11,8 @@ namespace IotProject
 {
     public class ConsoleMode
     {
-        private CancellationTokenSource cancellationTokenSource;
-        private ObservableCollection<ISensor> sensors;
+        private readonly CancellationTokenSource cancellationTokenSource;
+        private readonly ObservableCollection<ISensor> sensors;
 
         public ConsoleMode()
         {
