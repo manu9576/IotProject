@@ -44,11 +44,8 @@ namespace GrovePiDevice.Sensors
 
         internal RgbLcdDisplay(I2cDevice rgbDevice, I2cDevice textDevice)
         {
-            if (rgbDevice == null) throw new ArgumentNullException(nameof(rgbDevice));
-            if (textDevice == null) throw new ArgumentNullException(nameof(textDevice));
-
-            RgbDirectAccess = rgbDevice;
-            TextDirectAccess = textDevice;
+            RgbDirectAccess = rgbDevice ?? throw new ArgumentNullException(nameof(rgbDevice));
+            TextDirectAccess = textDevice ?? throw new ArgumentNullException(nameof(textDevice));
         }
 
         internal I2cDevice RgbDirectAccess { get; }
@@ -103,20 +100,15 @@ namespace GrovePiDevice.Sensors
             }
 
             /* Initialize the I2C bus */
-            var rgbConnectionSettings = new I2cConnectionSettings(Constants.DisplayRgbI2CAddress >> 1, Iot.Device.GrovePiDevice.GrovePi.DefaultI2cAddress);
+            var rgbConnectionSettings = new I2cConnectionSettings(1, Constants.DisplayRgbI2CAddress);
 
-            var textConnectionSettings = new I2cConnectionSettings(Constants.DisplayTextI2CAddress >> 1, Iot.Device.GrovePiDevice.GrovePi.DefaultI2cAddress);
+            var textConnectionSettings = new I2cConnectionSettings(1, Constants.DisplayTextI2CAddress);
 
 
-            //_rgbLcdDisplay = Task.Run(async () =>
-            //{
-            //    var dis = await GetDeviceInfo();
+            var rgbDevice = I2cDevice.Create(rgbConnectionSettings);
+            var textDevice = I2cDevice.Create(textConnectionSettings);
+            _rgbLcdDisplay = new RgbLcdDisplay(rgbDevice, textDevice);
 
-            //    // Create an I2cDevice with our selected bus controller and I2C settings
-            //    var rgbDevice = await I2cDevice.FromIdAsync(dis[0].Id, rgbConnectionSettings);
-            //    var textDevice = await I2cDevice.FromIdAsync(dis[0].Id, textConnectionSettings);
-            //    return new RgbLcdDisplay(rgbDevice, textDevice);
-            //}).Result;
             return _rgbLcdDisplay;
         }
 
