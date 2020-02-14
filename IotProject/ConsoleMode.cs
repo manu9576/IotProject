@@ -29,7 +29,7 @@ namespace IotProject
         {
             var rgbDisplay= GrovePiRgbLcdDisplay.BuildRgbLcdDisplayImpl();
 
-            rgbDisplay.SetBacklightRgb(20, 20, 20);
+            rgbDisplay.SetBacklightRgb(10, 10, 10);
             Task.Run(async () =>
             {
                 while (true)
@@ -39,7 +39,6 @@ namespace IotProject
                         Console.WriteLine(sensor.Name +": " + sensor.Value + sensor.Unit);
                         rgbDisplay.SetText(sensor.Name + ": \n" + sensor.Value + sensor.Unit);
                         await Task.Delay(intervalInMS, cancellationToken);
-
                     }
 
                     if (cancellationToken.IsCancellationRequested)

@@ -28,9 +28,6 @@ namespace Sensors.GrovePi
 
             var grovePi = GrovePiDevice.GetGrovePi();
 
-            
-
-
             switch (sensorType)
             {
                 case SensorType.AnalogSensor:

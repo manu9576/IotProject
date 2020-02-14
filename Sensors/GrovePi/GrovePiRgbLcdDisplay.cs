@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Device.I2c;
+using System.Linq;
 using System.Threading;
 
 namespace Sensors.GrovePi
@@ -12,23 +14,16 @@ namespace Sensors.GrovePi
 
     public class GrovePiRgbLcdDisplay : IRgbLcdDisplay
     {
+        private const byte DisplayRgbI2CAddress = 0x62;
+        private const byte DisplayTextI2CAddress = 0x3E;
 
+        private const int GroveRgpLcdMaxLength = 16;
+        private const int GroveRgpLcdRows = 2;
 
-        internal static class Constants
-        {
-            public const byte Unused = 0;
-            public const byte GroveVcc = 5;
-            public const byte AdcVoltage = 5;
-            public const int GroveRgpLcdMaxLength = 16;
-            public const int GroveRgpLcdRows = 2;
-
-            public const byte DisplayRgbI2CAddress = 0x62;
-            public const byte DisplayTextI2CAddress = 0x3E;
-        }
-
-        private const byte RedCommandAddress = 4;
-        private const byte GreenCommandAddress = 3;
         private const byte BlueCommandAddress = 2;
+        private const byte GreenCommandAddress = 3;
+        private const byte RedCommandAddress = 4;
+
         private const byte TextCommandAddress = 0x80;
         private const byte ClearDisplayCommandAddress = 0x01;
         private const byte DisplayOnCommandAddress = 0x08;
@@ -36,19 +31,15 @@ namespace Sensors.GrovePi
         private const byte TwoLinesCommandAddress = 0x28;
         private const byte SetCharacterCommandAddress = 0x40;
 
-        private static GrovePiRgbLcdDisplay _rgbLcdDisplay;
+        internal I2cDevice RgbDirectAccess;
+        internal I2cDevice TextDirectAccess;
 
         internal GrovePiRgbLcdDisplay(I2cDevice rgbDevice, I2cDevice textDevice)
         {
-            if (rgbDevice == null) throw new ArgumentNullException(nameof(rgbDevice));
-            if (textDevice == null) throw new ArgumentNullException(nameof(textDevice));
-
-            RgbDirectAccess = rgbDevice;
-            TextDirectAccess = textDevice;
+            RgbDirectAccess = rgbDevice ?? throw new ArgumentNullException(nameof(rgbDevice));
+            TextDirectAccess = textDevice ?? throw new ArgumentNullException(nameof(textDevice));
         }
 
-        internal I2cDevice RgbDirectAccess { get; }
-        internal I2cDevice TextDirectAccess { get; }
 
         public IRgbLcdDisplay SetBacklightRgb(byte red, byte green, byte blue)
         {
@@ -74,11 +65,11 @@ namespace Sensors.GrovePi
 
             foreach (var c in text)
             {
-                if (c.Equals('\n') || count == Constants.GroveRgpLcdMaxLength)
+                if (c.Equals('\n') || count == GroveRgpLcdMaxLength)
                 {
                     count = 0;
                     row += 1;
-                    if (row == Constants.GroveRgpLcdRows)
+                    if (row == GroveRgpLcdRows)
                         break;
                     TextDirectAccess.Write(new byte[] { TextCommandAddress, 0xc0 }); //TODO: find out what this address is
                     if (c.Equals('\n'))
@@ -91,26 +82,28 @@ namespace Sensors.GrovePi
             return this;
         }
 
-        public static GrovePiRgbLcdDisplay BuildRgbLcdDisplayImpl()
+        private static List<GrovePiRgbLcdDisplay> rgbLcdDisplays = new List<GrovePiRgbLcdDisplay>();
+
+        public static GrovePiRgbLcdDisplay BuildRgbLcdDisplayImpl(int displayRgbI2CAdress = DisplayRgbI2CAddress, int displayTextI2C = DisplayTextI2CAddress)
         {
-            if (null != _rgbLcdDisplay)
+            if (rgbLcdDisplays.Any(display => display.RgbDirectAccess.ConnectionSettings.DeviceAddress == displayRgbI2CAdress))
             {
-                return _rgbLcdDisplay;
+                throw new Exception($"Impossible to create display RGB: the adresse {displayRgbI2CAdress:X} is already used");
+            }
+
+            if (rgbLcdDisplays.Any(display => display.TextDirectAccess.ConnectionSettings.DeviceAddress == displayTextI2C))
+            {
+                throw new Exception($"Impossible to create display text: the adresse {displayTextI2C:X} is already used");
             }
 
             /* Initialize the I2C bus */
-            var rgbConnectionSettings = new I2cConnectionSettings(1, Constants.DisplayRgbI2CAddress);
-
-            var textConnectionSettings = new I2cConnectionSettings(1, Constants.DisplayTextI2CAddress);
-
-
+            var rgbConnectionSettings = new I2cConnectionSettings(1, displayRgbI2CAdress);
             var rgbDevice = I2cDevice.Create(rgbConnectionSettings);
+
+            var textConnectionSettings = new I2cConnectionSettings(1, displayTextI2C);
             var textDevice = I2cDevice.Create(textConnectionSettings);
 
-            _rgbLcdDisplay = new GrovePiRgbLcdDisplay(rgbDevice, textDevice);
-
-            return _rgbLcdDisplay;
+            return new GrovePiRgbLcdDisplay(rgbDevice, textDevice);
         }
-
     }
 }
