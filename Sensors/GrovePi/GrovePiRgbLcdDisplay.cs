@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Device.I2c;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace Sensors.GrovePi
@@ -63,20 +65,25 @@ namespace Sensors.GrovePi
             var count = 0;
             var row = 0;
 
-            foreach (var c in text)
+            var textWithouDiacirtics = RemoveDiacritics(text);
+
+            foreach (var charater in textWithouDiacirtics)
             {
-                if (c.Equals('\n') || count == GroveRgpLcdMaxLength)
+                if (charater.Equals('\n') || count == GroveRgpLcdMaxLength)
                 {
                     count = 0;
                     row += 1;
+
                     if (row == GroveRgpLcdRows)
                         break;
+
                     TextDirectAccess.Write(new byte[] { TextCommandAddress, 0xc0 }); //TODO: find out what this address is
-                    if (c.Equals('\n'))
+
+                    if (charater.Equals('\n'))
                         continue;
                 }
                 count += 1;
-                TextDirectAccess.Write(new[] { SetCharacterCommandAddress, (byte)c });
+                TextDirectAccess.Write(new[] { SetCharacterCommandAddress, (byte)charater });
             }
 
             return this;
@@ -104,6 +111,23 @@ namespace Sensors.GrovePi
             var textDevice = I2cDevice.Create(textConnectionSettings);
 
             return new GrovePiRgbLcdDisplay(rgbDevice, textDevice);
+        }
+
+       private static string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
     }
 }
