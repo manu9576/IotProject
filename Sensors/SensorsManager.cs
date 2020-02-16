@@ -3,6 +3,7 @@ using Sensors.GrovePi;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using Sensors.Weather;
 
 namespace Sensors
 {
@@ -17,7 +18,8 @@ namespace Sensors
             Sensors = new ObservableCollection<ISensor>
             {
                 GrovePiSensorBuilder.CreateSensor(SensorType.DhtTemperatureSensor, GrovePort.DigitalPin7, "Température"),
-                GrovePiSensorBuilder.CreateSensor(SensorType.DhtHumiditySensor, GrovePort.DigitalPin7, "Humidité")
+                GrovePiSensorBuilder.CreateSensor(SensorType.DhtHumiditySensor, GrovePort.DigitalPin7, "Humidité"),
+                new Weather.Weather()
             };
 
         }
