@@ -1,5 +1,6 @@
 ﻿using Sensors;
 using Sensors.GrovePi;
+using Storage;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -11,6 +12,7 @@ namespace IotProject
     {
         private CancellationTokenSource cancellationTokenSource;
         private ObservableCollection<ISensor> sensors;
+        private SensorsStorage sensorsStorage;
 
         public ConsoleMode()
         {
@@ -21,6 +23,8 @@ namespace IotProject
         public void Start()
         {
             PeriodicRefreshTask(2000, cancellationTokenSource.Token);
+            sensorsStorage = SensorsStorage.GetInstance();
+            sensorsStorage.Start(10);
             Console.Read();
         }
 
