@@ -1,9 +1,8 @@
-﻿using GrovePiDevice.Sensors;
-using Sensors;
+﻿using Sensors;
+using Sensors.GrovePi;
+using Storage;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,6 +12,7 @@ namespace IotProject
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly ObservableCollection<ISensor> sensors;
+        private SensorsStorage sensorsStorage;
 
         public ConsoleMode()
         {
@@ -22,16 +22,18 @@ namespace IotProject
 
         public void Start()
         {
-            PeriodicRefreshTask(1000, cancellationTokenSource.Token);
+            PeriodicRefreshTask(2000, cancellationTokenSource.Token);
+            sensorsStorage = SensorsStorage.GetInstance();
+            sensorsStorage.Start(10);
             Console.Read();
         }
 
 
         private void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
         {
-            var rgbDisplay= RgbLcdDisplay.BuildRgbLcdDisplayImpl();
+            var rgbDisplay= GrovePiRgbLcdDisplay.BuildRgbLcdDisplayImpl();
 
-            rgbDisplay.SetBacklightRgb(255, 0, 0);
+            rgbDisplay.SetBacklightRgb(10, 10, 10);
             Task.Run(async () =>
             {
                 while (true)
@@ -39,11 +41,9 @@ namespace IotProject
                     foreach (var sensor in sensors)
                     {
                         Console.WriteLine(sensor.Name +": " + sensor.Value + sensor.Unit);
-                        rgbDisplay.SetText(sensor.Name + ": " + sensor.Value + sensor.Unit);
+                        rgbDisplay.SetText(sensor.Name + ": \n" + sensor.Value + sensor.Unit);
                         await Task.Delay(intervalInMS, cancellationToken);
-
                     }
-
 
                     if (cancellationToken.IsCancellationRequested)
                         break;

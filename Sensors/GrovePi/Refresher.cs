@@ -21,7 +21,7 @@ namespace Sensors.GrovePi
         }
 
 
-        public void Start(int intervalInMs = 1000)
+        public void Start(int intervalInMs = 2000)
         {
             if (IsRunning)
             {
