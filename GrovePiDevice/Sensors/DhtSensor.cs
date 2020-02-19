@@ -14,7 +14,8 @@ namespace Iot.Device.GrovePiDevice.Sensors
     /// </summary>
     public class DhtSensor
     {
-        private Tuple<double, double> _lastTemHum = new Tuple<double, double>(double.NaN, double.NaN);
+
+        private double[] _lastTemHum = new double[2];
         private readonly GrovePi _grovePi;
 
         /// <summary>
@@ -48,27 +49,13 @@ namespace Iot.Device.GrovePiDevice.Sensors
         public DhtType DhtType { get; internal set; }
 
         /// <summary>
-        /// Get an array of 2 double
-        /// First is the temperature in degree Celsius
-        /// Second is the relative humidity from 0.0 to 100.0
-        /// </summary>
-        public Tuple<double, double> Value
-        {
-            get
-            {
-                Read();
-                return _lastTemHum;
-            }
-        }
-
-        /// <summary>
         /// You need to read the sensorbefore getting the value
         /// </summary>
         public void Read()
         {
             // Fix for the firmware 1.4.0, you can request a new measurement only if you got data
             // from the previous one
-            if (!(double.IsNaN(_lastTemHum.Item1) && double.IsNaN(_lastTemHum.Item2)))
+            if (!(double.IsNaN(_lastTemHum[0]) && double.IsNaN(_lastTemHum[1])))
             {
                 _grovePi.WriteCommand(GrovePiCommand.DhtTemp, _port, (byte)DhtType, 0);
             }
@@ -78,32 +65,30 @@ namespace Iot.Device.GrovePiDevice.Sensors
             // This is needed for firmware 1.4.0 and also working for previous versions
             Thread.Sleep(300);
             var retArray = _grovePi.ReadCommand(GrovePiCommand.DhtTemp, _port);
-            _lastTemHum = new Tuple<double, double>(
-                BitConverter.ToSingle(retArray.AsSpan(1, 4)), 
-                BitConverter.ToSingle(retArray.AsSpan(5, 4))
-                );
+            _lastTemHum[0] = BitConverter.ToSingle(retArray.AsSpan(1, 4));
+            _lastTemHum[1] = BitConverter.ToSingle(retArray.AsSpan(5, 4));
         }
 
         /// <summary>
         /// Returns the temperature and humidity in a formated way
         /// </summary>
         /// <returns>Returns the temperature and humidity in a formated way</returns>
-        public override string ToString() => $"Temperature: {_lastTemHum.Item1.ToString("0.00")} °C, Humidity: {_lastTemHum.Item2.ToString("0.00")} %";
+        public override string ToString() => $"Temperature: {_lastTemHum[0].ToString("0.00")} °C, Humidity: {_lastTemHum[1].ToString("0.00")} %";
 
         /// <summary>
         /// Get the last temperature measured in Farenheit
         /// </summary>
-        public double LastTemperatureInFarenheit => _lastTemHum.Item1 * 9 / 5 + 32;
+        public double LastTemperatureInFarenheit => _lastTemHum[0] * 9 / 5 + 32;
 
         /// <summary>
         /// Get the last temperature measured in Celsius
         /// </summary>
-        public double LastTemperature => _lastTemHum.Item1;
+        public double LastTemperature => _lastTemHum[0];
 
         /// <summary>
         /// Get the last measured relative humidy from 0.0 to 100.0
         /// </summary>
-        public double LastRelativeHumidity => _lastTemHum.Item2;
+        public double LastRelativeHumidity => _lastTemHum[1];
 
         /// <summary>
         /// Get the name of the DHT sensor
