@@ -40,8 +40,8 @@ namespace IotProject
                 {
                     foreach (var sensor in sensors)
                     {
-                        Console.WriteLine(sensor.Name +": " + sensor.Value + sensor.Unit);
-                        rgbDisplay.SetText(sensor.Name + ": \n" + sensor.Value + sensor.Unit);
+                        Console.WriteLine(sensor.Name +": " + sensor.Value.ToString("0.0") + sensor.Unit);
+                        rgbDisplay.SetText(sensor.Name + ": \n" + sensor.Value.ToString("0.0") + sensor.Unit);
                         await Task.Delay(intervalInMS, cancellationToken);
                     }
 
