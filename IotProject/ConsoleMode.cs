@@ -20,14 +20,27 @@ namespace IotProject
             cancellationTokenSource = new CancellationTokenSource();
         }
 
+        public bool IsRunning { get; private set; }
+
         public void Start()
         {
+            IsRunning = true;
             PeriodicRefreshTask(2000, cancellationTokenSource.Token);
             sensorsStorage = SensorsStorage.GetInstance();
             sensorsStorage.Start(10);
-            Console.Read();
         }
 
+        public void Stop()
+        {
+            cancellationTokenSource.Cancel();
+            IsRunning = false;
+        }
+
+        public void WriteLCD(string message)
+        {
+            var rgbDisplay = GrovePiRgbLcdDisplay.BuildRgbLcdDisplayImpl();
+            rgbDisplay.SetText(message);
+        }
 
         private void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
         {

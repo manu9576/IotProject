@@ -1,0 +1,13 @@
+[Unit]
+Description = Dotnet Core IotProject service
+
+[Service]
+ExecStart =/home/pi/dotnet/dotnet /home/pi/Desktop/IotProject/publish/IotProject.dll consoleMode
+User = pi
+Group= pi
+Restart = on-failure
+SyslogIdentifier= dotnet-iotProject-service
+PrivateTmp = true
+
+[Install]
+WantedBy= multi-user.target

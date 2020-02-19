@@ -17,6 +17,8 @@ namespace Sensors.GrovePi
 
         public override void Refresh()
         {
+            System.Console.WriteLine("Refresh Temperauture");
+
             DhtSensor.Read();
         }
     }
