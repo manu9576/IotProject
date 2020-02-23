@@ -1,9 +1,10 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
 using Iot.Device.GrovePiDevice.Sensors;
+using Sensors.Weather;
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiAnalogUltrasonic : GrovePiSensor
+    internal class GrovePiAnalogUltrasonic : GrovePiSensor, IRefresher
     {
         private readonly UltrasonicSensor _ultrasonicSensor;
         private double value;

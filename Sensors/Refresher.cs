@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Sensors.Weather;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Sensors.GrovePi
+namespace Sensors
 {
     internal class Refresher
     {
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private readonly List<ISensor> sensors = new List<ISensor>();
+        private readonly List<IRefresher> sensors = new List<IRefresher>();
         
         public bool IsRunning { get; private set ; }
 
-        public void AddSensor(ISensor sensor)
+        public void AddSensor(IRefresher sensor)
         {
             if (!sensors.Contains(sensor))
             {

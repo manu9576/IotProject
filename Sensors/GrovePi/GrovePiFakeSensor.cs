@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Sensors.Weather;
+using System;
 
 namespace Sensors.GrovePi
 {
-    public class GrovePiFakeSensor : ISensor
+    public class GrovePiFakeSensor : ISensor, IRefresher
     {
         private readonly SensorType sensorType;
         private readonly Random rand;
