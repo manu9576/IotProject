@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sensors.Weather
+﻿namespace Sensors.Weather
 {
     internal class WeatherTemperature : ISensor
     {
@@ -19,11 +15,7 @@ namespace Sensors.Weather
         {
             get
             {
-                var nodes = webWeather.XmlData.GetElementsByTagName("temperature");
-
-                var temp = nodes.
-
-                return 0.0;
+                return webWeather.GetTemperature();
             }
         }
 

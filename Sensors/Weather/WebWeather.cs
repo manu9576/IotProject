@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Globalization;
 using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace Sensors.Weather
@@ -13,12 +8,13 @@ namespace Sensors.Weather
     {
         internal WebWeather()
         {
+            Refresh();
         }
 
         private const string OpenWeatherKey = "adac93f3a057d268edd730c32733714e";
         private const string URL = "http://api.openweathermap.org/data/2.5/weather?q=@LOC@&mode=xml&units=metric&APPID=@API_KEY@";
 
-        public XmlDocument XmlData { get; private set; }
+        private XmlDocument xmlDocument;
 
         public void Refresh()
         {
@@ -33,8 +29,24 @@ namespace Sensors.Weather
             // Get the response string from the URL.
             string xml = client.DownloadString(url);
 
-            XmlData = new XmlDocument();
-            
+            xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(xml);
+        }
+
+        private string GetNodeValue(string nodeName, string attribute)
+        {
+            var nodes = xmlDocument.DocumentElement.SelectNodes(nodeName);
+
+            return  nodes[0].Attributes[attribute].Value;
+
+        }
+
+
+        public double GetTemperature()
+        {
+            var temperature = GetNodeValue("temperature", "value");
+
+            return double.Parse(temperature, CultureInfo.InvariantCulture);
         }
 
 
