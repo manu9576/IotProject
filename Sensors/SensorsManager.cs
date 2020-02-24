@@ -1,5 +1,6 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
 using Sensors.GrovePi;
+using Sensors.Weather;
 using System.Collections.ObjectModel;
 
 namespace Sensors
@@ -15,7 +16,8 @@ namespace Sensors
             Sensors = new ObservableCollection<ISensor>
             {
                 GrovePiSensorBuilder.CreateSensor(SensorType.DhtTemperatureSensor, GrovePort.DigitalPin7, "Température"),
-                GrovePiSensorBuilder.CreateSensor(SensorType.DhtHumiditySensor, GrovePort.DigitalPin7, "Humidité")
+                GrovePiSensorBuilder.CreateSensor(SensorType.DhtHumiditySensor, GrovePort.DigitalPin7, "Humidité"),
+                WeatherSensorBuilder.GetSensor(SensorWeatherType.Temperature)
             };
 
         }
