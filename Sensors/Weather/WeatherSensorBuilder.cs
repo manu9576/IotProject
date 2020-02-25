@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Sensors.Weather
 {
@@ -16,7 +14,7 @@ namespace Sensors.Weather
                 webWeather = new WebWeather();
                 refresher = new Refresher();
                 refresher.AddSensor(webWeather);
-                refresher.Start();
+                refresher.Start(600000);
             }
 
             switch (sensorWeatherType)
@@ -25,9 +23,17 @@ namespace Sensors.Weather
                     return new WeatherTemperature(webWeather);
 
                 case SensorWeatherType.Humidity:
+                    return new WeatherHumidity(webWeather);
+
                 case SensorWeatherType.Pressure:
+                    return new WeatherPressure(webWeather);
+
                 case SensorWeatherType.WindSpeed:
+                    return new WeatherWindSpeed(webWeather);
+
                 case SensorWeatherType.WindDirection:
+                    return new WeatherWindDirection(webWeather);
+
                 default:
                     throw new Exception("The type <" + webWeather + "> is not manage by the WeatherSensorBuilder");
             }
