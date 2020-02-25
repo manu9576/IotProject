@@ -10,8 +10,8 @@ namespace Sensors
     {
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly List<IRefresher> sensors = new List<IRefresher>();
-        
-        public bool IsRunning { get; private set ; }
+
+        private bool isRunning;
 
         public void AddSensor(IRefresher sensor)
         {
@@ -21,21 +21,20 @@ namespace Sensors
             }
         }
 
-
         public void Start(int intervalInMs = 5000)
         {
-            if (IsRunning)
+            if (isRunning)
             {
                 throw new Exception("The refresher is already running");
             }
 
-            IsRunning = true;
+            isRunning = true;
             PeriodicRefreshTask(intervalInMs, cancellationTokenSource.Token);
         }
 
         public void Stop()
         {
-            IsRunning = false;
+            isRunning = false;
             cancellationTokenSource.Cancel();
             cancellationTokenSource = new CancellationTokenSource();
         }
