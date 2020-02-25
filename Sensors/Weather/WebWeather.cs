@@ -6,15 +6,15 @@ namespace Sensors.Weather
 {
     internal class WebWeather : IRefresher
     {
-        internal WebWeather()
-        {
-            Refresh();
-        }
-
         private const string OpenWeatherKey = "adac93f3a057d268edd730c32733714e";
         private const string URL = "http://api.openweathermap.org/data/2.5/weather?q=@LOC@&mode=xml&units=metric&APPID=@API_KEY@";
 
         private XmlDocument xmlDocument;
+
+        internal WebWeather()
+        {
+            Refresh();
+        }
 
         public void Refresh()
         {
@@ -35,16 +35,11 @@ namespace Sensors.Weather
 
         private string GetNodeValue(string[] nodesName, string attribute)
         {
-            var currentNode = xmlDocument.DocumentElement.ChildNodes;
+            var xpath = string.Join('/', nodesName);
 
-            foreach (var nodeName in nodesName)
-            {
-                currentNode = currentNode[0].SelectNodes(nodeName);
-            }
+            var node = xmlDocument.DocumentElement.SelectSingleNode(xpath);
 
-
-            return currentNode[0].Attributes[attribute].Value;
-
+            return node.Attributes[attribute].Value;
         }
 
         public double GetTemperature()
