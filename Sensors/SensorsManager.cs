@@ -17,7 +17,11 @@ namespace Sensors
             {
                 GrovePiSensorBuilder.CreateSensor(SensorType.DhtTemperatureSensor, GrovePort.DigitalPin7, "Température"),
                 GrovePiSensorBuilder.CreateSensor(SensorType.DhtHumiditySensor, GrovePort.DigitalPin7, "Humidité"),
-                WeatherSensorBuilder.GetSensor(SensorWeatherType.Temperature)
+                WeatherSensorBuilder.GetSensor(SensorWeatherType.Temperature),
+                WeatherSensorBuilder.GetSensor(SensorWeatherType.Humidity),
+                WeatherSensorBuilder.GetSensor(SensorWeatherType.Pressure),
+                WeatherSensorBuilder.GetSensor(SensorWeatherType.WindDirection),
+                WeatherSensorBuilder.GetSensor(SensorWeatherType.WindSpeed),
             };
 
         }
