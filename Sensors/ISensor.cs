@@ -5,6 +5,5 @@
         string Name { get; }
         double Value { get; }
         string Unit { get; }
-        void Refresh();
     }
 }

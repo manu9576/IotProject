@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Sensors.Weather;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Sensors.GrovePi
+namespace Sensors
 {
     internal class Refresher
     {
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private readonly List<ISensor> sensors = new List<ISensor>();
-        
-        public bool IsRunning { get; private set ; }
+        private readonly List<IRefresher> sensors = new List<IRefresher>();
 
-        public void AddSensor(ISensor sensor)
+        private bool isRunning;
+
+        public void AddSensor(IRefresher sensor)
         {
             if (!sensors.Contains(sensor))
             {
@@ -20,21 +21,20 @@ namespace Sensors.GrovePi
             }
         }
 
-
         public void Start(int intervalInMs = 5000)
         {
-            if (IsRunning)
+            if (isRunning)
             {
                 throw new Exception("The refresher is already running");
             }
 
-            IsRunning = true;
+            isRunning = true;
             PeriodicRefreshTask(intervalInMs, cancellationTokenSource.Token);
         }
 
         public void Stop()
         {
-            IsRunning = false;
+            isRunning = false;
             cancellationTokenSource.Cancel();
             cancellationTokenSource = new CancellationTokenSource();
         }
