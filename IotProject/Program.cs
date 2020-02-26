@@ -22,10 +22,7 @@ namespace IotProject
                 consoleMode = new ConsoleMode();
                 consoleMode.Start();
 
-                while(consoleMode.IsRunning)
-                {
-                    Thread.Sleep(1000);
-                }
+                SpinWait.SpinUntil(() => !consoleMode.IsRunning);
 
                 consoleMode.WriteLCD("This is the end....");
             }
