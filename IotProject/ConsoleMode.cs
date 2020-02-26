@@ -27,7 +27,7 @@ namespace IotProject
             IsRunning = true;
             PeriodicRefreshTask(2000, cancellationTokenSource.Token);
             sensorsStorage = SensorsStorage.GetInstance();
-            sensorsStorage.Start(10);
+            sensorsStorage.Start(10 * 60);
         }
 
         public void Stop()
@@ -44,7 +44,7 @@ namespace IotProject
 
         private void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
         {
-            var rgbDisplay= GrovePiRgbLcdDisplay.BuildRgbLcdDisplayImpl();
+            var rgbDisplay = GrovePiRgbLcdDisplay.BuildRgbLcdDisplayImpl();
 
             rgbDisplay.SetBacklightRgb(10, 10, 10);
             Task.Run(async () =>
@@ -53,8 +53,8 @@ namespace IotProject
                 {
                     foreach (var sensor in sensors)
                     {
-                        Console.WriteLine(sensor.Name +": " + sensor.Value.ToString("0.0") + sensor.Unit);
-                        rgbDisplay.SetText(sensor.Name + ": \n" + sensor.Value.ToString("0.0") + sensor.Unit);
+                        Console.WriteLine(sensor.Name + ": " + sensor.Value.ToString("0.0") + sensor.Unit);
+                        rgbDisplay.SetText(sensor.Name, sensor.Value.ToString("0.0") + " " + sensor.Unit);
                         await Task.Delay(intervalInMS, cancellationToken);
                     }
 

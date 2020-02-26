@@ -12,6 +12,7 @@ namespace Sensors.GrovePi
     {
         IRgbLcdDisplay SetBacklightRgb(byte red, byte green, byte blue);
         IRgbLcdDisplay SetText(string text);
+        IRgbLcdDisplay SetText(string line1, string line2);
     }
 
     public class GrovePiRgbLcdDisplay : IRgbLcdDisplay
@@ -65,7 +66,7 @@ namespace Sensors.GrovePi
             var count = 0;
             var row = 0;
 
-            var textWithouDiacirtics = RemoveDiacritics(text);
+            var textWithouDiacirtics = ReplaceDegreeSymbol(RemoveDiacritics(text));
 
             foreach (var charater in textWithouDiacirtics)
             {
@@ -83,6 +84,28 @@ namespace Sensors.GrovePi
                         continue;
                 }
                 count += 1;
+                TextDirectAccess.Write(new[] { SetCharacterCommandAddress, (byte)charater });
+            }
+
+            return this;
+        }
+
+        public IRgbLcdDisplay SetText(string line1, string line2)
+        {
+            TextDirectAccess.Write(new[] { TextCommandAddress, ClearDisplayCommandAddress });
+            Thread.Sleep(50);
+            TextDirectAccess.Write(new[] { TextCommandAddress, (byte)(DisplayOnCommandAddress | NoCursorCommandAddress) });
+            TextDirectAccess.Write(new[] { TextCommandAddress, TwoLinesCommandAddress });
+
+            foreach (var charater in FormatText(line1))
+            {
+                TextDirectAccess.Write(new[] { SetCharacterCommandAddress, (byte)charater });
+            }
+
+            TextDirectAccess.Write(new byte[] { TextCommandAddress, 0xc0 });
+
+            foreach (var charater in FormatText(line2))
+            {
                 TextDirectAccess.Write(new[] { SetCharacterCommandAddress, (byte)charater });
             }
 
@@ -113,7 +136,7 @@ namespace Sensors.GrovePi
             return new GrovePiRgbLcdDisplay(rgbDevice, textDevice);
         }
 
-       private static string RemoveDiacritics(string text)
+        private static string RemoveDiacritics(string text)
         {
             var normalizedString = text.Normalize(NormalizationForm.FormD);
             var stringBuilder = new StringBuilder();
@@ -128,6 +151,24 @@ namespace Sensors.GrovePi
             }
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+
+        private static string ReplaceDegreeSymbol(string text)
+        {
+            return text.Replace('°', '\x00DF');
+        }
+
+
+        private static string FormatText(string text)
+        {
+            var formatedText = ReplaceDegreeSymbol(RemoveDiacritics(text));
+
+            return formatedText.Length > GroveRgpLcdMaxLength ?
+                    formatedText.Trim().Length > GroveRgpLcdMaxLength ?
+                        formatedText.Trim().Substring(0, GroveRgpLcdMaxLength):
+                        formatedText.Trim()
+                    :formatedText;
         }
     }
 }
