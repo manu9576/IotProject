@@ -4,6 +4,7 @@ using System.Device.I2c;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace Sensors.GrovePi
@@ -33,6 +34,7 @@ namespace Sensors.GrovePi
         private const byte NoCursorCommandAddress = 0x04;
         private const byte TwoLinesCommandAddress = 0x28;
         private const byte SetCharacterCommandAddress = 0x40;
+        private const byte NewLineCommand = 0xc0;
 
         internal I2cDevice RgbDirectAccess;
         internal I2cDevice TextDirectAccess;
@@ -78,7 +80,7 @@ namespace Sensors.GrovePi
                     if (row == GroveRgpLcdRows)
                         break;
 
-                    TextDirectAccess.Write(new byte[] { TextCommandAddress, 0xc0 }); //TODO: find out what this address is
+                    TextDirectAccess.Write(new byte[] { TextCommandAddress, NewLineCommand });
 
                     if (charater.Equals('\n'))
                         continue;
@@ -102,7 +104,7 @@ namespace Sensors.GrovePi
                 TextDirectAccess.Write(new[] { SetCharacterCommandAddress, (byte)charater });
             }
 
-            TextDirectAccess.Write(new byte[] { TextCommandAddress, 0xc0 });
+            TextDirectAccess.Write(new byte[] { TextCommandAddress, NewLineCommand });
 
             foreach (var charater in FormatText(line2))
             {
@@ -153,22 +155,32 @@ namespace Sensors.GrovePi
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
-
         private static string ReplaceDegreeSymbol(string text)
         {
             return text.Replace('°', '\x00DF');
         }
 
-
         private static string FormatText(string text)
         {
             var formatedText = ReplaceDegreeSymbol(RemoveDiacritics(text));
 
-            return formatedText.Length > GroveRgpLcdMaxLength ?
-                    formatedText.Trim().Length > GroveRgpLcdMaxLength ?
-                        formatedText.Trim().Substring(0, GroveRgpLcdMaxLength):
-                        formatedText.Trim()
-                    :formatedText;
+            if(formatedText.Length > GroveRgpLcdMaxLength)
+            {
+                var formatedTextWithoutSpace = formatedText.Replace(" ", "");
+
+                if (formatedTextWithoutSpace.Length > GroveRgpLcdMaxLength)
+                {
+                    return formatedTextWithoutSpace.Substring(0, GroveRgpLcdMaxLength);
+                }
+                else 
+                {
+                    return formatedTextWithoutSpace;
+                }
+            }
+            else
+            {
+                return formatedText;
+            }
         }
     }
 }
