@@ -18,7 +18,6 @@ namespace Sensors.GrovePi
 
         public override void Refresh()
         {
-            System.Console.WriteLine("Refresh Humidity");
             DhtSensor.Read();
         }
     }
