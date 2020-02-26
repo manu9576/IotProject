@@ -106,6 +106,7 @@ namespace Sensors.GrovePi
                 }
 
                 var dhtHumiditySensor = new GrovePiDthHumiditySensor(new DhtSensor(grovePi, port, DhtType.Dht22), name, port);
+                dhtHumiditySensor.Refresh();
                 refresher.AddSensor(dhtHumiditySensor);
                 _sensors.Add(dhtHumiditySensor);
                 return dhtHumiditySensor;
@@ -128,7 +129,7 @@ namespace Sensors.GrovePi
                 }
 
                 var dhtTemperatureSensor = new GrovePiDthTemperatureSensor(new DhtSensor(grovePi, port, DhtType.Dht22), name, port);
-
+                dhtTemperatureSensor.Refresh();
                 refresher.AddSensor(dhtTemperatureSensor);
                 _sensors.Add(dhtTemperatureSensor);
 
