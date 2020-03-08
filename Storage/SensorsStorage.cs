@@ -13,13 +13,14 @@ namespace Storage
         private static SensorsStorage sensorsStorage = null;
 
         private readonly Dictionary<Sensor, ISensor> sensors;
-        private CancellationTokenSource cancellationTokenSource;
+        private readonly CancellationTokenSource cancellationTokenSource;
         private SensorsContext db;
-
 
         private SensorsStorage()
         {
             sensors = new Dictionary<Sensor, ISensor>();
+
+            cancellationTokenSource = new CancellationTokenSource();
         }
 
         public static SensorsStorage GetInstance()
@@ -34,11 +35,26 @@ namespace Storage
 
         public void Start(int intervalInSeconds)
         {
+
+            PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
+
+        }
+
+        private void OpenDB()
+        {
+
+            if(db != null)
+            {
+                db.Dispose();
+            }
+
+            db = new SensorsContext();
+
+            sensors.Clear();
+
             Device device;
 
             string deviceName = Environment.MachineName;
-
-            db = new SensorsContext();
 
             if (!db.Devices.Any(dev => dev.Name == deviceName))
             {
@@ -61,8 +77,8 @@ namespace Storage
             foreach (var sensor in deviceSensors)
             {
 
-                dbSensor = db.Sensors.FirstOrDefault(sens => 
-                sens.Name == sensor.Name && 
+                dbSensor = db.Sensors.FirstOrDefault(sens =>
+                sens.Name == sensor.Name &&
                 sens.Device == device);
 
                 if (dbSensor == null)
@@ -80,15 +96,17 @@ namespace Storage
                 sensors.Add(dbSensor, sensor);
             }
 
-            cancellationTokenSource = new CancellationTokenSource();
-            PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
+        }
 
+        private void CloseDB()
+        {
+            db.Dispose();
         }
 
         public void Stop()
         {
             cancellationTokenSource.Cancel();
-            db.Dispose();
+
         }
 
         void PeriodicMesureTask(int intervalInMS, CancellationToken cancellationToken)
@@ -98,10 +116,18 @@ namespace Storage
             {
                 while (true)
                 {
+                    try
+                    {
+                        OpenDB();
+                        Measurement();
+                        CloseDB();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("DB exception: " + ex);
+                    }
 
-                    Mesure();
-
-                    await Task.Delay(intervalInMS , cancellationToken);
+                    await Task.Delay(intervalInMS, cancellationToken);
 
                     if (cancellationToken.IsCancellationRequested)
                         break;
@@ -109,7 +135,7 @@ namespace Storage
             });
         }
 
-        private void Mesure()
+        private void Measurement()
         {
             var dateTime = DateTime.Now;
 
@@ -122,7 +148,11 @@ namespace Storage
                 });
             }
 
-            db.SaveChanges();
+            var re = db.SaveChanges();
+
+            Console.WriteLine(re);
+
+
         }
     }
 }

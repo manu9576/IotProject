@@ -23,14 +23,14 @@ namespace Storage
 
         private void WaitServerDetection(string serverName)
         {
-            while(!ComputerIsPresent(serverName))
+            while(!ServerIsPresent(serverName))
             {
                 Thread.Sleep(5000);
             }
 
         }
 
-        private bool ComputerIsPresent(string serverName)
+        private bool ServerIsPresent(string serverName)
         {
             Ping pingSender = new Ping();
             PingOptions options = new PingOptions();
