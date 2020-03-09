@@ -43,7 +43,7 @@ namespace Storage
         private void OpenDB()
         {
 
-            if(db != null)
+            if (db != null)
             {
                 db.Dispose();
             }
@@ -141,11 +141,16 @@ namespace Storage
 
             foreach (var sensor in sensors.Keys)
             {
-                sensor.Measures.Add(new Measure
+                var value = sensors[sensor].Value;
+
+                if (double.IsNormal(value))
                 {
-                    Value = sensors[sensor].Value,
-                    DateTime = dateTime
-                });
+                    sensor.Measures.Add(new Measure
+                    {
+                        Value = value,
+                        DateTime = dateTime
+                    });
+                }
             }
 
             var re = db.SaveChanges();
