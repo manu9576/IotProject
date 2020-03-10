@@ -27,7 +27,7 @@ namespace IotProject
             IsRunning = true;
             PeriodicRefreshTask(2000, cancellationTokenSource.Token);
             sensorsStorage = SensorsStorage.GetInstance();
-            sensorsStorage.Start(10 * 60);
+            sensorsStorage.Start(30 * 60);
         }
 
         public void Stop()
