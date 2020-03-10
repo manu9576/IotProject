@@ -43,7 +43,6 @@ namespace IotProject.ViewModels
 
             Close = ReactiveCommand.Create(RunClose);
 
-            // TODO: Add a try catch for connection error to the DB
 #if DEBUG
             sensorsStorage = SensorsStorage.GetInstance();
             sensorsStorage.Start(10);

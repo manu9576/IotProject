@@ -11,15 +11,10 @@ namespace Storage
     public class SensorsStorage
     {
         private static SensorsStorage sensorsStorage = null;
-
-        private readonly Dictionary<Sensor, ISensor> sensors;
-        private readonly CancellationTokenSource cancellationTokenSource;
-        private SensorsContext db;
+        private readonly CancellationTokenSource cancellationTokenSource = null;
 
         private SensorsStorage()
         {
-            sensors = new Dictionary<Sensor, ISensor>();
-
             cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -35,22 +30,12 @@ namespace Storage
 
         public void Start(int intervalInSeconds)
         {
-
             PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
-
         }
 
-        private void OpenDB()
+        private Dictionary<Sensor, ISensor> ReadSensors(SensorsContext db)
         {
-
-            if (db != null)
-            {
-                db.Dispose();
-            }
-
-            db = new SensorsContext();
-
-            sensors.Clear();
+            var sensors = new Dictionary<Sensor, ISensor>();
 
             Device device;
 
@@ -96,17 +81,12 @@ namespace Storage
                 sensors.Add(dbSensor, sensor);
             }
 
-        }
-
-        private void CloseDB()
-        {
-            db.Dispose();
+            return sensors;
         }
 
         public void Stop()
         {
             cancellationTokenSource.Cancel();
-
         }
 
         void PeriodicMesureTask(int intervalInMS, CancellationToken cancellationToken)
@@ -114,13 +94,13 @@ namespace Storage
 
             Task.Run(async () =>
             {
-                while (true)
+                while (!cancellationToken.IsCancellationRequested)
                 {
                     try
                     {
-                        OpenDB();
-                        Measurement();
-                        CloseDB();
+                        using var db = new SensorsContext();
+                        var sensors = ReadSensors(db);
+                        Measurement(db, sensors);
                     }
                     catch (Exception ex)
                     {
@@ -128,14 +108,11 @@ namespace Storage
                     }
 
                     await Task.Delay(intervalInMS, cancellationToken);
-
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
                 }
             });
         }
 
-        private void Measurement()
+        private void Measurement(SensorsContext db, Dictionary<Sensor, ISensor> sensors)
         {
             var dateTime = DateTime.Now;
 
@@ -152,12 +129,7 @@ namespace Storage
                     });
                 }
             }
-
-            var re = db.SaveChanges();
-
-            Console.WriteLine(re);
-
-
+            db.SaveChanges();
         }
     }
 }
