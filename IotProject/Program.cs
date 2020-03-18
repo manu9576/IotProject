@@ -9,6 +9,7 @@ namespace IotProject
     class Program
     {
         static ConsoleMode consoleMode;
+        static ServiceMode serviceMode;
 
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -24,7 +25,18 @@ namespace IotProject
 
                 SpinWait.SpinUntil(() => !consoleMode.IsRunning);
 
-                consoleMode.WriteLCD("This is the end....");
+                ConsoleMode.WriteLCD("This is the end....");
+            }
+            else if (args.Length > 0 && args[0] == "serviceMode")
+            {
+                AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
+
+                serviceMode = new ServiceMode();
+                serviceMode.Start();
+
+                SpinWait.SpinUntil(() => !serviceMode.IsRunning);
+
+                ServiceMode.WriteLCD("This is the end....");
             }
             else
             {
@@ -34,7 +46,8 @@ namespace IotProject
 
         private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
-            consoleMode.Stop();
+            consoleMode?.Stop();
+            serviceMode?.Stop();
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
