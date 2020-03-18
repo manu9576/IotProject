@@ -20,6 +20,7 @@ namespace Iot.Device.GrovePiDevice
         private const byte MaxRetries = 4;
         private readonly bool _autoDispose;
         private I2cDevice _i2cDevice;
+        private bool disposed = false;
 
         /// <summary>
         /// The default GrovePi I2C address is 0x04
@@ -57,6 +58,19 @@ namespace Iot.Device.GrovePiDevice
                 _i2cDevice?.Dispose();
                 _i2cDevice = null;
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                Dispose();
+            }
+
+            disposed = true;
         }
 
         /// <summary>

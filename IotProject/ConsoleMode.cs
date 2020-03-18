@@ -36,7 +36,7 @@ namespace IotProject
             IsRunning = false;
         }
 
-        public void WriteLCD(string message)
+        public static void WriteLCD(string message)
         {
             var rgbDisplay = GrovePiRgbLcdDisplay.BuildRgbLcdDisplayImpl();
             rgbDisplay.SetText(message);

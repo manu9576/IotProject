@@ -114,7 +114,7 @@ namespace Sensors.GrovePi
             return this;
         }
 
-        private static List<GrovePiRgbLcdDisplay> rgbLcdDisplays = new List<GrovePiRgbLcdDisplay>();
+        private static readonly List<GrovePiRgbLcdDisplay> rgbLcdDisplays = new List<GrovePiRgbLcdDisplay>();
 
         public static GrovePiRgbLcdDisplay BuildRgbLcdDisplayImpl(int displayRgbI2CAdress = DisplayRgbI2CAddress, int displayTextI2C = DisplayTextI2CAddress)
         {

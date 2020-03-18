@@ -15,7 +15,7 @@ namespace Iot.Device.GrovePiDevice.Sensors
     public class DhtSensor
     {
 
-        private double[] _lastTemHum = new double[2];
+        private readonly double[] _lastTemHum = new double[2];
         private readonly GrovePi _grovePi;
 
         /// <summary>
