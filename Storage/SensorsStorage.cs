@@ -129,7 +129,23 @@ namespace Storage
                     });
                 }
             }
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while saving new values: " + ex.Message);
+                Console.WriteLine("Values saved: ");
+                foreach (var sensor in sensors.Keys)
+                {
+                    var value = sensors[sensor].Value;
+                    if (double.IsNormal(value))
+                    {
+                        Console.WriteLine("\t--Value: " + value + " / DateTime: " + dateTime);
+                    }
+                }
+            }
         }
     }
 }
