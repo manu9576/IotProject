@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Dapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 using Storage.Models;
 
 namespace IotWebApi.Controllers
@@ -11,32 +11,35 @@ namespace IotWebApi.Controllers
     [ApiController]
     public class DevicesController : ControllerBase
     {
-        private readonly ConnectionStrings _connectionString;
+        private readonly DbSensorsContext _context;
 
-        public DevicesController(ConnectionStrings connectionString)
+        public DevicesController(DbSensorsContext context)
         {
-            _connectionString = connectionString;
+            _context = context;
         }
 
         /// <summary>
-        /// Return the sensors list
+        /// Return the devices list
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] Device vm)
+        public async Task<ActionResult<IEnumerable<Device>>> GetTodoItems()
         {
-            return await Task.Run(() =>
+            return await _context.Devices.ToListAsync();
+        }
+
+        // GET: api/Device/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Device>> GetSensor(int id)
+        {
+            var device = await _context.Devices.FindAsync(id);
+
+            if (device == null)
             {
-                using (var connection = new MySqlConnection(_connectionString.MySql))
-                {
-                    var sql = @"SELECT * FROM Devices";
+                return NotFound();
+            }
 
-                    var query = connection.Query<Device>(sql, vm, commandTimeout: 30);
-
-                    return Ok(query);
-                }
-
-            });
+            return device;
         }
     }
 }

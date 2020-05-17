@@ -1,24 +1,21 @@
-﻿using Dapper;
-using IotWebApi.Models;
+﻿using IotWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 using Storage.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IotWebApi.Controllers
 {
-    [Route("api/Measurments")]
+    [Route("api/Measures")]
     [ApiController]
     public class MeasuresController : ControllerBase
     {
-        private readonly ConnectionStrings _connectionString;
+        private readonly DbSensorsContext _context;
 
-        public MeasuresController(ConnectionStrings connectionString)
+        public MeasuresController(DbSensorsContext context)
         {
-            _connectionString = connectionString;
+            _context = context;
         }
 
         /// <summary>
@@ -26,20 +23,23 @@ namespace IotWebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] Measure vm)
+        public async Task<ActionResult<IEnumerable<Measure>>> GetMeasures()
         {
-            return await Task.Run(() =>
+            return await _context.Measures.ToListAsync();
+        }
+
+        // GET: api/Measures/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Measure>> GetMeasure(int id)
+        {
+            var sensor = await _context.Measures.FindAsync(id);
+
+            if (sensor == null)
             {
-                using (var connection = new MySqlConnection(_connectionString.MySql))
-                {
-                    var sql = @"SELECT * FROM Measures";
+                return NotFound();
+            }
 
-                    var query = connection.Query<Measure>(sql, vm, commandTimeout: 30);
-
-                    return Ok(query);
-                }
-
-            });
+            return sensor;
         }
     }
 }

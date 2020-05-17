@@ -3,6 +3,7 @@ using System.IO;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +33,9 @@ namespace IotWebApi
             services.AddControllers();
             services.AddMvc();
 
+            services.AddDbContext<DbSensorsContext>(opt => opt.UseMySql(connectionStrings.MySql));
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = ".Net Core 3 Iot Web API", Version = "v1" });
@@ -41,7 +45,7 @@ namespace IotWebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

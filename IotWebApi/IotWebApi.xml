@@ -4,19 +4,19 @@
         <name>IotWebApi</name>
     </assembly>
     <members>
-        <member name="M:IotWebApi.Controllers.DevicesController.Get(Storage.Models.Device)">
+        <member name="M:IotWebApi.Controllers.DevicesController.GetTodoItems">
+            <summary>
+            Return the devices list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasures">
             <summary>
             Return the sensors list
             </summary>
             <returns></returns>
         </member>
-        <member name="M:IotWebApi.Controllers.MeasuresController.Get(Storage.Models.Measure)">
-            <summary>
-            Return the sensors list
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:IotWebApi.Controllers.SensorsController.Get(Storage.Models.Sensor)">
+        <member name="M:IotWebApi.Controllers.SensorsController.GetSensors">
             <summary>
             Return the sensors list
             </summary>
