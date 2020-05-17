@@ -4,7 +4,7 @@
         <name>IotWebApi</name>
     </assembly>
     <members>
-        <member name="M:IotWebApi.Controllers.DevicesController.GetTodoItems">
+        <member name="M:IotWebApi.Controllers.DevicesController.GetDevices">
             <summary>
             Return the devices list
             </summary>

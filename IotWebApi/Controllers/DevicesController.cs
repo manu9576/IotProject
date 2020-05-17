@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -23,14 +24,14 @@ namespace IotWebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Device>>> GetTodoItems()
+        public async Task<ActionResult<IEnumerable<Device>>> GetDevices()
         {
             return await _context.Devices.ToListAsync();
         }
 
         // GET: api/Device/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Device>> GetSensor(int id)
+        public async Task<ActionResult<Device>> GetDevice(int id)
         {
             var device = await _context.Devices.FindAsync(id);
 
@@ -41,5 +42,14 @@ namespace IotWebApi.Controllers
 
             return device;
         }
+
+        // GET: api/Device/5/Sensors
+        [HttpGet("{id}/Sensors")]
+        public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorsByDeviceId(int id)
+        {
+            return await _context.Sensors.Where(sens => sens.DeviceId == id).ToListAsync();
+
+        }
+
     }
 }

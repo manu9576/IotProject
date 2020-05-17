@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,14 @@ namespace IotWebApi.Controllers
             }
 
             return sensor;
+        }
+
+        // GET: api/Sensor/5/Measures
+        [HttpGet("{id}/Measures")]
+        public async Task<ActionResult<IEnumerable<Measure>>> GetMersuresBySensorId(int id)
+        {
+            return await _context.Measures.Where(mes => mes.SensorId == id).ToListAsync();
+
         }
     }
 }
