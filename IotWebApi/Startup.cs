@@ -35,12 +35,9 @@ namespace IotWebApi
 
             services.AddDbContext<DbSensorsContext>(opt => opt.UseMySql(connectionStrings.MySql));
 
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = ".Net Core 3 Iot Web API", Version = "v1" });
-                var filePath = Path.Combine(AppContext.BaseDirectory, "IotWebApi.xml");
-                c.IncludeXmlComments(filePath);
             });
         }
 

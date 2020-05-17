@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="MySqlConnector" Version="0.66.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
@@ -19,12 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Storage\Storage.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="IotWebApi.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 
