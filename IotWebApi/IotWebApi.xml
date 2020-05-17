@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IotWebApi</name>
+    </assembly>
+    <members>
+        <member name="M:IotWebApi.Controllers.DevicesController.Get(Storage.Models.Device)">
+            <summary>
+            Return the sensors list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.MeasuresController.Get(Storage.Models.Measure)">
+            <summary>
+            Return the sensors list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.SensorsController.Get(Storage.Models.Sensor)">
+            <summary>
+            Return the sensors list
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

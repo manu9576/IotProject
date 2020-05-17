@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrovePiDevice", "GrovePiDev
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensors", "Sensors\Sensors.csproj", "{7C13123C-5711-4548-8FC3-34ED14A7EF46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "Storage\Storage.csproj", "{CEDEBD47-650F-4CC0-878B-49F5B02F6697}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Storage", "Storage\Storage.csproj", "{CEDEBD47-650F-4CC0-878B-49F5B02F6697}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotWebApi", "IotWebApi\IotWebApi.csproj", "{50674483-EB13-4D57-8051-508E0918756B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{CEDEBD47-650F-4CC0-878B-49F5B02F6697}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEDEBD47-650F-4CC0-878B-49F5B02F6697}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEDEBD47-650F-4CC0-878B-49F5B02F6697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50674483-EB13-4D57-8051-508E0918756B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50674483-EB13-4D57-8051-508E0918756B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50674483-EB13-4D57-8051-508E0918756B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50674483-EB13-4D57-8051-508E0918756B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
