@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ namespace IotWebApi.Controllers
 {
     [Route("api/Sensor")]
     [ApiController]
+
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SensorsController : ControllerBase
     {
         private readonly DbSensorsContext _context;

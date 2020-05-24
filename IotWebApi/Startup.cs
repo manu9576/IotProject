@@ -14,6 +14,7 @@ namespace IotWebApi
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        readonly static string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IHostEnvironment env)
         {
@@ -29,6 +30,16 @@ namespace IotWebApi
             ConnectionStrings connectionStrings = new ConnectionStrings();
             Configuration.Bind("ConnectionStrings", connectionStrings);
             services.AddSingleton(connectionStrings);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://rasp4:5000",
+                                                          "http://www.contoso.com");
+                                  });
+            });
 
             services.AddControllers();
             services.AddMvc();
@@ -50,8 +61,8 @@ namespace IotWebApi
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
 
             //app.UseAuthorization();
 

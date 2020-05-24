@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Storage.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 
 namespace IotWebApi.Controllers
 {
     [Route("api/Measures")]
     [ApiController]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class MeasuresController : ControllerBase
     {
         private readonly DbSensorsContext _context;

@@ -1,4 +1,6 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
+using Iot.Device.GrovePiDevice.Sensors;
+using Sensors.Weather;
 
 namespace Sensors.GrovePi
 {
