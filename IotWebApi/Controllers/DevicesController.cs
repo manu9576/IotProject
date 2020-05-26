@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http.Cors;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ namespace IotWebApi.Controllers
 {
     [Route("api/Device")]
     [ApiController]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DevicesController : ControllerBase
     {
         private readonly DbSensorsContext _context;
@@ -31,7 +29,11 @@ namespace IotWebApi.Controllers
             return await _context.Devices.ToListAsync();
         }
 
-        // GET: api/Device/5
+        /// <summary>
+        ///  GET: api/Device/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Device>> GetDevice(int id)
         {
@@ -45,13 +47,22 @@ namespace IotWebApi.Controllers
             return device;
         }
 
-        // GET: api/Device/5/Sensors
-        [HttpGet("{id}/Sensors")]
-        public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorsByDeviceId(int id)
+        /// <summary>
+        /// GET: api/Device/Name/name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet("Name/{name}")]
+        public async Task<ActionResult<Device>> GetDeviceByName(string name)
         {
-            return await _context.Sensors.Where(sens => sens.DeviceId == id).ToListAsync();
+            var device = _context.Devices.Where(dev => dev.Name == name);
 
+            if (device == null)
+            {
+                return NotFound();
+            }
+
+            return await device.FirstOrDefaultAsync();
         }
-
     }
 }

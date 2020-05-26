@@ -10,16 +10,68 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:IotWebApi.Controllers.DevicesController.GetDevice(System.Int32)">
+            <summary>
+             GET: api/Device/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.DevicesController.GetDeviceByName(System.String)">
+            <summary>
+            GET: api/Device/Name/name
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasures">
             <summary>
-            Return the sensors list
+            GET: api/Measure
+            Return the measures list
+            ALL MEASURES!! SHOULD BE LONG
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasure(System.Int32)">
+            <summary>
+            GET: api/Measure/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasureBySensorId(System.Int32)">
+            <summary>
+            GET: api/Measures/sensor/5
+            </summary>
+            <param name="sensorId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.MeasuresController.GetSensorsByDeviceIdAndDate(System.Int32,System.DateTime)">
+            <summary>
+            GET: api/Sensor/5/Date/13-01-22
+            </summary>
+            <param name="sensorId"></param>
+            <param name="date"></param>
             <returns></returns>
         </member>
         <member name="M:IotWebApi.Controllers.SensorsController.GetSensors">
             <summary>
-            Return the sensors list
+            GET: api/Sensor
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.SensorsController.GetSensorById(System.Int32)">
+            <summary>
+            GET: api/Sensor/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IotWebApi.Controllers.SensorsController.GetSensorsByDeviceId(System.Int32)">
+            <summary>
+            GET: api/Sensor/device/5
+            </summary>
+            <param name="deviceId"></param>
             <returns></returns>
         </member>
     </members>

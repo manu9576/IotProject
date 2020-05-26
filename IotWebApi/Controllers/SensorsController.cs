@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http.Cors;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +11,6 @@ namespace IotWebApi.Controllers
 {
     [Route("api/Sensor")]
     [ApiController]
-
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SensorsController : ControllerBase
     {
         private readonly DbSensorsContext _context;
@@ -23,7 +21,7 @@ namespace IotWebApi.Controllers
         }
 
         /// <summary>
-        /// Return the sensors list
+        /// GET: api/Sensor
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -32,9 +30,13 @@ namespace IotWebApi.Controllers
             return await _context.Sensors.ToListAsync();
         }
 
-        // GET: api/Sensor/5
+        /// <summary>
+        /// GET: api/Sensor/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Sensor>> GetSensor(int id)
+        public async Task<ActionResult<Sensor>> GetSensorById(int id)
         {
             var sensor = await _context.Sensors.FindAsync(id);
 
@@ -46,12 +48,24 @@ namespace IotWebApi.Controllers
             return sensor;
         }
 
-        // GET: api/Sensor/5/Measures
-        [HttpGet("{id}/Measures")]
-        public async Task<ActionResult<IEnumerable<Measure>>> GetMersuresBySensorId(int id)
+        /// <summary>
+        /// GET: api/Sensor/device/5
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <returns></returns>
+        [HttpGet("Device/{deviceId}")]
+        public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorsByDeviceId(int deviceId)
         {
-            return await _context.Measures.Where(mes => mes.SensorId == id).ToListAsync();
 
+            if (!_context.Sensors.Any(sen => sen.DeviceId == deviceId))
+            {
+                return NotFound();
+            }
+
+            return await _context.Sensors.Where(sen => sen.DeviceId == deviceId).ToListAsync();
         }
+
+     
+
     }
 }
