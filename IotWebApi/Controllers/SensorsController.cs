@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IotWebApi.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Storage.Models;
 
 namespace IotWebApi.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Route("api/Sensor")]
     [ApiController]
     public class SensorsController : ControllerBase

@@ -1,4 +1,5 @@
 ﻿using IotWebApi.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Storage.Models;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace IotWebApi.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Route("api/Measure")]
     [ApiController]
     public class MeasuresController : ControllerBase
