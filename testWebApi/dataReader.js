@@ -1,82 +1,88 @@
-let device = function () {
+"use stric";
 
-    var xhr = new XMLHttpRequest();
+let getValues = function (formatedVals, chart) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function () {
 
-    xhr.onload = function () {
+    let vals = JSON.parse(xhr.responseText);
 
-        let vals = JSON.parse(xhr.responseText);
-        let formatedVals = []
-
-        vals.forEach(element => {
-            formatedVals.push({
-                x: element.dateTime,
-                y: element.value
-            });
+    formatedVals.length = 0;
+    vals.forEach(element => {
+      if (element.value > 1) {
+        formatedVals.push({
+          x: new moment(element.dateTime),
+          y: element.value
         });
-
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                // labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: formatedVals,
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    scales: {
-                        xAxes: [{
-                            type: 'time'
-                        }]
-                    }
-                }
-            }
-        });
+      }
+    });
 
 
-    };
-    xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/18/Date/2020-06-02', true);
-    xhr.timeout = 5000;
-    xhr.ontimeout = function (e) {
-        alert("Timeout");
-    };
+    debugger;
 
+    chart.update();
+  };
 
-    xhr.setRequestHeader("Content-Type", 'text/plain');
-    xhr.send(null);
+  // xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/18/Month/5', true);
+  xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/28/Month/5', true);
+  xhr.timeout = 5000;
+  xhr.ontimeout = function (e) {
+    alert("Timeout");
+  };
 
-    return [{
-            "deviceId": 4,
-            "name": "PC_BUREAU",
-            "sensors": []
-        },
-        {
-            "deviceId": 5,
-            "name": "PC_TABLETTE",
-            "sensors": []
-        },
-        {
-            "deviceId": 6,
-            "name": "raspberrypi",
-            "sensors": []
-        }
-    ]
+  xhr.setRequestHeader("Content-Type", 'text/plain');
+  xhr.send(null);
 }
 
 
 window.onload = function () {
-    let textArea = window.document.getElementById("text");
+  let formatedVals = []
+  let ctx = document.getElementById('myChart').getContext('2d');
+  let myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: 'Value',
+        data: formatedVals,
+        borderColor: "#3e95cd",
+        fill: false,
+        yAxisID: 'y-axis-1'
+      }]
+    },
+    options: {
 
-    textArea.innerText = JSON.stringify(device());
+      responsive: false,
+      hoverMode: 'index',
+      stacked: false,
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart - Multi Axis'
+      },
+
+      scales: {
+
+        xAxes: [{
+          type: 'time',
+          distribution: 'series',
+          time: {
+            displayFormats: {
+              quarter: 'MMM YYYY H:mm'
+            }
+          }
+        }],
+
+        yAxes: [{
+          type: 'linear',
+          display: true,
+          position: 'left',
+          id: 'y-axis-1',
+          min: 25,
+          max: 50
+        }]
+
+      }
+    }
+  });
+
+
+  getValues(formatedVals,myChart);
 }
