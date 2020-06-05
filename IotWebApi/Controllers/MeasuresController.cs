@@ -77,7 +77,7 @@ namespace IotWebApi.Controllers
         /// <param name="date"></param>
         /// <returns></returns>
         [HttpGet("Sensor/{sensorId}/Date/{date}")]
-        public async Task<ActionResult<IEnumerable<Measure>>> GetSensorsByDeviceIdAndDate(int sensorId, DateTime date)
+        public async Task<ActionResult<IEnumerable<Measure>>> GetSensorsBySensorIdAndDate(int sensorId, DateTime date)
         {
 
             var measures = _context.Measures.Where(mes => mes.SensorId == sensorId && mes.DateTime.Date == date.Date);
@@ -90,6 +90,25 @@ namespace IotWebApi.Controllers
             return await measures.ToListAsync();
         }
 
+        /// <summary>
+        /// GET: api/Sensor/26/Date/2020-05-26
+        /// </summary>
+        /// <param name="sensorId"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        [HttpGet("Sensor/{sensorId}/Month/{month}")]
+        public async Task<ActionResult<IEnumerable<Measure>>> GetSensorsBySensorIdAndMonth(int sensorId, int month)
+        {
+
+            var measures = _context.Measures.Where(mes => mes.SensorId == sensorId && mes.DateTime.Month == month);
+
+            if (measures == null)
+            {
+                return NotFound();
+            }
+
+            return await measures.ToListAsync();
+        }
 
     }
 }
