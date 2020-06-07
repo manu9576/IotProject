@@ -1,6 +1,10 @@
 "use stric";
 
-let getValues = function (formatedVals, chart) {
+let formatedVals = [];
+let myChart;
+const DEVICE_ID = 6;
+
+let updateValues = function (formatedVals, chart, sensorId, month) {
   var xhr = new XMLHttpRequest();
   xhr.onload = function () {
 
@@ -16,28 +20,19 @@ let getValues = function (formatedVals, chart) {
       }
     });
 
-
-    debugger;
-
     chart.update();
   };
 
   // xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/18/Month/5', true);
-  xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/28/Month/5', true);
-  xhr.timeout = 5000;
-  xhr.ontimeout = function (e) {
-    alert("Timeout");
-  };
-
+  xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/' + sensorId + '/Month/' + month, true);
   xhr.setRequestHeader("Content-Type", 'text/plain');
   xhr.send(null);
-}
+};
 
+let initializeGraph = function () {
 
-window.onload = function () {
-  let formatedVals = []
   let ctx = document.getElementById('myChart').getContext('2d');
-  let myChart = new Chart(ctx, {
+  myChart = new Chart(ctx, {
     type: 'line',
     data: {
       datasets: [{
@@ -55,7 +50,7 @@ window.onload = function () {
       stacked: false,
       title: {
         display: true,
-        text: 'Chart.js Line Chart - Multi Axis'
+        text: 'Sensor'
       },
 
       scales: {
@@ -83,6 +78,53 @@ window.onload = function () {
     }
   });
 
+};
 
-  getValues(formatedVals,myChart);
+let update = function () {
+
+  debugger;
+
+  let capteursList = document.getElementById('capteursList');  
+  let sensorId= capteursList.options[capteursList.selectedIndex].value;
+
+  let date =  new Date(document.getElementById('date').value);  
+
+
+  updateValues(formatedVals, chart, sensorId, date.getMonth());
+
+};
+
+let initializeSensors = function () {
+
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function () {
+
+    let sensors = JSON.parse(xhr.responseText);
+
+    let capteursList = document.getElementById('capteursList');
+
+
+    sensors.forEach(sensor => {
+      var option = document.createElement("option");
+      option.text = sensor.name;
+      option.value = sensor.id;
+
+      capteursList.add(option);
+    });
+  };
+
+  xhr.open('GET', 'http://localhost:54384/api/Sensor/Device/' + DEVICE_ID, true);
+  xhr.setRequestHeader("Content-Type", 'text/plain');
+  xhr.send(null);
+
+
+};
+
+window.onload = function () {
+  initializeGraph();
+  initializeSensors();
+
+  let button = document.getElementById('updateButton');
+  button.addEventListener("update", update);
+
 }
