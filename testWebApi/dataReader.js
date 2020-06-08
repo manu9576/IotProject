@@ -5,6 +5,7 @@ let myChart;
 const DEVICE_ID = 6;
 
 let updateValues = function (formatedVals, chart, sensorId, month) {
+
   var xhr = new XMLHttpRequest();
   xhr.onload = function () {
 
@@ -82,15 +83,13 @@ let initializeGraph = function () {
 
 let update = function () {
 
-  debugger;
-
   let capteursList = document.getElementById('capteursList');  
-  let sensorId= capteursList.options[capteursList.selectedIndex].value;
+  let sensorId= capteursList.options[capteursList.selectedIndex].id;
 
   let date =  new Date(document.getElementById('date').value);  
 
 
-  updateValues(formatedVals, chart, sensorId, date.getMonth());
+  updateValues(formatedVals, myChart, sensorId, date.getMonth()+1);
 
 };
 
@@ -107,7 +106,7 @@ let initializeSensors = function () {
     sensors.forEach(sensor => {
       var option = document.createElement("option");
       option.text = sensor.name;
-      option.value = sensor.id;
+      option.id = sensor.sensorId;
 
       capteursList.add(option);
     });
@@ -125,6 +124,6 @@ window.onload = function () {
   initializeSensors();
 
   let button = document.getElementById('updateButton');
-  button.addEventListener("update", update);
+  button.addEventListener("click", update);
 
-}
+};
