@@ -1,7 +1,7 @@
 "use stric";
 
 let formatedVals = [];
-let myChart;
+let chart;
 const DEVICE_ID = 6;
 
 let updateValues = function (formatedVals, chart, sensorId, month) {
@@ -32,8 +32,8 @@ let updateValues = function (formatedVals, chart, sensorId, month) {
 
 let initializeGraph = function () {
 
-  let ctx = document.getElementById('myChart').getContext('2d');
-  myChart = new Chart(ctx, {
+  let ctx = document.getElementById('sensorChart').getContext('2d');
+  chart = new Chart(ctx, {
     type: 'line',
     data: {
       datasets: [{
@@ -58,7 +58,7 @@ let initializeGraph = function () {
 
         xAxes: [{
           type: 'time',
-          distribution: 'series',
+          distribution: 'linear',
           time: {
             displayFormats: {
               quarter: 'MMM YYYY H:mm'
@@ -83,13 +83,13 @@ let initializeGraph = function () {
 
 let update = function () {
 
-  let capteursList = document.getElementById('capteursList');  
-  let sensorId= capteursList.options[capteursList.selectedIndex].id;
+  let capteursList = document.getElementById('capteursList');
+  let sensorId = capteursList.options[capteursList.selectedIndex].id;
 
-  let date =  new Date(document.getElementById('date').value);  
+  let date = new Date(document.getElementById('date').value);
 
 
-  updateValues(formatedVals, myChart, sensorId, date.getMonth()+1);
+  updateValues(formatedVals, chart, sensorId, date.getMonth() + 1);
 
 };
 
@@ -101,7 +101,6 @@ let initializeSensors = function () {
     let sensors = JSON.parse(xhr.responseText);
 
     let capteursList = document.getElementById('capteursList');
-
 
     sensors.forEach(sensor => {
       var option = document.createElement("option");
