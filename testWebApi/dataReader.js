@@ -1,33 +1,52 @@
 "use stric";
 
-let formatedVals = [];
+let _datasets = [];
 let chart;
 const DEVICE_ID = 6;
 
-let updateValues = function (formatedVals, chart, sensorId, month) {
+let updateValues = function (chart, sensorsId, month) {
 
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function () {
+  _datasets.length = 0;
 
-    let vals = JSON.parse(xhr.responseText);
+  for (let i = 0; i < sensorsId.length; i++) {
+    let sensorId = sensorsId[i];
 
-    formatedVals.length = 0;
-    vals.forEach(element => {
-      if (element.value > 1) {
-        formatedVals.push({
-          x: new moment(element.dateTime),
-          y: element.value
-        });
-      }
-    });
 
-    chart.update();
-  };
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
 
-  // xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/18/Month/5', true);
-  xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/' + sensorId + '/Month/' + month, true);
-  xhr.setRequestHeader("Content-Type", 'text/plain');
-  xhr.send(null);
+      let vals = JSON.parse(xhr.responseText);
+      let formatedVals = [];
+
+      vals.forEach(element => {
+        if (element.value > 1) {
+          formatedVals.push({
+            x: new moment(element.dateTime),
+            y: element.value
+          });
+        }
+      });
+
+      _datasets[i] = {
+        label: 'Value: ' + sensorId,
+        data: formatedVals,
+        borderColor: "#3e95cd",
+        fill: false,
+        yAxisID: 'y-axis-1'
+      };
+
+      chart.update();
+
+
+    };
+
+    // xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/18/Month/5', true);
+    xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/' + sensorId + '/Month/' + month, true);
+    xhr.setRequestHeader("Content-Type", 'text/plain');
+    xhr.send(null);
+
+  }
+
 };
 
 let initializeGraph = function () {
@@ -36,13 +55,7 @@ let initializeGraph = function () {
   chart = new Chart(ctx, {
     type: 'line',
     data: {
-      datasets: [{
-        label: 'Value',
-        data: formatedVals,
-        borderColor: "#3e95cd",
-        fill: false,
-        yAxisID: 'y-axis-1'
-      }]
+      datasets: _datasets
     },
     options: {
 
@@ -83,13 +96,21 @@ let initializeGraph = function () {
 
 let update = function () {
 
-  let capteursList = document.getElementById('capteursList');
-  let sensorId = capteursList.options[capteursList.selectedIndex].id;
-
   let date = new Date(document.getElementById('date').value);
 
+  let capteursList = document.getElementById('capteursList');
+  let sensorsId = [];
 
-  updateValues(formatedVals, chart, sensorId, date.getMonth() + 1);
+  let checkboxs = capteursList.getElementsByTagName('input');
+
+  for (let i = 0; i < checkboxs.length; i++) {
+    let chb = checkboxs[i];
+    if (chb.checked) {
+      sensorsId.push(chb.id);
+    }
+  }
+
+  updateValues(chart, sensorsId, date.getMonth() + 1);
 
 };
 
@@ -103,11 +124,19 @@ let initializeSensors = function () {
     let capteursList = document.getElementById('capteursList');
 
     sensors.forEach(sensor => {
-      var option = document.createElement("option");
-      option.text = sensor.name;
-      option.id = sensor.sensorId;
+      let checkbox = document.createElement("input");
+      checkbox.type = 'checkbox';
+      checkbox.id = sensor.sensorId;
 
-      capteursList.add(option);
+      let label = document.createElement("label");
+      label.for = sensor.sensorId;
+      label.innerText = sensor.name;
+
+      let div = document.createElement("div");
+      div.appendChild(checkbox);
+      div.appendChild(label);
+
+      capteursList.appendChild(div);
     });
   };
 
