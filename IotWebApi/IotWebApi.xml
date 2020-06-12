@@ -54,6 +54,15 @@
             <param name="date"></param>
             <returns></returns>
         </member>
+        <member name="M:IotWebApi.Controllers.MeasuresController.GetSensorsBySensorIdFromDateToDate(System.Int32,System.DateTime,System.DateTime)">
+            <summary>
+            GET: api/Sensor/26/From/2020-05-26/To/2020-06-01
+            </summary>
+            <param name="sensorId"></param>
+            <param name="startDate"></param>
+            <param name="endDate"></param>
+            <returns></returns>
+        </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetSensorsBySensorIdAndMonth(System.Int32,System.Int32)">
             <summary>
             GET: api/Sensor/26/Date/2020-05-26

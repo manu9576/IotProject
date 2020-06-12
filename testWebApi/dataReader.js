@@ -5,6 +5,10 @@ let chart;
 const DEVICE_ID = 6;
 const curvesColor = ["red", "blue", "green"];
 
+let convertDate = function (date) {
+  return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+}
+
 
 let updateValues = function (chart, sensorsId, month) {
 
@@ -43,6 +47,50 @@ let updateValues = function (chart, sensorsId, month) {
       }
     };
     xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/' + sensorId + '/Month/' + month, true);
+    xhr.setRequestHeader("Content-Type", 'text/plain');
+    xhr.send(null);
+  }
+
+};
+
+let updateValuesPlage = function (chart, sensorsId, startDate, endDate) {
+
+  _datasets.length = 0;
+
+  for (let i = 0; i < sensorsId.length; i++) {
+
+    let sensorId = sensorsId[i];
+
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+
+      if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText !== "") {
+
+        let parsedValues = JSON.parse(xhr.responseText);
+        let formattedValues = [];
+
+        parsedValues.forEach(element => {
+          if (element.value > 1) {
+            formattedValues.push({
+              x: new moment(element.dateTime),
+              y: element.value
+            });
+          }
+        });
+        console.log("Add new sensor : " + sensorId + " with " + formattedValues.length + " values");
+        _datasets.push({
+          label: 'Sensor id: ' + sensorId,
+          data: formattedValues,
+          borderColor: curvesColor[_datasets.length % curvesColor.length],
+          fill: false,
+          yAxisID: 'y-axis-1'
+        });
+
+        chart.update();
+      }
+    };
+    xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/' + sensorId + '/From/' +
+      convertDate(startDate) + '/To/' +convertDate(endDate), true);
     xhr.setRequestHeader("Content-Type", 'text/plain');
     xhr.send(null);
   }
@@ -109,6 +157,27 @@ let update = function () {
 
 };
 
+let updatePlage = function () {
+
+  let startDate = new Date(document.getElementById('startDate').value);
+  let endDate = new Date(document.getElementById('endDate').value);
+
+  let sensorsList = document.getElementById('sensorsList');
+  let sensorsId = [];
+
+  let checkboxs = sensorsList.getElementsByTagName('input');
+
+  for (let i = 0; i < checkboxs.length; i++) {
+    let chb = checkboxs[i];
+    if (chb.checked) {
+      sensorsId.push(chb.id);
+    }
+  }
+
+  updateValuesPlage(chart, sensorsId, startDate, endDate);
+
+};
+
 let initializeSensors = function () {
 
   let xhr = new XMLHttpRequest();
@@ -147,5 +216,8 @@ window.onload = function () {
 
   let button = document.getElementById('updateButton');
   button.addEventListener("click", update);
+
+  let updatePlageButton = document.getElementById('updatePlageButton');
+  updatePlageButton.addEventListener("click", updatePlage);
 
 };

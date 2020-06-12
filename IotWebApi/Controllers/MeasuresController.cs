@@ -91,6 +91,33 @@ namespace IotWebApi.Controllers
         }
 
         /// <summary>
+        /// GET: api/Sensor/26/From/2020-05-26/To/2020-06-01
+        /// </summary>
+        /// <param name="sensorId"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        [HttpGet("Sensor/{sensorId}/From/{startDate}/To/{endDate}")]
+        public async Task<ActionResult<IEnumerable<IDtoMeasure>>> GetSensorsBySensorIdFromDateToDate(int sensorId, DateTime startDate, DateTime endDate)
+        {
+            var intervalEnd = endDate.AddDays(1);
+
+            IQueryable<IDtoMeasure> measures = _context.Measures.Where
+                (
+                mes => mes.SensorId == sensorId &&
+                mes.DateTime >= startDate &&
+                mes.DateTime <= intervalEnd
+                );
+
+            if (measures == null)
+            {
+                return NotFound();
+            }
+
+            return await measures.ToListAsync();
+        }
+
+        /// <summary>
         /// GET: api/Sensor/26/Date/2020-05-26
         /// </summary>
         /// <param name="sensorId"></param>
