@@ -1,50 +1,50 @@
-"use stric";
+"use strict";
 
 let _datasets = [];
 let chart;
 const DEVICE_ID = 6;
+const curvesColor = ["red", "blue", "green"];
+
 
 let updateValues = function (chart, sensorsId, month) {
 
   _datasets.length = 0;
 
   for (let i = 0; i < sensorsId.length; i++) {
+
     let sensorId = sensorsId[i];
 
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
 
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
+      if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText !== "") {
 
-      let vals = JSON.parse(xhr.responseText);
-      let formatedVals = [];
+        let parsedValues = JSON.parse(xhr.responseText);
+        let formattedValues = [];
 
-      vals.forEach(element => {
-        if (element.value > 1) {
-          formatedVals.push({
-            x: new moment(element.dateTime),
-            y: element.value
-          });
-        }
-      });
+        parsedValues.forEach(element => {
+          if (element.value > 1) {
+            formattedValues.push({
+              x: new moment(element.dateTime),
+              y: element.value
+            });
+          }
+        });
+        console.log("Add new sensor : " + sensorId + " with " + formattedValues.length + " values");
+        _datasets.push({
+          label: 'Sensor id: ' + sensorId,
+          data: formattedValues,
+          borderColor: curvesColor[_datasets.length % curvesColor.length],
+          fill: false,
+          yAxisID: 'y-axis-1'
+        });
 
-      _datasets[i] = {
-        label: 'Value: ' + sensorId,
-        data: formatedVals,
-        borderColor: "#3e95cd",
-        fill: false,
-        yAxisID: 'y-axis-1'
-      };
-
-      chart.update();
-
-
+        chart.update();
+      }
     };
-
-    // xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/18/Month/5', true);
     xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/' + sensorId + '/Month/' + month, true);
     xhr.setRequestHeader("Content-Type", 'text/plain');
     xhr.send(null);
-
   }
 
 };
@@ -64,19 +64,14 @@ let initializeGraph = function () {
       stacked: false,
       title: {
         display: true,
-        text: 'Sensor'
+        text: 'Sensors'
       },
 
       scales: {
 
         xAxes: [{
           type: 'time',
-          distribution: 'linear',
-          time: {
-            displayFormats: {
-              quarter: 'MMM YYYY H:mm'
-            }
-          }
+          distribution: 'linear'
         }],
 
         yAxes: [{
@@ -84,8 +79,8 @@ let initializeGraph = function () {
           display: true,
           position: 'left',
           id: 'y-axis-1',
-          min: 25,
-          max: 50
+          // min: 25,
+          // max: 50
         }]
 
       }
@@ -98,10 +93,10 @@ let update = function () {
 
   let date = new Date(document.getElementById('date').value);
 
-  let capteursList = document.getElementById('capteursList');
+  let sensorsList = document.getElementById('sensorsList');
   let sensorsId = [];
 
-  let checkboxs = capteursList.getElementsByTagName('input');
+  let checkboxs = sensorsList.getElementsByTagName('input');
 
   for (let i = 0; i < checkboxs.length; i++) {
     let chb = checkboxs[i];
@@ -116,12 +111,12 @@ let update = function () {
 
 let initializeSensors = function () {
 
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.onload = function () {
 
     let sensors = JSON.parse(xhr.responseText);
 
-    let capteursList = document.getElementById('capteursList');
+    let sensorsList = document.getElementById('sensorsList');
 
     sensors.forEach(sensor => {
       let checkbox = document.createElement("input");
@@ -136,14 +131,13 @@ let initializeSensors = function () {
       div.appendChild(checkbox);
       div.appendChild(label);
 
-      capteursList.appendChild(div);
+      sensorsList.appendChild(div);
     });
   };
 
   xhr.open('GET', 'http://localhost:54384/api/Sensor/Device/' + DEVICE_ID, true);
   xhr.setRequestHeader("Content-Type", 'text/plain');
   xhr.send(null);
-
 
 };
 
