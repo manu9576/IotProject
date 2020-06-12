@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage.Models
 {
-    public class Sensor
+    public class Sensor : IDtoSensor
     {
         [Key]
         public int SensorId { get; set; }

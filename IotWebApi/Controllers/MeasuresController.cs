@@ -29,7 +29,7 @@ namespace IotWebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Measure>>> GetMeasures()
+        public async Task<ActionResult<IEnumerable<IDtoMeasure>>> GetMeasures()
         {
             return await _context.Measures.ToListAsync();
         }
@@ -40,9 +40,9 @@ namespace IotWebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Measure>> GetMeasure(int id)
+        public async Task<ActionResult<IDtoMeasure>> GetMeasure(int id)
         {
-            var sensor = await _context.Measures.FindAsync(id);
+            ActionResult<IDtoMeasure> sensor = await _context.Measures.FindAsync(id);
 
             if (sensor == null)
             {
@@ -58,9 +58,9 @@ namespace IotWebApi.Controllers
         /// <param name="sensorId"></param>
         /// <returns></returns>
         [HttpGet("Sensor/{sensorId}")]
-        public async Task<ActionResult<IEnumerable<Measure>>> GetMeasureBySensorId(int sensorId)
+        public async Task<ActionResult<IEnumerable<IDtoMeasure>>> GetMeasureBySensorId(int sensorId)
         {
-            var measures =  _context.Measures.Where(mes => mes.SensorId == sensorId);
+            IQueryable<IDtoMeasure> measures = _context.Measures.Where(mes => mes.SensorId == sensorId);
 
             if (measures == null)
             {
@@ -77,10 +77,10 @@ namespace IotWebApi.Controllers
         /// <param name="date"></param>
         /// <returns></returns>
         [HttpGet("Sensor/{sensorId}/Date/{date}")]
-        public async Task<ActionResult<IEnumerable<Measure>>> GetSensorsBySensorIdAndDate(int sensorId, DateTime date)
+        public async Task<ActionResult<IEnumerable<IDtoMeasure>>> GetSensorsBySensorIdAndDate(int sensorId, DateTime date)
         {
 
-            var measures = _context.Measures.Where(mes => mes.SensorId == sensorId && mes.DateTime.Date == date.Date);
+            IQueryable<IDtoMeasure> measures = _context.Measures.Where(mes => mes.SensorId == sensorId && mes.DateTime.Date == date.Date);
 
             if (measures == null)
             {
@@ -97,10 +97,10 @@ namespace IotWebApi.Controllers
         /// <param name="month"></param>
         /// <returns></returns>
         [HttpGet("Sensor/{sensorId}/Month/{month}")]
-        public async Task<ActionResult<IEnumerable<Measure>>> GetSensorsBySensorIdAndMonth(int sensorId, int month)
+        public async Task<ActionResult<IEnumerable<IDtoMeasure>>> GetSensorsBySensorIdAndMonth(int sensorId, int month)
         {
 
-            var measures = _context.Measures.Where(mes => mes.SensorId == sensorId && mes.DateTime.Month == month);
+            IQueryable<IDtoMeasure> measures = _context.Measures.Where(mes => mes.SensorId == sensorId && mes.DateTime.Month == month);
 
             if (measures == null)
             {

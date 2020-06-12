@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage.Models
 {
-    public class Device
+    public class Device : IDtoDevice
     {
         [Key]
         public int DeviceId { get; set; }

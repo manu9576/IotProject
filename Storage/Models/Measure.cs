@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage.Models
 {
-    public class Measure
+    public class Measure : IDtoMeasure
     {
         [Key]
         public int MeasureId { get; set; }

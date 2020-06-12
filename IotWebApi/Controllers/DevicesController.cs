@@ -37,9 +37,9 @@ namespace IotWebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Device>> GetDevice(int id)
+        public async Task<ActionResult<IDtoDevice>> GetDevice(int id)
         {
-            var device = await _context.Devices.FindAsync(id);
+            ActionResult<IDtoDevice> device = await _context.Devices.FindAsync(id);
 
             if (device == null)
             {
@@ -55,7 +55,7 @@ namespace IotWebApi.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet("Name/{name}")]
-        public async Task<ActionResult<Device>> GetDeviceByName(string name)
+        public async Task<ActionResult<IDtoDevice>> GetDeviceByName(string name)
         {
             var device = _context.Devices.Where(dev => dev.Name == name);
 
