@@ -1,17 +1,30 @@
 Vue.component('graph-configuration', {
+    props:{
+        sensorsList: sensorsList
+    },
+    template: `
+    <fieldset   fieldset  id='sensorsList'>
+        <ul>
+            <li v-for="(sensor) in sensorsList" :key="index">
+                <sensor-detail :sensor={sensor}></sensor-detail>
+            </li>
+        </ul>
+    </fieldset>
+    `
+});
+
+
+Vue.component('graph-configuration', {
     data() {
         return {
-            tabs: ['Reviews', 'Make a Review'],
-            selectedTab: 'Reviews'
+
         };
     },
     template: `
     <div >
-          
-        <fieldset   fieldset  id='sensorsList'>
-            <sensor-list></sensor-list>
-        </fieldset>
 
+        <sensor-list></sensor-list>
+       
         <input id="startDate" type="date" :value="oneWeekEarlier" :max="todayDate">
         <input id="endDate" type="date" :value="todayDate" :max="todayDate">
         <button id='updatePlageButton' v-on:click="updateGraph">Update plage</button>
@@ -51,10 +64,18 @@ var app = new Vue({
     data: {
         chart: document.getElementById('sensorChart'),
         chartHelper: new ChartHelper(document.getElementById('sensorChart')),
-        dataRetriever: new DataRetriever()
+        dataRetriever: new DataRetriever(),
+        sensorsList: []
+    },
+    mount: ()=>{
+        this.dataRetriever.getSensorsList().then((sensorsList) =>{
+            debugger;
+            this.sensorsList = sensorsList;
+        });
     },
     provide: {
-        dataRetriever: this.dataRetriever
+        dataRetriever: this.dataRetriever,
+        sensorsList: this.sensorsList
     },
     methods: {
         updateCart(variantId) {
