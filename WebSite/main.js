@@ -1,7 +1,5 @@
 Vue.component('graph-configuration', {
-    props:{
-        sensorsList: sensorsList
-    },
+    inject: ['sensorsList'],
     template: `
     <fieldset   fieldset  id='sensorsList'>
         <ul>
@@ -32,8 +30,8 @@ Vue.component('graph-configuration', {
     </div>
     `,
     methods: {
-        updateGraph: ()=>{
-            
+        updateGraph: () => {
+
         }
     },
     computed: {
@@ -58,24 +56,30 @@ Vue.component('graph-configuration', {
     }
 });
 
-
 var app = new Vue({
     el: '#chartPresenter',
-    data: {
-        chart: document.getElementById('sensorChart'),
-        chartHelper: new ChartHelper(document.getElementById('sensorChart')),
-        dataRetriever: new DataRetriever(),
-        sensorsList: []
+    data: function () {
+        return {
+            chartHelper: new ChartHelper(document.getElementById('sensorChart')),
+            dataRetriever: new DataRetriever(),
+            sensorsList: []
+        };
     },
-    mount: ()=>{
-        this.dataRetriever.getSensorsList().then((sensorsList) =>{
+    mounted: () => {
+        // this.dataRetriever =
+
+        
+  let $vm = this;
+
+        this.dataRetriever.getSensorsList().then((sensorsList) => {
             debugger;
-            this.sensorsList = sensorsList;
+            $vm.sensorsList = sensorsList;
         });
     },
-    provide: {
-        dataRetriever: this.dataRetriever,
-        sensorsList: this.sensorsList
+    provide: function () {
+        return {
+            sensorsList: this.sensorsList
+        }
     },
     methods: {
         updateCart(variantId) {

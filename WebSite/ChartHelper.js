@@ -1,12 +1,15 @@
 class ChartHelper {
 
-    #chartContext;
-    #dataset = [];
+    chartContext;
+    dataset = [];
     
     constructor(chart) {
+
+        
+        console.log("ChartHelper ctr");
         let ctx = chart.getContext('2d');
 
-        this.#chartContext = new Chart(ctx, {
+        this.chartContext = new Chart(ctx, {
             type: 'line',
             data: {
                 datasets: this.datasets

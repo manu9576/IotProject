@@ -2,6 +2,10 @@
 const DEVICE_ID = 6;
 class DataRetriever {
 
+    constructor(){
+        console.log("DataRetriever ctr");
+    }
+
     getValuesForInterval(sensorId, startDate, endDate) {
         return new Promise((successCallback, failureCallback) => {
             try {
