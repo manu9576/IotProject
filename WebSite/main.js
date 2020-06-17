@@ -1,12 +1,19 @@
-Vue.component('graph-configuration', {
-    inject: ['sensorsList'],
+Vue.component('sensor-detail', {
+    props: ["sensor"],
     template: `
-    <fieldset   fieldset  id='sensorsList'>
-        <ul>
-            <li v-for="(sensor) in sensorsList" :key="index">
-                <sensor-detail :sensor={sensor}></sensor-detail>
-            </li>
-        </ul>
+    <div>
+        <input type='checkbox' :id="sensor.id">
+        <label>{{sensor.name}} ({{sensor.unit}})</label>   
+    </div>
+    `
+});
+
+
+Vue.component('sensor-list', {
+    props: ['sensors'],
+    template: `
+    <fieldset>
+        <sensor-detail  v-for="(sensor) in sensors" :key="sensor.sensorId" :sensor="sensor"></sensor-detail>
     </fieldset>
     `
 });
@@ -18,22 +25,17 @@ Vue.component('graph-configuration', {
 
         };
     },
+    props: ['sensors'],
     template: `
     <div >
 
-        <sensor-list></sensor-list>
+        <sensor-list :sensors="sensors"></sensor-list>
        
         <input id="startDate" type="date" :value="oneWeekEarlier" :max="todayDate">
         <input id="endDate" type="date" :value="todayDate" :max="todayDate">
-        <button id='updatePlageButton' v-on:click="updateGraph">Update plage</button>
-
+        
     </div>
     `,
-    methods: {
-        updateGraph: () => {
-
-        }
-    },
     computed: {
         todayDate() {
             let today = new Date();
@@ -56,40 +58,43 @@ Vue.component('graph-configuration', {
     }
 });
 
-var app = new Vue({
-    el: '#chartPresenter',
-    data: function () {
+
+
+Vue.component('sensors-chart', {
+    data() {
         return {
-            chartHelper: new ChartHelper(document.getElementById('sensorChart')),
+            chartHelper: undefined,
             dataRetriever: new DataRetriever(),
-            sensorsList: []
+            sensors: []
         };
     },
-    mounted: () => {
-        // this.dataRetriever =
-
-        
-  let $vm = this;
-
-        this.dataRetriever.getSensorsList().then((sensorsList) => {
-            debugger;
-            $vm.sensorsList = sensorsList;
+    mounted() {
+        this.chartHelper = new ChartHelper(this.$refs.chart);
+        this.dataRetriever.getSensorsList().then((sensors) => {
+            this.sensors = sensors;
         });
+
     },
-    provide: function () {
-        return {
-            sensorsList: this.sensorsList
-        }
-    },
+    template: `
+    <div >
+
+        <canvas ref=chart></canvas>
+       
+        <graph-configuration :sensors="sensors"></graph-configuration>
+
+        <button id='updatePlageButton'>Update plage</button>
+
+    </div>
+    `,
     methods: {
-        updateCart(variantId) {
-            this.cart.push(variantId);
-        },
-        removeFromCart(variantId) {
-            const index = this.cart.indexOf(variantId);
-            if (index > -1) {
-                this.cart.splice(index, 1);
-            }
-        }
+
+    },
+    computed: {
+
     }
+});
+
+
+var app = new Vue({
+    el: '#chartPresenter'
 });
