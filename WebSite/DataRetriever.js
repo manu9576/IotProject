@@ -2,10 +2,6 @@
 const DEVICE_ID = 6;
 class DataRetriever {
 
-    constructor(){
-        console.log("DataRetriever ctr");
-    }
-
     getValuesForInterval(sensorId, startDate, endDate) {
         return new Promise((successCallback, failureCallback) => {
             try {
@@ -50,7 +46,7 @@ class DataRetriever {
                 xhr.onload = function () {
                     try {
 
-                        let sensors = JSON.parse(xhr.responseText)
+                        let sensors = JSON.parse(xhr.responseText);
                         successCallback(sensors);
 
                     } catch (ex) {

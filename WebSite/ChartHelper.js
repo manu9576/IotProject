@@ -4,9 +4,7 @@ class ChartHelper {
     dataset = [];
     
     constructor(chart) {
-
         
-        console.log("ChartHelper ctr");
         let ctx = chart.getContext('2d');
 
         this.chartContext = new Chart(ctx, {
