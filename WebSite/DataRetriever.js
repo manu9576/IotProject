@@ -46,7 +46,19 @@ class DataRetriever {
                 xhr.onload = function () {
                     try {
 
-                        let sensors = JSON.parse(xhr.responseText);
+                        let jsonSensors = JSON.parse(xhr.responseText);
+
+                        let sensors =[];
+
+                        jsonSensors.forEach((jsonSensor) => {
+                            sensors.push(
+                                new Sensor(
+                                    jsonSensor.sensorId,
+                                    jsonSensor.name,
+                                    jsonSensor.unit)
+                                    );
+                        });
+
                         successCallback(sensors);
 
                     } catch (ex) {

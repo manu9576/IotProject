@@ -1,13 +1,15 @@
+const curvesColor = ["red", "blue", "green"];
+
 class ChartHelper {
 
-    chartContext;
-    dataset = [];
+    chart;
+    datasets = [];
     
     constructor(chart) {
         
         let ctx = chart.getContext('2d');
 
-        this.chartContext = new Chart(ctx, {
+        this.chart = new Chart(ctx, {
             type: 'line',
             data: {
                 datasets: this.datasets
@@ -42,5 +44,22 @@ class ChartHelper {
             }
         });
 
+    }
+
+    clearDatasets(){
+        this.datasets.length = 0;
+    }
+
+    addDataSet(sensorName,values){
+        this.datasets.push({
+            label: sensorName,
+            data: values,
+            borderColor: curvesColor[this.datasets.length % curvesColor.length],
+            fill: false
+          });
+    }
+
+    updateChart(){
+        this.chart.update();
     }
 }
