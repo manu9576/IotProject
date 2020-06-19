@@ -4,8 +4,51 @@ body {
     margin: 0px;
 }
 
-.nav-bar {
-    background: linear-gradient(-90deg, #84CF6A, #16C0B0);
-    height: 60px;
-    margin-bottom: 15px;
+.header {
+    background: linear-gradient(-90deg, #6a8dcf, #94999e);
+   
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    font-size: x-large;
+
+    grid-area: header;
 }
+
+.chart{
+    grid-area: chart;
+    height: 100%;
+    width: 100%;
+}
+
+
+html,body {
+    height: 100%;
+    width: 100%;
+    margin:0;
+    padding:0;
+}
+
+.sensor-list{
+    grid-area: sensors;
+    overflow: auto;
+}
+.date-selection{
+    grid-area: date;
+}
+.container {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: auto 600px auto;
+    grid-template-areas: 
+    "header header"
+    "chart chart"
+    "sensors date";
+  }
+
+
+  .item {
+    justify-self: stretch;
+  }

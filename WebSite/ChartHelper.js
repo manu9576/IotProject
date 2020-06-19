@@ -15,13 +15,11 @@ class ChartHelper {
                 datasets: this.datasets
             },
             options: {
-
                 responsive: false,
                 hoverMode: 'index',
                 stacked: false,
                 title: {
-                    display: true,
-                    text: 'Sensors'
+                    display: false
                 },
 
                 scales: {

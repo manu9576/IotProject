@@ -68,15 +68,19 @@ Vue.component('sensors-chart', {
         });
     },
     template: `
-    <div>
+    <div class="container">
 
-        <canvas ref=chart></canvas>
+        <div class="item header">Chart</div>
 
-        <sensor-list :sensors="sensors"></sensor-list>
-       
-        <input type="date" :value="convertDate(startDate)" v-bind:max="convertDate(endDate)">
-        <input type="date" :value="convertDate(endDate)" v-bind:min="convertDate(startDate)" v-bind:max="convertDate(todayDate)">
-        <button @click='updateChart(vm)' >Update plage</button>
+        <canvas ref=chart class="item chart"></canvas>
+
+        <sensor-list :sensors="sensors"  class="item sensor-list"></sensor-list>
+
+        <div class="item date-selection">
+            <input type="date" :value="convertDate(startDate)" v-bind:max="convertDate(endDate)">
+            <input type="date" :value="convertDate(endDate)" v-bind:min="convertDate(startDate)" v-bind:max="convertDate(todayDate)">
+            <button @click='updateChart(vm)' >Update plage</button>
+        </div>
 
     </div>
     `,
