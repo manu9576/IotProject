@@ -28,7 +28,7 @@ class DataRetriever {
                     }
                 };
                 xhr.open('GET', 'http://localhost:54384/api/Measure/Sensor/' + sensorId + '/From/' +
-                    convertDate(startDate) + '/To/' + convertDate(endDate), true);
+                    startDate + '/To/' + endDate, true);
                 xhr.setRequestHeader("Content-Type", 'text/plain');
                 xhr.send(null);
             } catch (ex) {

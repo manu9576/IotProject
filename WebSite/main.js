@@ -55,9 +55,9 @@ Vue.component('sensors-chart', {
             chartHelper: undefined,
             dataRetriever: new DataRetriever(),
             sensors: [],
-            startDate: oneWeekEarlier(),
-            endDate: todayDate(),
-            todayDate: todayDate(),
+            startDate: convertDate(oneWeekEarlier()),
+            endDate: convertDate(todayDate()),
+            todayDate: convertDate(todayDate()),
             vm: this
         };
     },
@@ -77,9 +77,17 @@ Vue.component('sensors-chart', {
         <sensor-list :sensors="sensors"  class="item sensor-list"></sensor-list>
 
         <div class="item date-selection">
-            <input type="date" :value="convertDate(startDate)" v-bind:max="convertDate(endDate)">
-            <input type="date" :value="convertDate(endDate)" v-bind:min="convertDate(startDate)" v-bind:max="convertDate(todayDate)">
-            <button @click='updateChart(vm)' >Update plage</button>
+            <p>
+                <label>Start date: </label>
+                <input type="date" v-model="startDate" :max="endDate">
+            </p>
+            <p>
+                <label>End date:   </label>
+                <input type="date" v-model="endDate" :max="todayDate" :min="startDate">
+            </p>
+            <p>
+                <button @click='updateChart(vm)' >Update plage</button>
+            </p>
         </div>
 
     </div>
@@ -90,6 +98,7 @@ Vue.component('sensors-chart', {
 
             vm.sensors.forEach(sensor => {
                 if (sensor.isSelected) {
+
                     vm.dataRetriever.getValuesForInterval(sensor.id, vm.startDate, vm.endDate).then((values) => {
                         vm.chartHelper.addDataSet(sensor.name, values);
                         vm.chartHelper.updateChart();
