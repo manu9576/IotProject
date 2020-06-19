@@ -34,8 +34,6 @@ class ChartHelper {
                         display: true,
                         position: 'left',
                         id: 'y-axis-1',
-                        // min: 25,
-                        // max: 50
                     }]
 
                 }
