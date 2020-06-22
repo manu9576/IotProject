@@ -8,7 +8,10 @@ Vue.component('sensor-detail', {
     template: `
     <div>
         <input type='checkbox' v-model="sensor.isSelected" v-bind:id="sensor.id">
-        <label>{{sensor.name}} ({{sensor.unit}})</label>   
+        <label :for="sensor.id">{{sensor.label}} ({{sensor.unit}})</label>  
+        
+        <label> - Color </label>
+        <input type="color" v-model="sensor.borderColor"> 
     </div>
     `
 });
@@ -44,7 +47,7 @@ Vue.component('sensor-list', {
     template: `
     <fieldset>
         <legend>Select sensors to display</legend>
-        <sensor-detail  v-for="(sensor) in sensors" :key="sensor.id" :sensor="sensor"></sensor-detail>
+        <sensor-detail v-for="(sensor) in sensors" :key="sensor.id" :sensor="sensor"></sensor-detail>
     </fieldset>
     `
 });
@@ -100,7 +103,8 @@ Vue.component('sensors-chart', {
                 if (sensor.isSelected) {
 
                     vm.dataRetriever.getValuesForInterval(sensor.id, vm.startDate, vm.endDate).then((values) => {
-                        vm.chartHelper.addDataSet(sensor.name, values);
+                        sensor.data = values;
+                        vm.chartHelper.addDataSet(sensor);
                         vm.chartHelper.updateChart();
                     })
                 }

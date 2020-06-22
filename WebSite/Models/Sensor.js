@@ -1,16 +1,22 @@
 class Sensor{
 
     id;
-    name;
+    label;
     unit;
-    yAxe;
+    yAxeid;
     isSelected;
+    borderColor;
+    data;
+    fill;
 
     constructor(id,name,unit){
         this.id = id;
-        this.name = name;
+        this.label = name;
         this.unit = unit;
-        this.yAxe = null;
+        this.yAxeid = null;
         this.isSelected = false;
+        this.borderColor = "blue";
+        this.data = [];
+        this.fill = false;
     }
 }

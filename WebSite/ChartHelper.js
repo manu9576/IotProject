@@ -3,11 +3,18 @@ const curvesColor = ["red", "blue", "green"];
 class ChartHelper {
 
     chart;
-    datasets = [];
-    
+    datasets;
+    yAxes;
+    defaultYAxe;
+
     constructor(chart) {
-        
+        this.yAxes = [];
+        this.datasets= [];
         let ctx = chart.getContext('2d');
+        this.defaultYAxe =  new YAxe("linear", "left", "AXe1");
+        this.yAxes.push(
+            this.defaultYAxe
+        );
 
         this.chart = new Chart(ctx, {
             type: 'line',
@@ -29,12 +36,7 @@ class ChartHelper {
                         distribution: 'linear'
                     }],
 
-                    yAxes: [{
-                        type: 'linear',
-                        display: true,
-                        position: 'left',
-                        id: 'y-axis-1',
-                    }]
+                    yAxes: this.yAxes
 
                 }
             }
@@ -42,20 +44,16 @@ class ChartHelper {
 
     }
 
-    clearDatasets(){
+    clearDatasets() {
         this.datasets.length = 0;
     }
 
-    addDataSet(sensorName,values){
-        this.datasets.push({
-            label: sensorName,
-            data: values,
-            borderColor: curvesColor[this.datasets.length % curvesColor.length],
-            fill: false
-          });
+    addDataSet(sensor) {
+        sensor.yAxeid = this.defaultYAxe.id;
+        this.datasets.push(sensor);
     }
 
-    updateChart(){
+    updateChart() {
         this.chart.update();
     }
 }
