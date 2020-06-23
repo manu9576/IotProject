@@ -17,13 +17,11 @@ body {
 
 .chart{
     grid-area: chart;
-    height: 100%;
-    width: 100%;
     overflow: hidden;
 }
 
 
-html,body {
+html,body,#chartPresenter {
     height: 100%;
     width: 100%;
     margin:0;
@@ -39,16 +37,12 @@ html,body {
     margin: 10px;
 }
 
-.date-selection label{
-    width: 100px;
-}
-
 .container {
     display: grid;
     height: 100%;
     width: 100%;
     grid-template-columns: 60% 40%;
-    grid-template-rows: auto 600px auto;
+    grid-template-rows: 2em 70% 20%;
     grid-template-areas: 
     "header header"
     "chart chart"

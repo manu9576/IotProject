@@ -1,5 +1,3 @@
-const curvesColor = ["red", "blue", "green"];
-
 class ChartHelper {
 
     chart;
@@ -8,6 +6,7 @@ class ChartHelper {
     defaultYAxe;
 
     constructor(chart) {
+
         this.yAxes = [];
         this.datasets= [];
         let ctx = chart.getContext('2d');
@@ -22,13 +21,14 @@ class ChartHelper {
                 datasets: this.datasets
             },
             options: {
-                responsive: false,
+                responsive: true,
                 hoverMode: 'index',
+                maintainAspectRatio: false,
                 stacked: false,
                 title: {
                     display: false
                 },
-
+                
                 scales: {
 
                     xAxes: [{

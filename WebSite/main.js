@@ -74,8 +74,10 @@ Vue.component('sensors-chart', {
     <div class="container">
 
         <div class="item header">Chart</div>
-
-        <canvas ref=chart class="item chart"></canvas>
+        
+        <div class="item chart">
+            <canvas ref=chart style="height: 100%; width: 100%" ></canvas>
+        </div>
 
         <sensor-list :sensors="sensors"  class="item sensor-list"></sensor-list>
 
