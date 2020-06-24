@@ -1,16 +1,11 @@
 class ChartHelper {
 
-    chart;
-    datasets;
-    yAxes;
-    defaultYAxe;
-
     constructor(chart) {
 
         this.yAxes = [];
-        this.datasets= [];
-        let ctx = chart.getContext('2d');
-        this.defaultYAxe =  new YAxe("linear", "left", "AXe1");
+        this.datasets = [];
+         let ctx = chart.getContext('2d');
+        this.defaultYAxe = new YAxe("linear", "left", "AXe1");
         this.yAxes.push(
             this.defaultYAxe
         );
@@ -22,26 +17,22 @@ class ChartHelper {
             },
             options: {
                 responsive: true,
-                hoverMode: 'index',
                 maintainAspectRatio: false,
-                stacked: false,
-                title: {
+
+                legend: {
                     display: false
                 },
-                
-                scales: {
 
+                scales: {
                     xAxes: [{
                         type: 'time',
                         distribution: 'linear'
                     }],
-
                     yAxes: this.yAxes
+                },
 
-                }
             }
         });
-
     }
 
     clearDatasets() {
