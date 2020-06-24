@@ -1,13 +1,10 @@
 class YAxe {
-    type= 'linear';
-    display= true;
-    position= 'left';
-    id= 'y-axis-1';
 
     constructor(type,position,id){
         this.type = type;
         this.position = position;
         this.id = id;
+        this.display= true;
     }
 
     hide(){

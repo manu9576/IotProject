@@ -8,19 +8,9 @@ sensorColor = [
     "#483D8B",
     "#DAA520",
     "#7FFF00"
-]
+];
 
 class Sensor {
-
-    id;
-    label;
-    unit;
-    yAxeid;
-    isSelected;
-    borderColor;
-    data;
-    fill;
-    pointRadius;
 
     constructor(id, name, unit) {
         this.id = id;
