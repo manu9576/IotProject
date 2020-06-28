@@ -1,55 +1,61 @@
 body {
-    font-family: tahoma;
-    color: #282828;
-    margin: 0px;
+  font-family: tahoma;
+  color: #282828;
+  margin: 0px;
 }
 
 .header {
-    background: linear-gradient(-90deg, #6a8dcf, #94999e);
-   
-    color: #fff;
-    text-align: center;
-    vertical-align: middle;
-    font-size: x-large;
+  background: linear-gradient(-90deg, #6a8dcf, #94999e);
 
-    grid-area: header;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  font-size: x-large;
+
+  grid-area: header;
 }
 
-.chart{
-    grid-area: chart;
-    overflow: hidden;
+.chart {
+  grid-area: chart;
+  overflow: hidden;
+  padding: 10px;
 }
 
-
-html,body,#chartPresenter {
-    height: 100%;
-    width: 100%;
-    margin:0;
-    padding:0;
+html,
+body,
+#chartPresenter {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-.sensor-list{
-    grid-area: sensors;
-    overflow: auto;
+.sensor-list {
+  grid-area: sensors;
+  overflow: auto;
 }
-.date-selection{
-    grid-area: date;
-    margin: 10px;
+.date-selection {
+  grid-area: date;
+  margin: 10px;
+}
+
+.yAxe-list {
+  grid-area: yAxes;
+  overflow: auto;
 }
 
 .container {
-    display: grid;
-    height: 100%;
-    width: 100%;
-    grid-template-columns: 60% 40%;
-    grid-template-rows: 2em 70% 20%;
-    grid-template-areas: 
-    "header header"
-    "chart chart"
-    "sensors date";
-  }
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: 50% 30% 20%;
+  grid-template-rows: 2em 70% 20%;
+  grid-template-areas:
+    "header header header"
+    "chart chart chart"
+    "sensors yAxes date";
+}
 
-
-  .item {
-    justify-self: stretch;
-  }
+.item {
+  justify-self: stretch;
+}

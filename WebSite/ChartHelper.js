@@ -4,11 +4,11 @@ class ChartHelper {
 
         this.yAxes = [];
         this.datasets = [];
-         let ctx = chart.getContext('2d');
-        this.defaultYAxe = new YAxe("linear", "left", "AXe1");
-        this.yAxes.push(
-            this.defaultYAxe
-        );
+        let ctx = chart.getContext('2d');
+
+        this.yAxesBuilder = new YAxesBuilder();
+        this.yAxesBuilder.createNewAxe("Axe-1");
+        this.yAxes = this.yAxesBuilder.yAxes;
 
         this.chart = new Chart(ctx, {
             type: 'line',
@@ -40,11 +40,14 @@ class ChartHelper {
     }
 
     addDataSet(sensor) {
-        sensor.yAxeid = this.defaultYAxe.id;
         this.datasets.push(sensor);
     }
 
     updateChart() {
         this.chart.update();
+    }
+
+    createYAxe(name){
+        this.yAxesBuilder.createNewAxe(name);
     }
 }

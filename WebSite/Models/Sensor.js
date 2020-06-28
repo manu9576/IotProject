@@ -16,7 +16,7 @@ class Sensor {
         this.id = id;
         this.label = name;
         this.unit = unit;
-        this.yAxeid = null;
+        this.yAxisID = null;
         this.isSelected = false;
         this.borderColor = sensorColor[sensorCount % sensorColor.length];
         this.data = [];
