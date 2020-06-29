@@ -92,7 +92,7 @@ Vue.component('yAxe-list', {
     </fieldset>
     `,
     methods: {
-        addNewAxe () {
+        addNewAxe() {
 
             this.$emit('add-axe', this.axeName);
             this.axeName = '';
@@ -130,8 +130,8 @@ Vue.component('sensors-chart', {
     mounted() {
         this.chartHelper = new ChartHelper(this.$refs.chart);
         this.yAxes = this.chartHelper.yAxes;
-        this.chartHelper.createYAxe("test")
-        this.yAxes[1].position = 'right'
+        this.chartHelper.createYAxe("test");
+        this.yAxes[1].position = 'right';
         this.dataRetriever.getSensorsList().then((sensors) => {
             this.sensors = sensors;
 
@@ -176,15 +176,22 @@ Vue.component('sensors-chart', {
         updateChart() {
             this.chartHelper.clearDatasets();
 
+            let promises = [];
+
             this.sensors.forEach(sensor => {
                 if (sensor.isSelected) {
 
-                    this.dataRetriever.getValuesForInterval(sensor.id, this.startDate, this.endDate).then((values) => {
+                    promises.push(this.dataRetriever.getValuesForInterval(sensor.id, this.startDate, this.endDate).then((values) => {
                         sensor.data = values;
                         this.chartHelper.addDataSet(sensor);
-                        this.chartHelper.updateChart();
-                    })
+                    }));
+
                 }
+
+            });
+
+            Promise.all(promises).then((values) => {
+                this.chartHelper.updateChart();
             });
         },
         convertDate(date) {
@@ -196,7 +203,7 @@ Vue.component('sensors-chart', {
             return yyyy + "-" + mm + "-" + dd;
         },
         addAxe(yAxeName) {
-            this.chartHelper.createYAxe(yAxeName)
+            this.chartHelper.createYAxe(yAxeName);
         }
     },
     computed: {
