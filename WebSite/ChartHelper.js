@@ -2,13 +2,9 @@ class ChartHelper {
 
     constructor(chart) {
 
-        this.yAxes = [];
+       
         this.datasets = [];
         let ctx = chart.getContext('2d');
-
-        this.yAxesBuilder = new YAxesBuilder();
-        this.yAxesBuilder.createNewAxe("Axe-1");
-        this.yAxes = this.yAxesBuilder.yAxes;
 
         this.chart = new Chart(ctx, {
             type: 'line',
@@ -28,26 +24,38 @@ class ChartHelper {
                         type: 'time',
                         distribution: 'linear'
                     }],
-                    yAxes: this.yAxes
+                    yAxes: [{
+                        id: 'y-axis-0',
+                        display: "auto",
+                        type: 'linear',
+                        labelString: "Y-Axe 1"
+                    },
+                    {
+                        id: 'y-axis-1',
+                        display: "auto",
+                        type: 'linear',
+                        position: 'right',
+                        labelString: "Y-Axe 2"
+                    }]
                 },
 
             }
         });
+
+        this.yAxes = this.chart.options.scales.yAxes;
+
     }
 
     clearDatasets() {
-        this.datasets.length = 0;
+        this.chart.data.datasets.length = 0;
     }
 
     addDataSet(sensor) {
-        this.datasets.push(sensor);
+        this.chart.data.datasets.push(sensor);
     }
 
     updateChart() {
         this.chart.update();
     }
 
-    createYAxe(name){
-        this.yAxesBuilder.createNewAxe(name);
-    }
 }

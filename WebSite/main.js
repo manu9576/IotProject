@@ -82,12 +82,6 @@ Vue.component('yAxe-list', {
     template: `
     <fieldset>
         <legend>Y-Axe configuration</legend>
-
-        <label for="axeName">Name of new axe:</label>
-        <input type="text" id="axeName" size="10" v-model="axeName">
-
-        <button @click="addNewAxe">Add</button>
-
         <yAxe-detail v-for="(yAxe) in yAxes" :key="yAxe.id" :yAxe="yAxe"></yAxe-detail>
     </fieldset>
     `,
@@ -130,8 +124,6 @@ Vue.component('sensors-chart', {
     mounted() {
         this.chartHelper = new ChartHelper(this.$refs.chart);
         this.yAxes = this.chartHelper.yAxes;
-        this.chartHelper.createYAxe("test");
-        this.yAxes[1].position = 'right';
         this.dataRetriever.getSensorsList().then((sensors) => {
             this.sensors = sensors;
 
@@ -205,9 +197,6 @@ Vue.component('sensors-chart', {
         addAxe(yAxeName) {
             this.chartHelper.createYAxe(yAxeName);
         }
-    },
-    computed: {
-
     }
 });
 
