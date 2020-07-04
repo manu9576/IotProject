@@ -103,7 +103,11 @@ Vue.component('yAxe-detail', {
     },
     template: `
     <div>
-        <label>{{yAxe.labelString}}</label>  
+        <label>{{yAxe.labelString}}</label>
+
+        <label :for="yAxe.id">Visible :</label> 
+        <input type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
+        
     </div>
     `
 });
