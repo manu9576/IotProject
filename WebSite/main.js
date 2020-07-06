@@ -1,32 +1,3 @@
-Vue.component('sensor-detail', {
-    props: {
-        sensor: {
-            type: Object,
-            require: true
-        },
-        yAxes: {
-            type: Array,
-            require: true
-        }
-    },
-    template: `
-    <div>
-        <input type='checkbox' v-model="sensor.isSelected" v-bind:id="sensor.id">
-        <label :for="sensor.id">{{sensor.label}} ({{sensor.unit}})</label>  
-        
-        <label> - Color </label>
-        <input type="color" v-model="sensor.borderColor"> 
-
-        <label> - Y axe: </label>
-        <select v-model="sensor.yAxisID">
-            <option v-for="yAxe in yAxes" v-bind:value="yAxe.id">
-                {{ yAxe.labelString }}
-            </option>
-        </select>
-    </div>
-    `
-});
-
 let convertDate = function (date) {
 
     let dd = String(date.getDate()).padStart(2, '0');
@@ -62,8 +33,51 @@ Vue.component('sensor-list', {
     template: `
     <fieldset>
         <legend>Select sensors to display</legend>
-        <sensor-detail v-for="(sensor) in sensors" :key="sensor.id" :sensor="sensor" :yAxes="yAxes"></sensor-detail>
+        <div class="sensors-table">
+            <table>
+            
+            <tr>
+                <th>Senor name</th>
+                <th>Unit</th>
+                <th>Display</th>
+                <th>Color</th>
+                <th>Y-axe</th>
+            </tr>
+
+            <sensor-detail v-for="(sensor) in sensors" :key="sensor.id" :sensor="sensor" :yAxes="yAxes"></sensor-detail>
+
+            </table>
+        </div>    
+        
     </fieldset>
+    `
+});
+
+Vue.component('sensor-detail', {
+    props: {
+        sensor: {
+            type: Object,
+            require: true
+        },
+        yAxes: {
+            type: Array,
+            require: true
+        }
+    },
+    template: `
+    <tr>
+        <td>{{sensor.label}}</td>
+        <td>{{sensor.unit}}</td>
+        <td><input type='checkbox' v-model="sensor.isSelected" v-bind:id="sensor.id"></td>
+        <td><input type="color" v-model="sensor.borderColor"></td>
+        <td>
+            <select v-model="sensor.yAxisID">
+                <option v-for="yAxe in yAxes" v-bind:value="yAxe.id">
+                    {{ yAxe.labelString }}
+                </option>
+            </select>
+        </td>
+    </tr>
     `
 });
 
@@ -108,7 +122,6 @@ Vue.component('yAxe-detail', {
     `
 });
 
-
 Vue.component('sensors-chart', {
     data() {
         return {
@@ -141,7 +154,7 @@ Vue.component('sensors-chart', {
             <canvas ref=chart style="height: 100%; width: 100%" ></canvas>
         </div>
 
-        <sensor-list class="item sensor-list"
+        <sensor-list class="item sensors-list"
             :sensors="sensors"
             :yAxes="yAxes"
             ></sensor-list>
@@ -199,7 +212,6 @@ Vue.component('sensors-chart', {
         }
     }
 });
-
 
 var app = new Vue({
     el: '#chartPresenter'

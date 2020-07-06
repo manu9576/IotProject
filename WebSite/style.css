@@ -30,10 +30,43 @@ body,
   padding: 0;
 }
 
-.sensor-list {
-  grid-area: sensors;
+.sensors-table {
   overflow: auto;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
+
+table {
+  border: medium solid black;
+  border-collapse: collapse;
+}
+
+th {
+  border: thin solid black;
+  padding: 5px;
+  background-color: #94999e;
+}
+
+td {
+  font-family: sans-serif;
+  border: thin solid black;
+  width: 50%;
+  padding: 5px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+caption {
+  font-family: sans-serif;
+}
+
+.sensors-list {
+  grid-area: sensors;
+  padding-bottom: 20px;
+}
+
 .date-selection {
   grid-area: date;
   margin: 10px;
