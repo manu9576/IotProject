@@ -115,9 +115,47 @@ Vue.component('yAxe-detail', {
             require: true
         }
     },
+    data: function () {
+        return {
+            hasAutoLimit: true
+        };
+    },
+    mounted() {
+        this.updateHasAutoLimit();
+    },
+    methods: {
+        switchToManualRange() {
+            this.yAxe.ticks.min = 0;
+            this.yAxe.ticks.max = 25;
+            this.updateHasAutoLimit();
+        },
+        switchToAutoRange() {
+            this.yAxe.ticks.min = undefined;
+            this.yAxe.ticks.max = undefined;
+            this.updateHasAutoLimit()
+        },
+        updateHasAutoLimit() {
+            this.hasAutoLimit = this.yAxe.ticks === undefined || (this.yAxe.ticks.min === undefined && this.yAxe.ticks.max === undefined)
+        }
+
+    },
+
     template: `
     <div>
-        <label>{{yAxe.labelString}}</label>  
+        <label>{{yAxe.labelString}}</label>
+
+        <label :for="yAxe.id">Visible :</label> 
+        <input type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
+
+        <div v-if="hasAutoLimit">
+            <button @click='switchToManualRange'>Manual range</button>
+        </div>
+        <div v-else>
+            <button @click='switchToAutoRange'>Auto range</button>
+            <input v-model.number="yAxe.ticks.min" type="number">
+            <input v-model.number="yAxe.ticks.max" type="number">
+        </div>
+        
     </div>
     `
 });

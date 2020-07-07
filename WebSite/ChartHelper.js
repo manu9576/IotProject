@@ -26,16 +26,21 @@ class ChartHelper {
                     }],
                     yAxes: [{
                         id: 'y-axis-0',
-                        display: "auto",
+                        display: true,
                         type: 'linear',
                         labelString: "Y-Axe 1"
                     },
                     {
                         id: 'y-axis-1',
-                        display: "auto",
+                        display: false,
                         type: 'linear',
                         position: 'right',
-                        labelString: "Y-Axe 2"
+                        labelString: "Y-Axe 2",
+                        ticks:{
+                            min: undefined,
+                            max: undefined
+                        }
+
                     }]
                 },
 
