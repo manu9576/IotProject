@@ -2,11 +2,11 @@ class ChartHelper {
 
     constructor(chart) {
 
-       
-        this.datasets = [];
-        let ctx = chart.getContext('2d');
 
-        this.chart = new Chart(ctx, {
+        this.datasets = [];
+        this.ctx = chart.getContext('2d');
+
+        this.chart = new Chart(this.ctx, {
             type: 'line',
             data: {
                 datasets: this.datasets
@@ -36,7 +36,7 @@ class ChartHelper {
                         type: 'linear',
                         position: 'right',
                         labelString: "Y-Axe 2",
-                        ticks:{
+                        ticks: {
                             min: undefined,
                             max: undefined
                         }
@@ -60,7 +60,31 @@ class ChartHelper {
     }
 
     updateChart() {
-        this.chart.update();
+
+        this.chart = new Chart(this.ctx, {
+            type: 'line',
+            data: {
+                datasets: this.datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                legend: {
+                    display: false
+                },
+
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        distribution: 'linear'
+                    }],
+                    yAxes: this.yAxes
+                },
+
+            }
+        });
+
     }
 
 }
