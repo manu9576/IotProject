@@ -142,19 +142,21 @@ Vue.component('yAxe-detail', {
 
     template: `
     <div>
-        <label>{{yAxe.labelString}}</label>
+        <label>{{yAxe.labelString}} : </label>
 
-        <label :for="yAxe.id">Visible :</label> 
         <input type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
+        <label :for="yAxe.id">visible</label> 
 
-        <div v-if="hasAutoLimit">
+        <a> - </a>
+
+        <a v-if="hasAutoLimit">
             <button @click='switchToManualRange'>Manual range</button>
-        </div>
-        <div v-else>
+        </a>
+        <a v-else>
             <button @click='switchToAutoRange'>Auto range</button>
             <input v-model.number="yAxe.ticks.min" type="number">
             <input v-model.number="yAxe.ticks.max" type="number">
-        </div>
+        </a>
         
     </div>
     `
