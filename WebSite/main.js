@@ -209,7 +209,7 @@ Vue.component('sensors-chart', {
                 <input type="date" v-model="endDate" :max="todayDate" :min="startDate">
             </p>
             <p>
-                <button @click='updateChart' >Update plage</button>
+                <button @click='updateChart' >Update chart</button>
             </p>
         </div>
 
