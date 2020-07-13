@@ -27,7 +27,7 @@ class DataRetriever {
 
                     }
                 };
-                xhr.open('GET', 'https://manu9576.net:5001/api/Measure/Sensor/' + sensorId + '/From/' +
+                xhr.open('GET', 'http://manu9576.net/api/Measure/Sensor/' + sensorId + '/From/' +
                     startDate + '/To/' + endDate, true);
                 xhr.setRequestHeader("Content-Type", 'text/plain');
                 xhr.send(null);
@@ -67,7 +67,7 @@ class DataRetriever {
 
                 };
 
-                xhr.open('GET', 'https://manu9576.net:5001/api/Sensor/Device/' + DEVICE_ID, true);
+                xhr.open('GET', 'http://manu9576.net/api/Sensor/Device/' + DEVICE_ID, true);
                 xhr.setRequestHeader("Content-Type", 'text/plain');
                 xhr.send(null);
 
