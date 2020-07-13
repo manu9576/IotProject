@@ -35,7 +35,7 @@ namespace IotWebApi
                 options.AddPolicy(name: "MyPolicy",
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost");
+                                      builder.WithOrigins("http://localhost","http://manu9576");
                                   });
             });
 
