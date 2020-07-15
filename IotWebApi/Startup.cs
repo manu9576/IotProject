@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +33,7 @@ namespace IotWebApi
                 options.AddPolicy(name: "MyPolicy",
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost","http://manu9576");
+                                      builder.WithOrigins("http://localhost");
                                   });
             });
 
@@ -58,22 +56,22 @@ namespace IotWebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
-
-            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
+#if DEBUG
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", ".Net Core 3 Web API V1");
             });
+
+#endif
         }
     }
 }
