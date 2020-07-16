@@ -58,8 +58,6 @@ namespace IotWebApi.Controllers
         [HttpGet("Device/{deviceId}")]
         public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorsByDeviceId(int deviceId)
         {
-            Console.WriteLine("GetSensorsByDeviceId");
-
             if (!_context.Sensors.Any(sen => sen.DeviceId == deviceId))
             {
                 return NotFound();

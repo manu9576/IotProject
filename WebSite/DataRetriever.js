@@ -34,9 +34,7 @@ class DataRetriever {
             } catch (ex) {
                 failureCallback("Exception during getValuesForInterval: " + ex);
             }
-
         });
-
     }
 
     getSensorsList() {
