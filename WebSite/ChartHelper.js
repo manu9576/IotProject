@@ -22,7 +22,14 @@ class ChartHelper {
                 scales: {
                     xAxes: [{
                         type: 'time',
-                        distribution: 'linear'
+                        distribution: 'linear',
+                        time: {
+                            unit: 'day',
+                            unitStepSize: 1,
+                            displayFormats: {
+                                'day': 'DD MMM'
+                            },
+                        }
                     }],
                     yAxes: [{
                         id: 'y-axis-0',
@@ -48,7 +55,7 @@ class ChartHelper {
         });
 
         this.yAxes = this.chart.options.scales.yAxes;
-
+        this.xAxes = this.chart.options.scales.xAxes;
     }
 
     clearDatasets() {
@@ -75,10 +82,7 @@ class ChartHelper {
                 },
 
                 scales: {
-                    xAxes: [{
-                        type: 'time',
-                        distribution: 'linear'
-                    }],
+                    xAxes: this.xAxes,
                     yAxes: this.yAxes
                 },
 
