@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.IO;
 
 namespace IotWebApi
 {
@@ -15,8 +16,10 @@ namespace IotWebApi
 
         public Startup(IHostEnvironment env)
         {
+            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
             IConfigurationRoot appSettings = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json").Build();
+                .SetBasePath(env.ContentRootPath).AddJsonFile(Path.Combine(path, "appsettings.json")).Build();
 
             Configuration = appSettings;
         }
