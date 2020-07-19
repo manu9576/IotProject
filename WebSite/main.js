@@ -131,10 +131,10 @@ Vue.component('yAxe-detail', {
     methods: {
         switchRangeMode() {
 
-            if(this.hasAutoLimit){
+            if (this.hasAutoLimit) {
                 this.yAxe.ticks.min = 0;
                 this.yAxe.ticks.max = 25;
-            }else{
+            } else {
                 this.yAxe.ticks.min = undefined;
                 this.yAxe.ticks.max = undefined;
             }
@@ -144,11 +144,11 @@ Vue.component('yAxe-detail', {
             this.hasAutoLimit = this.yAxe.ticks === undefined || (this.yAxe.ticks.min === undefined && this.yAxe.ticks.max === undefined)
         }
     },
-    computed:{
-        buttonText(){
-            if(this.hasAutoLimit){
+    computed: {
+        buttonText() {
+            if (this.hasAutoLimit) {
                 return 'Manual range';
-            } else{
+            } else {
                 return 'Automatic range';
             }
         }
@@ -269,6 +269,68 @@ Vue.component('sensors-chart', {
     }
 });
 
-var app = new Vue({
+var chart = new Vue({
     el: '#chartPresenter'
+});
+
+
+Vue.component('last-values-presenter', {
+    data() {
+        return {
+            dataRetriever: new DataRetriever(),
+            sensors: []
+        }
+    },
+    props: {
+        sensors: {
+            type: Array,
+            require: true
+        },
+    },
+    mounted() {
+        this.dataRetriever.getSensorsList().then((sensors) => {
+
+            debugger;
+            this.sensors = sensors;
+
+            this.sensors.forEach(sensor => {
+                this.dataRetriever.getLastValue(sensor).then((value) => sensor.value = value);
+            });
+        });
+    },
+    template: `
+    <fieldset>
+        <legend>Dernières valeurs</legend>
+        <last-value v-for="(sensor) in sensors" :key="sensor.id" :sensor='sensor' :value='sensor.value'></last-value>
+    </fieldset>
+    `,
+    methods: {
+        addNewAxe() {
+
+            this.$emit('add-axe', this.axeName);
+            this.axeName = '';
+        }
+    }
+});
+
+Vue.component('last-value', {
+
+    props: ['sensor'],
+
+    template: `
+    <div>
+        <label>{{sensor.name}}</label>
+    </div>
+    `,
+    methods: {
+        addNewAxe() {
+
+            this.$emit('add-axe', this.axeName);
+            this.axeName = '';
+        }
+    }
+});
+
+var lastValue = new Vue({
+    el: '#lastValuePresenter'
 });

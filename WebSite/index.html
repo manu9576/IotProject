@@ -51,6 +51,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#last-values" id="chart-link" class="skel-layers-ignoreHref">
+                            <span class="icon fa-bar-chart-o">Valeurs actuelles</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="#chart" id="chart-link" class="skel-layers-ignoreHref">
                             <span class="icon fa-bar-chart-o">Graphique</span>
                         </a>
@@ -107,7 +112,19 @@
         </section>
 
         <!-- Portfolio -->
-        <section id="chart" class="two">
+        <section id="last-values" class="two">
+            <div class="container">
+                <header>
+                    <h2>Dernières valeurs</h2>
+                </header>
+                <div id="lastValuePresenter">
+                    <last-values-presenter></last-values-presenter>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio -->
+        <section id="chart" class="tree">
             <div class="container">
                 <header>
                     <h2>Graphique</h2>
