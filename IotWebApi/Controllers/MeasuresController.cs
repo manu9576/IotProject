@@ -137,5 +137,27 @@ namespace IotWebApi.Controllers
             return await measures.ToListAsync();
         }
 
+
+        /// <summary>
+        /// GET: api/Sensor/26/Date/2020-05-26
+        /// </summary>
+        /// <param name="sensorId"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        [HttpGet("Sensor/{sensorId}/GetLastValue")]
+        public double GetLastValue(int sensorId)
+        {
+            var sensorMeasures = _context.Measures.Where(mes => mes.SensorId == sensorId);
+
+            var lastMeasure = sensorMeasures.OrderByDescending(mes => mes.DateTime).FirstOrDefault();
+
+            if(lastMeasure == null)
+            {
+                return 0.0;
+            }
+
+            return lastMeasure.Value;
+        }
+
     }
 }

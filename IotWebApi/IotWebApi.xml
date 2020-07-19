@@ -71,6 +71,14 @@
             <param name="month"></param>
             <returns></returns>
         </member>
+        <member name="M:IotWebApi.Controllers.MeasuresController.GetLastValue(System.Int32)">
+            <summary>
+            GET: api/Sensor/26/Date/2020-05-26
+            </summary>
+            <param name="sensorId"></param>
+            <param name="month"></param>
+            <returns></returns>
+        </member>
         <member name="M:IotWebApi.Controllers.SensorsController.GetSensors">
             <summary>
             GET: api/Sensor
