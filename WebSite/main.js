@@ -33,7 +33,7 @@ Vue.component('sensor-list', {
     template: `
     <fieldset>
         <legend>Select sensors to display</legend>
-        <div class="sensors-table">
+        <div id="sensors-table">
             <table>
             
             <tr>
@@ -44,7 +44,12 @@ Vue.component('sensor-list', {
                 <th>Y-axe</th>
             </tr>
 
-            <sensor-detail v-for="(sensor) in sensors" :key="sensor.id" :sensor="sensor" :yAxes="yAxes"></sensor-detail>
+            <sensor-detail
+                id="sensors-table-content"
+                v-for="(sensor) in sensors" 
+                :key="sensor.id" :sensor="sensor" 
+                :yAxes="yAxes">
+            </sensor-detail>
 
             </table>
         </div>    
@@ -69,7 +74,7 @@ Vue.component('sensor-detail', {
         <td>{{sensor.label}}</td>
         <td>{{sensor.unit}}</td>
         <td><input type='checkbox' v-model="sensor.isSelected" v-bind:id="sensor.id"></td>
-        <td><input type="color" v-model="sensor.borderColor"></td>
+        <td><input type="color" class="yAxeColor" v-model="sensor.borderColor"></td>
         <td>
             <select v-model="sensor.yAxisID">
                 <option v-for="yAxe in yAxes" v-bind:value="yAxe.id">
@@ -124,40 +129,43 @@ Vue.component('yAxe-detail', {
         this.updateHasAutoLimit();
     },
     methods: {
-        switchToManualRange() {
-            this.yAxe.ticks.min = 0;
-            this.yAxe.ticks.max = 25;
+        switchRangeMode() {
+
+            if(this.hasAutoLimit){
+                this.yAxe.ticks.min = 0;
+                this.yAxe.ticks.max = 25;
+            }else{
+                this.yAxe.ticks.min = undefined;
+                this.yAxe.ticks.max = undefined;
+            }
             this.updateHasAutoLimit();
-        },
-        switchToAutoRange() {
-            this.yAxe.ticks.min = undefined;
-            this.yAxe.ticks.max = undefined;
-            this.updateHasAutoLimit()
         },
         updateHasAutoLimit() {
             this.hasAutoLimit = this.yAxe.ticks === undefined || (this.yAxe.ticks.min === undefined && this.yAxe.ticks.max === undefined)
         }
-
+    },
+    computed:{
+        buttonText(){
+            if(this.hasAutoLimit){
+                return 'Manual range';
+            } else{
+                return 'Automatic range';
+            }
+        }
     },
 
     template: `
     <div>
-        <label>{{yAxe.labelString}} : </label>
-
-        <input type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
-        <label :for="yAxe.id">visible</label> 
-
-        <a> - </a>
-
-        <a v-if="hasAutoLimit">
-            <button @click='switchToManualRange'>Manual range</button>
-        </a>
-        <a v-else>
-            <button @click='switchToAutoRange'>Auto range</button>
+        <div>    
+            <label>{{yAxe.labelString}} : </label>
+            <label :for="yAxe.id">visible</label> 
+            <input type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
+        </div>
+        <button @click='switchRangeMode'>{{buttonText}}</button>
+        <div v-if="!hasAutoLimit">
             <input v-model.number="yAxe.ticks.min" type="number">
             <input v-model.number="yAxe.ticks.max" type="number">
-        </a>
-        
+        </div>
     </div>
     `
 });
@@ -186,35 +194,43 @@ Vue.component('sensors-chart', {
         });
     },
     template: `
-    <div class="container">
+    <div class="container item">
 
-        <div class="item header">Chart</div>
-        
-        <div class="item chart">
-            <canvas ref=chart style="height: 100%; width: 100%" ></canvas>
+        <div>
+            <canvas ref=chart style="height: 100%; width: 100%; min-height:500px" ></canvas>
         </div>
 
-        <sensor-list class="item sensors-list"
-            :sensors="sensors"
-            :yAxes="yAxes"
-            ></sensor-list>
+        <div id="legend">
 
-        <yAxe-list :yAxes="yAxes" v-on:add-axe="addAxe" class="item yAxe-list"></yAxe-list>
+            <sensor-list
+                id="sensor-list"
+                :sensors="sensors"
+                :yAxes="yAxes">
+            </sensor-list>
 
-        <div class="item date-selection">
-            <p>
-                <label>Start date: </label>
-                <input type="date" v-model="startDate" :max="endDate">
-            </p>
-            <p>
-                <label>End date:   </label>
-                <input type="date" v-model="endDate" :max="todayDate" :min="startDate">
-            </p>
-            <p>
+            <yAxe-list 
+                id="yAxes-config"
+                :yAxes="yAxes" 
+                v-on:add-axe="addAxe">
+            </yAxe-list>
+
+            <fieldset id="xAxes-config">
+                <legend>X-Axe configuration</legend>
+                <div>
+                    <label>Start date: </label>
+                    <input type="date" v-model="startDate" :max="endDate">
+                </div>
+                <div>
+                    <label>End date:   </label>
+                    <input type="date" v-model="endDate" :max="todayDate" :min="startDate">
+                </div>
+            </fieldset>
+ 
+            <div id="update-chart">
                 <button @click='updateChart' >Update chart</button>
-            </p>
-        </div>
+            </div>
 
+        </div>
     </div>
     `,
     methods: {
