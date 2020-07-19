@@ -82,19 +82,16 @@ class DataRetriever {
                 let xhr = new XMLHttpRequest();
                 xhr.onload = function () {
                     try {
-                        debugger;
-
                         let value = JSON.parse(xhr.responseText);
-
                         successCallback(value);
 
                     } catch (ex) {
-                        failureCallback("Exception while parsing sensors list: " + ex);
+                        failureCallback("Exception while getting last value: " + ex);
                     }
 
                 };
 
-                xhr.open('GET', 'https://manu9576.net/api/Sensor/' + sensor.sensorId + '/GetLastValue', true);
+                xhr.open('GET', 'https://manu9576.net/api/Measure/Sensor/' + sensor.id + '/GetLastValue', true);
                 xhr.setRequestHeader("Content-Type", 'text/plain');
                 xhr.send(null);
 

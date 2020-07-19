@@ -23,6 +23,7 @@ class Sensor {
         this.fill = false;
         this.pointRadius = 0;
         this.lineTension = 0;
+        this.lastValue = 0;
 
         sensorCount++;
     }

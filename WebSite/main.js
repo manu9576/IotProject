@@ -290,18 +290,20 @@ Vue.component('last-values-presenter', {
     mounted() {
         this.dataRetriever.getSensorsList().then((sensors) => {
 
-            debugger;
             this.sensors = sensors;
 
             this.sensors.forEach(sensor => {
-                this.dataRetriever.getLastValue(sensor).then((value) => sensor.value = value);
+                this.dataRetriever.getLastValue(sensor).then((value) =>
+                { 
+                    sensor.lastValue = value;
+                });
             });
         });
     },
     template: `
     <fieldset>
         <legend>Dernières valeurs</legend>
-        <last-value v-for="(sensor) in sensors" :key="sensor.id" :sensor='sensor' :value='sensor.value'></last-value>
+        <last-value v-for="(sensor) in sensors" :key="sensor.id" :sensor='sensor'></last-value>
     </fieldset>
     `,
     methods: {
@@ -319,16 +321,9 @@ Vue.component('last-value', {
 
     template: `
     <div>
-        <label>{{sensor.name}}</label>
+        <label>{{sensor.label}}: {{sensor.lastValue}} {{sensor.unit}}</label>
     </div>
-    `,
-    methods: {
-        addNewAxe() {
-
-            this.$emit('add-axe', this.axeName);
-            this.axeName = '';
-        }
-    }
+    `
 });
 
 var lastValue = new Vue({
