@@ -161,7 +161,7 @@ Vue.component('yAxe-detail', {
             <label :for="yAxe.id">visible</label> 
             <input type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
         </div>
-        <button @click='switchRangeMode'>{{buttonText}}</button>
+        <button @click='switchRangeMode' class="button">{{buttonText}}</button>
         <div v-if="!hasAutoLimit">
             <input v-model.number="yAxe.ticks.min" type="number">
             <input v-model.number="yAxe.ticks.max" type="number">
@@ -227,7 +227,7 @@ Vue.component('sensors-chart', {
             </fieldset>
  
             <div id="update-chart">
-                <button @click='updateChart' >Update chart</button>
+                <button class="button" @click='updateChart' >Actualiser le graphique</button>
             </div>
 
         </div>
@@ -292,16 +292,22 @@ Vue.component('last-values-presenter', {
 
             this.sensors = sensors;
 
+            this.refreshSensorsValue();
+        });
+    },
+    methods:{
+        refreshSensorsValue(){
             this.sensors.forEach(sensor => {
                 this.dataRetriever.getLastValue(sensor).then((value) => {
                     sensor.lastValue = value;
                 });
             });
-        });
+        }
     },
     template: `
-    <div>
+    <div class="item" id="last-value-list">
         <last-value v-for="(sensor) in sensors" :key="sensor.id" :sensor='sensor'></last-value>
+        <button class="button" @click="refreshSensorsValue">Rafraîchir</button>
     </div>
     `
 });

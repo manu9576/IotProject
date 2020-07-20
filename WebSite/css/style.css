@@ -742,8 +742,8 @@ input[type="reset"]:active,
   grid-template-rows: auto auto auto;
   grid-gap: 10px;
   grid-template-areas:
-	"legend-left legend-right1"
-	"legend-left legend-right2"
+    "legend-left legend-right1"
+    "legend-left legend-right2"
     "legend-bottom legend-bottom";
 }
 
@@ -752,13 +752,16 @@ input[type="reset"]:active,
 }
 
 #legend input {
-	font-size: 70%;
-	width: 100px;
-  }
-  #legend select {
-	font-size: 70%;
-  }
-  
+  font-size: 70%;
+  width: 100px;
+}
+#legend select {
+  font-size: 70%;
+}
+
+#legend button {
+  font-size: 70%;
+}
 
 #legend fieldset {
   border: solid 1px;
@@ -778,20 +781,28 @@ input[type="reset"]:active,
 }
 
 #yAxes-config {
-	grid-area: legend-right1;
+  grid-area: legend-right1;
   width: 100%;
   padding: 5px 20px;
 }
 
 #xAxes-config {
-	grid-area: legend-right2;
+  grid-area: legend-right2;
   width: 100%;
   padding: 5px 20px;
 }
 
 #update-chart {
-	grid-area: legend-bottom;
-
+  grid-area: legend-bottom;
   padding: 5px 20px;
   width: 100%;
+}
+
+#last-value-list{
+  padding: 10px;
+}
+
+#last-value-list button{
+  padding: 10px;
+  margin-top: 10px;
 }
