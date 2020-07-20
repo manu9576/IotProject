@@ -293,35 +293,36 @@ Vue.component('last-values-presenter', {
             this.sensors = sensors;
 
             this.sensors.forEach(sensor => {
-                this.dataRetriever.getLastValue(sensor).then((value) =>
-                { 
+                this.dataRetriever.getLastValue(sensor).then((value) => {
                     sensor.lastValue = value;
                 });
             });
         });
     },
     template: `
-    <fieldset>
-        <legend>Dernières valeurs</legend>
+    <div>
         <last-value v-for="(sensor) in sensors" :key="sensor.id" :sensor='sensor'></last-value>
-    </fieldset>
-    `,
-    methods: {
-        addNewAxe() {
-
-            this.$emit('add-axe', this.axeName);
-            this.axeName = '';
-        }
-    }
+    </div>
+    `
 });
 
 Vue.component('last-value', {
 
     props: ['sensor'],
 
+    computed: {
+        getValue() {
+            if (this.sensor.lastValue == undefined) {
+                return "-";
+            }
+            // to ensure things like 1.05 round correctly, we use 
+            return Math.round((this.sensor.lastValue + Number.EPSILON) * 10) / 10;
+        }
+    },
+
     template: `
     <div>
-        <label>{{sensor.label}}: {{sensor.lastValue}} {{sensor.unit}}</label>
+        <label>{{sensor.label}}: {{getValue}} {{sensor.unit}}</label>
     </div>
     `
 });
