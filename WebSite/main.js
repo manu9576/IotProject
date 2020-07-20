@@ -32,16 +32,16 @@ Vue.component('sensor-list', {
     },
     template: `
     <fieldset>
-        <legend>Select sensors to display</legend>
+        <legend>Sélection des capteurs à afficher</legend>
         <div id="sensors-table">
             <table>
             
             <tr>
-                <th>Senor name</th>
-                <th>Unit</th>
-                <th>Display</th>
-                <th>Color</th>
-                <th>Y-axe</th>
+                <th>Nom du capteur</th>
+                <th>Unité</th>
+                <th>Affichage</th>
+                <th>Couleur</th>
+                <th>Axe-Y</th>
             </tr>
 
             <sensor-detail
@@ -71,7 +71,7 @@ Vue.component('sensor-detail', {
     },
     template: `
     <tr>
-        <td>{{sensor.label}}</td>
+        <td style="text-align: left;">{{sensor.label}}</td>
         <td>{{sensor.unit}}</td>
         <td><input type='checkbox' v-model="sensor.isSelected" v-bind:id="sensor.id"></td>
         <td><input type="color" class="yAxeColor" v-model="sensor.borderColor"></td>
@@ -99,8 +99,8 @@ Vue.component('yAxe-list', {
         }
     },
     template: `
-    <fieldset>
-        <legend>Y-Axe configuration</legend>
+    <fieldset class='y-configuration'>
+        <legend>Configuration des axes Y</legend>
         <yAxe-detail v-for="(yAxe) in yAxes" :key="yAxe.id" :yAxe="yAxe"></yAxe-detail>
     </fieldset>
     `,
@@ -147,25 +147,21 @@ Vue.component('yAxe-detail', {
     computed: {
         buttonText() {
             if (this.hasAutoLimit) {
-                return 'Manual range';
+                return 'Plage manuel';
             } else {
-                return 'Automatic range';
+                return 'Plage automatique';
             }
         }
     },
 
     template: `
-    <div>
-        <div>    
-            <label>{{yAxe.labelString}} : </label>
-            <label :for="yAxe.id">visible</label> 
-            <input type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
-        </div>
-        <button @click='switchRangeMode' class="button">{{buttonText}}</button>
-        <div v-if="!hasAutoLimit">
-            <input v-model.number="yAxe.ticks.min" type="number">
-            <input v-model.number="yAxe.ticks.max" type="number">
-        </div>
+    <div class="y-axe">
+        <label class="axe-name">{{yAxe.labelString}}</label>
+        <input class="axe-visibility-checkbox" type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
+        <label class="axe-visibility-label" :for="yAxe.id">visible</label> 
+        <button @click='switchRangeMode' class="button axe-range-selection">{{buttonText}}</button>
+        <input class="axe-min" v-if="!hasAutoLimit" v-model.number="yAxe.ticks.min" type="number">
+        <input class="axe-max" v-if="!hasAutoLimit" v-model.number="yAxe.ticks.max" type="number">
     </div>
     `
 });
@@ -215,15 +211,11 @@ Vue.component('sensors-chart', {
             </yAxe-list>
 
             <fieldset id="xAxes-config">
-                <legend>X-Axe configuration</legend>
-                <div>
-                    <label>Start date: </label>
-                    <input type="date" v-model="startDate" :max="endDate">
-                </div>
-                <div>
-                    <label>End date:   </label>
-                    <input type="date" v-model="endDate" :max="todayDate" :min="startDate">
-                </div>
+                <legend>Configuration de l'axe X</legend>
+                <label>Du : </label>
+                <input type="date" v-model="startDate" :max="endDate">
+                <label>  au : </label>
+                <input type="date" v-model="endDate" :max="todayDate" :min="startDate">
             </fieldset>
  
             <div id="update-chart">
