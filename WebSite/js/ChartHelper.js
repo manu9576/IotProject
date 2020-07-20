@@ -1,5 +1,6 @@
 class ChartHelper {
 
+
     constructor(chart) {
 
 
@@ -27,7 +28,7 @@ class ChartHelper {
                             unit: 'day',
                             unitStepSize: 1,
                             displayFormats: {
-                                'day': 'DD MMM'
+                                'day': 'dddd DD MMM'
                             },
                         }
                     }],
