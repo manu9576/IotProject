@@ -63,14 +63,18 @@ class ChartHelper {
             id: 'y-axis-0',
             display: true,
             type: 'linear',
-            labelString: "Y-Axe 1"
+            labelString: "Axe Y1",
+            ticks: {
+                min: undefined,
+                max: undefined
+            }
         },
         {
             id: 'y-axis-1',
             display: false,
             type: 'linear',
             position: 'right',
-            labelString: "Y-Axe 2",
+            labelString: "Axe Y2",
             ticks: {
                 min: undefined,
                 max: undefined
