@@ -101,14 +101,17 @@ Vue.component('yAxe-list', {
     template: `
     <fieldset class='y-configuration'>
         <legend>Configuration des axes Y</legend>
-        <yAxe-detail v-for="(yAxe) in yAxes" :key="yAxe.id" :yAxe="yAxe"></yAxe-detail>
+        <yAxe-detail 
+            v-for="(yAxe) in yAxes" 
+            :key="yAxe.id" 
+            :yAxe="yAxe"
+            v-on:updateRequest="updateRequest">
+        </yAxe-detail>
     </fieldset>
     `,
     methods: {
-        addNewAxe() {
-
-            this.$emit('add-axe', this.axeName);
-            this.axeName = '';
+        updateRequest() {
+            this.$emit('updateRequest');
         }
     }
 });
@@ -122,26 +125,30 @@ Vue.component('yAxe-detail', {
     },
     data: function () {
         return {
-            hasAutoLimit: true
+            visible: true,
+            min: 0,
+            max: 25
         };
     },
     mounted() {
-        this.updateHasAutoLimit();
+        this.visible = this.yAxe.display;
+        this.min = this.yAxe.ticks.min;
+        this.max = this.yAxe.ticks.max;
     },
     methods: {
         switchRangeMode() {
 
             if (this.hasAutoLimit) {
-                this.yAxe.ticks.min = 0;
-                this.yAxe.ticks.max = 25;
+                this.min = 0;
+                this.max = 25;
             } else {
-                this.yAxe.ticks.min = undefined;
-                this.yAxe.ticks.max = undefined;
+                this.min = undefined;
+                this.max = undefined;
             }
-            this.updateHasAutoLimit();
         },
-        updateHasAutoLimit() {
-            this.hasAutoLimit = this.yAxe.ticks === undefined || (this.yAxe.ticks.min === undefined && this.yAxe.ticks.max === undefined)
+
+        updateRequest() {
+            this.$nextTick(() => this.$emit("updateRequest"));
         }
     },
     computed: {
@@ -151,17 +158,33 @@ Vue.component('yAxe-detail', {
             } else {
                 return 'Plage automatique';
             }
+        },
+        hasAutoLimit() {
+            return this.min === undefined && this.max === undefined;
         }
     },
-
+    watch:{
+        visible(){
+            this.yAxe.display = this.visible;
+            this.$emit("updateRequest")
+        },
+        min(){
+            this.yAxe.ticks.min = this.min;
+            this.$emit("updateRequest")
+        },
+        max(){
+            this.yAxe.ticks.max = this.max;
+            this.$emit("updateRequest")
+        }
+    },
     template: `
     <div class="y-axe">
         <label class="axe-name">{{yAxe.labelString}}</label>
-        <input class="axe-visibility-checkbox" type='checkbox' v-model="yAxe.display" v-bind:id="yAxe.id">
+        <input class="axe-visibility-checkbox" type='checkbox' v-model="visible">
         <label class="axe-visibility-label" :for="yAxe.id">visible</label> 
         <button @click='switchRangeMode' class="button axe-range-selection">{{buttonText}}</button>
-        <input class="axe-min" v-if="!hasAutoLimit" v-model.number="yAxe.ticks.min" type="number">
-        <input class="axe-max" v-if="!hasAutoLimit" v-model.number="yAxe.ticks.max" type="number">
+        <input class="axe-min" v-if="!hasAutoLimit" v-model.number="min" type="number">
+        <input class="axe-max" v-if="!hasAutoLimit" v-model.number="max" type="number">
     </div>
     `
 });
@@ -175,7 +198,8 @@ Vue.component('sensors-chart', {
             startDate: convertDate(oneWeekEarlier()),
             endDate: convertDate(todayDate()),
             todayDate: convertDate(todayDate()),
-            yAxes: []
+            yAxes: [],
+            promises: []
         };
     },
     mounted() {
@@ -189,6 +213,14 @@ Vue.component('sensors-chart', {
             });
         });
     },
+    watch: {
+        endDate() {
+            this.updateChart();
+        },
+        startDate() {
+            this.updateChart();
+        }
+    },
     template: `
     <div class="container item">
 
@@ -201,13 +233,15 @@ Vue.component('sensors-chart', {
             <sensor-list
                 id="sensor-list"
                 :sensors="sensors"
-                :yAxes="yAxes">
+                :yAxes="yAxes"
+                v-on:updateRequest="updateChart">
             </sensor-list>
 
             <yAxe-list 
                 id="yAxes-config"
                 :yAxes="yAxes" 
-                v-on:add-axe="addAxe">
+                v-on:add-axe="addAxe"
+                v-on:updateRequest="updateChart">
             </yAxe-list>
 
             <fieldset id="xAxes-config">
@@ -229,21 +263,20 @@ Vue.component('sensors-chart', {
         updateChart() {
             this.chartHelper.clearDatasets();
 
-            let promises = [];
+            //TODO: view how to cancel old promises before making new ones           
+
+            this.promises = [];
 
             this.sensors.forEach(sensor => {
                 if (sensor.isSelected) {
-
-                    promises.push(this.dataRetriever.getValuesForInterval(sensor.id, this.startDate, this.endDate).then((values) => {
+                    this.promises.push(this.dataRetriever.getValuesForInterval(sensor.id, this.startDate, this.endDate).then((values) => {
                         sensor.data = values;
                         this.chartHelper.addDataSet(sensor);
                     }));
-
                 }
-
             });
 
-            Promise.all(promises).then((values) => {
+            Promise.all(this.promises).then((values) => {
                 this.chartHelper.updateChart();
             });
         },
@@ -287,8 +320,8 @@ Vue.component('last-values-presenter', {
             this.refreshSensorsValue();
         });
     },
-    methods:{
-        refreshSensorsValue(){
+    methods: {
+        refreshSensorsValue() {
             this.sensors.forEach(sensor => {
                 this.dataRetriever.getLastValue(sensor).then((value) => {
                     sensor.lastValue = value;
