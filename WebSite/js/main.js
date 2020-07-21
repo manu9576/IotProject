@@ -30,6 +30,11 @@ Vue.component('sensor-list', {
             require: true
         }
     },
+    methods:{
+        updateRequest(){
+            this.$emit("updateRequest");
+        }
+    },
     template: `
     <fieldset>
         <legend>Sélection des capteurs à afficher</legend>
@@ -48,7 +53,8 @@ Vue.component('sensor-list', {
                 id="sensors-table-content"
                 v-for="(sensor) in sensors" 
                 :key="sensor.id" :sensor="sensor" 
-                :yAxes="yAxes">
+                :yAxes="yAxes"
+                v-on:updateRequest="updateRequest">
             </sensor-detail>
 
             </table>
@@ -69,14 +75,40 @@ Vue.component('sensor-detail', {
             require: true
         }
     },
+    data() {
+        return {
+            selected: false,
+            borderColor: "",
+            yAxeId: ""
+        };
+    },
+    mounted() {
+        this.selected = this.sensor.isSelected;
+        this.borderColor = this.sensor.borderColor;
+        this.yAxeId = this.sensor.yAxisID;
+    },
+    watch:{
+        selected(){
+            this.sensor.isSelected = this.selected;
+            this.$emit("updateRequest");
+        },
+        borderColor(){
+            this.sensor.borderColor = this.borderColor;
+            this.$emit("updateRequest");
+        },
+        yAxeId(){
+            this.sensor.yAxisID = this.yAxeId;
+            this.$emit("updateRequest");
+        }
+    },
     template: `
     <tr>
         <td style="text-align: left;">{{sensor.label}}</td>
         <td>{{sensor.unit}}</td>
-        <td><input type='checkbox' v-model="sensor.isSelected" v-bind:id="sensor.id"></td>
-        <td><input type="color" class="yAxeColor" v-model="sensor.borderColor"></td>
+        <td><input type='checkbox' v-model="selected" v-bind:id="sensor.id"></td>
+        <td><input type="color" class="yAxeColor" v-model="borderColor"></td>
         <td>
-            <select v-model="sensor.yAxisID">
+            <select v-model="yAxeId">
                 <option v-for="yAxe in yAxes" v-bind:value="yAxe.id">
                     {{ yAxe.labelString }}
                 </option>
@@ -252,10 +284,6 @@ Vue.component('sensors-chart', {
                 <input type="date" v-model="endDate" :max="todayDate" :min="startDate">
             </fieldset>
  
-            <div id="update-chart">
-                <button class="button" @click='updateChart' >Actualiser le graphique</button>
-            </div>
-
         </div>
     </div>
     `,
@@ -314,9 +342,7 @@ Vue.component('last-values-presenter', {
     },
     mounted() {
         this.dataRetriever.getSensorsList().then((sensors) => {
-
             this.sensors = sensors;
-
             this.refreshSensorsValue();
         });
     },
