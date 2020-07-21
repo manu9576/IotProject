@@ -9,7 +9,7 @@ let convertDate = function (date) {
 
 let todayDate = function () {
     return new Date();
-}
+};
 
 let oneWeekEarlier = function () {
 
@@ -198,15 +198,15 @@ Vue.component('yAxe-detail', {
     watch:{
         visible(){
             this.yAxe.display = this.visible;
-            this.$emit("updateRequest")
+            this.$emit("updateRequest");
         },
         min(){
             this.yAxe.ticks.min = this.min;
-            this.$emit("updateRequest")
+            this.$emit("updateRequest");
         },
         max(){
             this.yAxe.ticks.max = this.max;
-            this.$emit("updateRequest")
+            this.$emit("updateRequest");
         }
     },
     template: `
@@ -332,7 +332,7 @@ Vue.component('last-values-presenter', {
         return {
             dataRetriever: new DataRetriever(),
             sensors: []
-        }
+        };
     },
     props: {
         sensors: {

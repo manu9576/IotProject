@@ -22,10 +22,10 @@ class Translator {
                 result = 'Mai';
                 break;
             case 'Jun':
-                result = "Juin"
+                result = "Juin";
                 break;
             case 'Jul':
-                result = "Juil"
+                result = "Juil";
                 break;
             case 'Aug':
                 result = 'Août';
@@ -45,7 +45,7 @@ class Translator {
         }
 
         return result;
-    };
+    }
 
     _translate_day(day) {
 
@@ -68,15 +68,15 @@ class Translator {
                 result = 'Ven';
                 break;
             case 'Saturday':
-                result = "Sam"
+                result = "Sam";
                 break;
             case 'Sunday':
-                result = "Dim"
+                result = "Dim";
                 break;
         }
 
         return result;
-    };
+    }
 
     translate_date_label(label) {
 
@@ -101,7 +101,7 @@ class Translator {
         }
 
         return translatedDate;
-    };
+    }
 
     isFrenchLanguage() {
         return navigator.language == "fr" || navigator.language == 'fr-FR';

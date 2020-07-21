@@ -41,28 +41,31 @@ class DataRetriever {
         return new Promise((successCallback, failureCallback) => {
             try {
                 let xhr = new XMLHttpRequest();
-                xhr.onload = function () {
-                    try {
+                xhr.onreadystatechange = function () {
 
-                        let jsonSensors = JSON.parse(xhr.responseText);
+                    if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText !== "") {
 
-                        let sensors = [];
+                        try {
 
-                        jsonSensors.forEach((jsonSensor) => {
-                            sensors.push(
-                                new Sensor(
-                                    jsonSensor.sensorId,
-                                    jsonSensor.name,
-                                    jsonSensor.unit)
-                            );
-                        });
+                            let jsonSensors = JSON.parse(xhr.responseText);
 
-                        successCallback(sensors);
+                            let sensors = [];
 
-                    } catch (ex) {
-                        failureCallback("Exception while parsing sensors list: " + ex);
+                            jsonSensors.forEach((jsonSensor) => {
+                                sensors.push(
+                                    new Sensor(
+                                        jsonSensor.sensorId,
+                                        jsonSensor.name,
+                                        jsonSensor.unit)
+                                );
+                            });
+
+                            successCallback(sensors);
+
+                        } catch (ex) {
+                            failureCallback("Exception while parsing sensors list: " + ex);
+                        }
                     }
-
                 };
 
                 xhr.open('GET', 'https://manu9576.net/api/Sensor/Device/' + DEVICE_ID, true);
@@ -72,7 +75,7 @@ class DataRetriever {
             } catch (ex) {
                 failureCallback("Exception during getSensorsList: " + ex);
             }
-        })
+        });
     }
 
     getLastValue(sensor) {
@@ -80,15 +83,19 @@ class DataRetriever {
             try {
 
                 let xhr = new XMLHttpRequest();
-                xhr.onload = function () {
-                    try {
-                        let value = JSON.parse(xhr.responseText);
-                        successCallback(value);
+                xhr.onreadystatechange = function () {
 
-                    } catch (ex) {
-                        failureCallback("Exception while getting last value: " + ex);
+                    if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText !== "") {
+                        try {
+
+                            let value = JSON.parse(xhr.responseText);
+                            successCallback(value);
+
+                        } catch (ex) {
+                            failureCallback("Exception while getting last value: " + ex);
+                        }
+
                     }
-
                 };
 
                 xhr.open('GET', 'https://manu9576.net/api/Measure/Sensor/' + sensor.id + '/GetLastValue', true);
@@ -98,6 +105,6 @@ class DataRetriever {
             } catch (ex) {
                 failureCallback("Exception during getLastValue: " + ex);
             }
-        })
+        });
     }
 }
