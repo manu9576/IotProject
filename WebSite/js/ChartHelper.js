@@ -1,3 +1,6 @@
+/**
+ * Class that manage a chartjs
+ */
 class ChartHelper {
 
     constructor(chart) {
@@ -7,6 +10,7 @@ class ChartHelper {
         this.translator = new Translator();
         this.datasets = [];
         this.ctx = chart.getContext('2d');
+
         this.tooltips = {
             mode: 'index',
             callbacks: {
@@ -14,36 +18,33 @@ class ChartHelper {
                     var label = data.datasets[tooltipItem.datasetIndex].label || '';
 
                     if (label) {
-                        label += ': ';
+                        label = 
+                            label + ': ' +
+                            (Math.round(tooltipItem.yLabel * 10) / 10) +
+                            data.datasets[tooltipItem.datasetIndex].unit;
                     }
-                    label += Math.round(tooltipItem.yLabel * 10) / 10;
-                    label += data.datasets[tooltipItem.datasetIndex].unit;
+
                     return label;
                 },
 
                 title: function (tooltipItem, data) {
-                    if(tooltipItem.length<1){
+                    if (tooltipItem.length < 1) {
                         return '';
                     }
 
-                    let sensor = data.datasets[tooltipItem[0].datasetIndex];
-                    let sensorData = sensor.data;
-
-                    let index = tooltipItem[0].index;
-
-                    let dateTime = sensorData[index].x;
+                    let sensorData = data.datasets[tooltipItem[0].datasetIndex].data;
+                    let dateTime = sensorData[tooltipItem[0].index].x;
 
                     return dateTime.format('lll');
-            
                 }
             }
         };
+
         this.xAxes = [{
             type: 'time',
             distribution: 'linear',
             time: {
                 unit: 'day',
-                tooltipFormat: 'dddd DD MMM, YYYY',
                 unitStepSize: 1,
                 displayFormats: {
                     day: 'dddd DD MMM'
@@ -53,53 +54,63 @@ class ChartHelper {
                 display: true,
             },
             ticks: {
-                callback: function (label, index, labels) {
+                callback: function (label) {
                     return self.translator.translate_date_label(label);
                 }
             }
         }];
 
         this.yAxes = [{
-            id: 'y-axis-0',
-            display: true,
-            type: 'linear',
-            labelString: "Axe Y1",
-            ticks: {
-                min: undefined,
-                max: undefined
+                id: 'y-axis-0',
+                display: true,
+                type: 'linear',
+                labelString: "Axe Y1",
+                ticks: {
+                    min: undefined,
+                    max: undefined
+                }
+            },
+            {
+                id: 'y-axis-1',
+                display: false,
+                type: 'linear',
+                position: 'right',
+                labelString: "Axe Y2",
+                ticks: {
+                    min: undefined,
+                    max: undefined
+                }
             }
-        },
-        {
-            id: 'y-axis-1',
-            display: false,
-            type: 'linear',
-            position: 'right',
-            labelString: "Axe Y2",
-            ticks: {
-                min: undefined,
-                max: undefined
-            }
+        ];
 
-        }];
-
-        if(this.translator.isFrenchLanguage()){
+        if (this.translator.isFrenchLanguage()) {
             moment.locale('fr');
         }
 
         this.updateChart();
     }
 
+    /**
+     * Remove all data from the chart
+     */
     clearDatasets() {
         this.chart.data.datasets.length = 0;
     }
 
+    /**
+     * Add a sensor to the datasets of the chart
+     * @param {Sensor} sensor 
+     */
     addDataSet(sensor) {
         this.chart.data.datasets.push(sensor);
     }
 
+    /**
+     * Update the chart
+     */
     updateChart() {
 
-        if(this.chart){
+        if (this.chart) {
             this.chart.destroy();
         }
 
@@ -120,7 +131,7 @@ class ChartHelper {
                 hover: {
                     animationDuration: 0
                 },
-                
+
                 legend: {
                     display: false
                 },

@@ -2,6 +2,12 @@
 const DEVICE_ID = 6;
 class DataRetriever {
 
+    /**
+     * Get the value for a sensor between two date
+     * @param {string} sensorId 
+     * @param {string} startDate 
+     * @param {string} endDate 
+     */
     getValuesForInterval(sensorId, startDate, endDate) {
         return new Promise((successCallback, failureCallback) => {
             try {
@@ -37,6 +43,9 @@ class DataRetriever {
         });
     }
 
+    /**
+     * Return the sensors list
+     */
     getSensorsList() {
         return new Promise((successCallback, failureCallback) => {
             try {
@@ -78,6 +87,10 @@ class DataRetriever {
         });
     }
 
+    /**
+     * Return the last value of a sensor
+     * @param {sensor} sensor 
+     */
     getLastValue(sensor) {
         return new Promise((successCallback, failureCallback) => {
             try {
