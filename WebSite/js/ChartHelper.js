@@ -76,7 +76,11 @@ let translate_day = function (day) {
 };
 
 
-let translate_this_label = function (label) {
+let translate_date_label = function (label) {
+
+    if(!isFrenchLanguage()){
+        return label;
+    }
 
     let month = label.match(/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/g);
 
@@ -97,79 +101,90 @@ let translate_this_label = function (label) {
     return translatedDate;
 };
 
+let isFrenchLanguage= function(){
+    return (navigator.language || navigator.userLanguage) == 'fr-FR';
+}
+
 class ChartHelper {
 
     constructor(chart) {
 
-        moment.locale('fr');
+        if(isFrenchLanguage()){
+            moment.locale('fr');
+        }
+
         this.datasets = [];
         this.ctx = chart.getContext('2d');
+        this.tooltips = {
+            mode: 'index',
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
 
-        this.chart = new Chart(this.ctx, {
-            type: 'line',
-            data: {
-                datasets: this.datasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-
-                legend: {
-                    display: false
+                    if (label) {
+                        label += ': ';
+                    }
+                    label += Math.round(tooltipItem.yLabel * 10) / 10;
+                    label += data.datasets[tooltipItem.datasetIndex].unit;
+                    return label;
                 },
 
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        distribution: 'linear',
-                        time: {
-                            unit: 'day',
-                            tooltipFormat: 'dddd DD MMM, YYYY',
-                            unitStepSize: 1,
-                            displayFormats: {
-                                day: 'dddd DD MMM'
-                            }
-                        },
-                        scaleLabel: {
-                            display: true,
-                        },
-                        ticks: {
+                title: function (tooltipItem, data) {
+                    let sensor = data.datasets[tooltipItem[0].datasetIndex];
 
-                            // Here's where the magic happens:
-                            callback: function (label, index, labels) {
+                    let sensorData = sensor.data;
 
-                                return translate_this_label(label);
-                            }
-                        }
-                    }],
-                    yAxes: [{
-                        id: 'y-axis-0',
-                        display: true,
-                        type: 'linear',
-                        labelString: "Y-Axe 1"
-                    },
-                    {
-                        id: 'y-axis-1',
-                        display: false,
-                        type: 'linear',
-                        position: 'right',
-                        labelString: "Y-Axe 2",
-                        ticks: {
-                            min: undefined,
-                            max: undefined
-                        }
+                    let index = tooltipItem[0].index;
 
-                    }]
-                },
+                    let dateTime = sensorData[index].x;
 
+                    return dateTime.format('lll');
+            
+                }
             }
-        });
+        };
+        this.xAxes = [{
+            type: 'time',
+            distribution: 'linear',
+            time: {
+                unit: 'day',
+                tooltipFormat: 'dddd DD MMM, YYYY',
+                unitStepSize: 1,
+                displayFormats: {
+                    day: 'dddd DD MMM'
+                }
+            },
+            scaleLabel: {
+                display: true,
+            },
+            ticks: {
+                callback: function (label, index, labels) {
+                    return translate_date_label(label);
+                }
+            }
+        }];
 
-        this.yAxes = this.chart.options.scales.yAxes;
-        this.xAxes = this.chart.options.scales.xAxes;
+        this.yAxes = [{
+            id: 'y-axis-0',
+            display: true,
+            type: 'linear',
+            labelString: "Y-Axe 1"
+        },
+        {
+            id: 'y-axis-1',
+            display: false,
+            type: 'linear',
+            position: 'right',
+            labelString: "Y-Axe 2",
+            ticks: {
+                min: undefined,
+                max: undefined
+            }
+
+        }];
+
+        this.updateChart();
     }
-
-
 
     clearDatasets() {
         this.chart.data.datasets.length = 0;
@@ -199,6 +214,7 @@ class ChartHelper {
                     yAxes: this.yAxes
                 },
 
+                tooltips: this.tooltips
             }
         });
     }
