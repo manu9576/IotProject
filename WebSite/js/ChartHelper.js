@@ -102,7 +102,7 @@ let translate_date_label = function (label) {
 };
 
 let isFrenchLanguage= function(){
-    return (navigator.language || navigator.userLanguage) == 'fr-FR';
+    return navigator.language = "fr" || navigator.language == 'fr-FR';
 }
 
 class ChartHelper {
