@@ -130,8 +130,11 @@ class ChartHelper {
                 },
 
                 title: function (tooltipItem, data) {
-                    let sensor = data.datasets[tooltipItem[0].datasetIndex];
+                    if(tooltipItem.length<1){
+                        return '';
+                    }
 
+                    let sensor = data.datasets[tooltipItem[0].datasetIndex];
                     let sensorData = sensor.data;
 
                     let index = tooltipItem[0].index;
@@ -204,7 +207,13 @@ class ChartHelper {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-
+                animation: {
+                    duration: 0
+                },
+                hover: {
+                    animationDuration: 0
+                },
+                responsiveAnimationDuration: 0,
                 legend: {
                     display: false
                 },
