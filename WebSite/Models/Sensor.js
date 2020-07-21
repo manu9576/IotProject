@@ -21,7 +21,8 @@ class Sensor {
         this.borderColor = sensorColor[sensorCount % sensorColor.length];
         this.data = [];
         this.fill = false;
-        this.pointRadius = 0;
+        this.pointRadius = 3;
+        this.pointStyle = 'crossRot';
         this.lineTension = 0;
         this.lastValue = 0;
 
