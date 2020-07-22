@@ -5,8 +5,8 @@ class DataRetriever {
     /**
      * Get the value for a sensor between two date
      * @param {string} sensorId 
-     * @param {string} startDate 
-     * @param {string} endDate 
+     * @param {string} startDate format yyyy-mm-dd
+     * @param {string} endDate format yyyy-mm-dd
      */
     getValuesForInterval(sensorId, startDate, endDate) {
         return new Promise((successCallback, failureCallback) => {

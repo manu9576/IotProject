@@ -3,6 +3,10 @@
  */
 class ChartHelper {
 
+    /**
+     * Constructor : initialize axes and options
+     * @param {canvas} chart 
+     */
     constructor(chart) {
 
         let self = this;
