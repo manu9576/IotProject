@@ -1,24 +1,3 @@
-let convertDate = function (date) {
-
-    let dd = String(date.getDate()).padStart(2, '0');
-    let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = date.getFullYear();
-
-    return yyyy + "-" + mm + "-" + dd;
-};
-
-let todayDate = function () {
-    return new Date();
-};
-
-let oneWeekEarlier = function () {
-
-    let date = new Date();
-    date.setDate(date.getDate() - 7);
-
-    return date;
-};
-
 Vue.component('sensor-list', {
     props: {
         sensors: {
@@ -227,9 +206,9 @@ Vue.component('sensors-chart', {
             chartHelper: undefined,
             dataRetriever: new DataRetriever(),
             sensors: [],
-            startDate: convertDate(oneWeekEarlier()),
-            endDate: convertDate(todayDate()),
-            todayDate: convertDate(todayDate()),
+            startDate: moment().subtract(7, 'days').format("yyyy-mm-dd"),
+            endDate: moment().format("yyyy-mm-dd"),
+            todayDate: moment().format("yyyy-mm-dd"),
             yAxes: [],
             promises: []
         };
