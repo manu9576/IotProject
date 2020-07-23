@@ -9,8 +9,8 @@ Vue.component('sensor-list', {
             require: true
         }
     },
-    methods:{
-        updateRequest(){
+    methods: {
+        updateRequest() {
             this.$emit("updateRequest");
         }
     },
@@ -66,16 +66,16 @@ Vue.component('sensor-detail', {
         this.borderColor = this.sensor.borderColor;
         this.yAxeId = this.sensor.yAxisID;
     },
-    watch:{
-        selected(){
+    watch: {
+        selected() {
             this.sensor.isSelected = this.selected;
             this.$emit("updateRequest");
         },
-        borderColor(){
+        borderColor() {
             this.sensor.borderColor = this.borderColor;
             this.$emit("updateRequest");
         },
-        yAxeId(){
+        yAxeId() {
             this.sensor.yAxisID = this.yAxeId;
             this.$emit("updateRequest");
         }
@@ -174,16 +174,16 @@ Vue.component('yAxe-detail', {
             return this.min === undefined && this.max === undefined;
         }
     },
-    watch:{
-        visible(){
+    watch: {
+        visible() {
             this.yAxe.display = this.visible;
             this.$emit("updateRequest");
         },
-        min(){
+        min() {
             this.yAxe.ticks.min = this.min;
             this.$emit("updateRequest");
         },
-        max(){
+        max() {
             this.yAxe.ticks.max = this.max;
             this.$emit("updateRequest");
         }
@@ -206,11 +206,12 @@ Vue.component('sensors-chart', {
             chartHelper: undefined,
             dataRetriever: new DataRetriever(),
             sensors: [],
-            startDate: moment().subtract(7, 'days').format("yyyy-mm-dd"),
-            endDate: moment().format("yyyy-mm-dd"),
-            todayDate: moment().format("yyyy-mm-dd"),
+            startDate: moment().subtract(7, 'days').format("Y-MM-DD"),
+            endDate: moment().format("Y-MM-DD"),
+            todayDate: moment().format("Y-MM-DD"),
             yAxes: [],
-            promises: []
+            promises: [],
+            currentRequestIndex: -1
         };
     },
     mounted() {
@@ -250,8 +251,7 @@ Vue.component('sensors-chart', {
 
             <yAxe-list 
                 id="yAxes-config"
-                :yAxes="yAxes" 
-                v-on:add-axe="addAxe"
+                :yAxes="yAxes"
                 v-on:updateRequest="updateChart">
             </yAxe-list>
 
@@ -268,35 +268,32 @@ Vue.component('sensors-chart', {
     `,
     methods: {
         updateChart() {
-            this.chartHelper.clearDatasets();
-
-            //TODO: view how to cancel old promises before making new ones           
-
+            let requestIndex = this.chartHelper.clearDatasets();
+            this.currentRequestIndex = requestIndex;
+            console.log("clearDatasets " + this.currentRequestIndex + " " + requestIndex);
+            
             this.promises = [];
 
             this.sensors.forEach(sensor => {
                 if (sensor.isSelected) {
-                    this.promises.push(this.dataRetriever.getValuesForInterval(sensor.id, this.startDate, this.endDate).then((values) => {
-                        sensor.data = values;
-                        this.chartHelper.addDataSet(sensor);
-                    }));
+                    this.promises.push(
+                        this.dataRetriever.getValuesForInterval(sensor.id, this.startDate, this.endDate)
+                        .then((values) => {
+                            console.log("add data " + this.currentRequestIndex + " " + requestIndex);
+                            if (this.currentRequestIndex == requestIndex) {
+                                sensor.data = values;
+                                this.chartHelper.addDataSet(sensor);
+                            }
+                        }));
                 }
             });
 
-            Promise.all(this.promises).then((values) => {
-                this.chartHelper.updateChart();
+            Promise.all(this.promises).then(() => {
+                console.log("updateChart " + this.currentRequestIndex + " " + requestIndex);
+                if (this.currentRequestIndex == requestIndex) {
+                    this.chartHelper.updateChart();
+                }
             });
-        },
-        convertDate(date) {
-
-            let dd = String(date.getDate()).padStart(2, '0');
-            let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-            var yyyy = date.getFullYear();
-
-            return yyyy + "-" + mm + "-" + dd;
-        },
-        addAxe(yAxeName) {
-            this.chartHelper.createYAxe(yAxeName);
         }
     }
 });

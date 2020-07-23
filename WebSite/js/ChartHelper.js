@@ -11,6 +11,7 @@ class ChartHelper {
 
         let self = this;
 
+        this.indexRequest = 0;
         this.translator = new Translator();
         this.datasets = [];
         this.ctx = chart.getContext('2d');
@@ -22,7 +23,7 @@ class ChartHelper {
                     var label = data.datasets[tooltipItem.datasetIndex].label || '';
 
                     if (label) {
-                        label = 
+                        label =
                             label + ': ' +
                             (Math.round(tooltipItem.yLabel * 10) / 10) +
                             data.datasets[tooltipItem.datasetIndex].unit;
@@ -97,8 +98,10 @@ class ChartHelper {
     /**
      * Remove all data from the chart
      */
-    clearDatasets() {
+    initializeChart() {
         this.chart.data.datasets.length = 0;
+        this.indexRequest++;
+        return this.indexRequest;
     }
 
     /**
