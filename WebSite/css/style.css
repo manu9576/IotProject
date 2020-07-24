@@ -815,7 +815,7 @@ button {
   margin-top: 10px;
 }
 
-#legend .y-axe{
+#legend .y-axe {
   display: grid;
   grid-template-columns: 10px auto auto auto auto auto 10px;
   grid-template-rows: 50% 50%;
@@ -826,34 +826,54 @@ button {
     ". axe-visibility-checkbox axe-visibility-label axe-range-selection axe-min axe-max .";
 }
 
-#legend .y-axe .axe-name{
+#legend .y-axe .axe-name {
   grid-area: axe-name;
   font-weight: bold;
 }
 
-#legend .y-axe .axe-visibility-checkbox{
+#legend .y-axe .axe-visibility-checkbox {
   grid-area: axe-visibility-checkbox;
   justify-self: end;
   width: auto;
 }
 
-#legend .y-axe .axe-visibility-label{
+#legend .y-axe .axe-visibility-label {
   grid-area: axe-visibility-label;
   justify-self: start;
   width: auto;
   padding-top: 3px;
 }
 
-#legend .y-axe .axe-range-selection{
+#legend .y-axe .axe-range-selection {
   grid-area: axe-range-selection;
 }
 
-#legend .y-axe .axe-min{
+#legend .y-axe .axe-min {
   grid-area: axe-min;
   height: auto;
 }
 
-#legend .y-axe .axe-max{
+#legend .y-axe .axe-max {
   grid-area: axe-max;
   height: auto;
+}
+
+#char {
+  min-height: 400px;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+#chart-loading {
+  grid-column: 1;
+  grid-row: 1;
+  background-color: #444;
+  opacity: 0.5;
+  align-self: stretch;
+  justify-self: stretch;
+}
+
+#chart-container {
+  display: grid;
+  align-items: center;
 }

@@ -211,7 +211,8 @@ Vue.component('sensors-chart', {
             todayDate: moment().format("Y-MM-DD"),
             yAxes: [],
             promises: [],
-            currentRequestIndex: -1
+            currentRequestIndex: -1,
+            chartUpdating: false
         };
     },
     mounted() {
@@ -236,8 +237,11 @@ Vue.component('sensors-chart', {
     template: `
     <div class="container item">
 
-        <div>
-            <canvas ref=chart style="height: 100%; width: 100%; min-height:500px" ></canvas>
+        <div id="chart-container" >
+            <canvas ref=chart id="char"></canvas>
+            <div v-if="chartUpdating" id="chart-loading">
+                <img src="images/giphy.gif" alt="Chargement"/>
+            </div>
         </div>
 
         <div id="legend">
@@ -268,6 +272,7 @@ Vue.component('sensors-chart', {
     `,
     methods: {
         updateChart() {
+            this.chartUpdating = true;
             let requestIndex = this.chartHelper.initializeChart();
             this.currentRequestIndex = requestIndex;
             
@@ -289,6 +294,7 @@ Vue.component('sensors-chart', {
             Promise.all(this.promises).then(() => {
                 if (this.currentRequestIndex == requestIndex) {
                     this.chartHelper.updateChart();
+                    this.chartUpdating = false;
                 }
             });
         }
