@@ -268,9 +268,8 @@ Vue.component('sensors-chart', {
     `,
     methods: {
         updateChart() {
-            let requestIndex = this.chartHelper.clearDatasets();
+            let requestIndex = this.chartHelper.initializeChart();
             this.currentRequestIndex = requestIndex;
-            console.log("clearDatasets " + this.currentRequestIndex + " " + requestIndex);
             
             this.promises = [];
 
@@ -279,7 +278,6 @@ Vue.component('sensors-chart', {
                     this.promises.push(
                         this.dataRetriever.getValuesForInterval(sensor.id, this.startDate, this.endDate)
                         .then((values) => {
-                            console.log("add data " + this.currentRequestIndex + " " + requestIndex);
                             if (this.currentRequestIndex == requestIndex) {
                                 sensor.data = values;
                                 this.chartHelper.addDataSet(sensor);
@@ -289,7 +287,6 @@ Vue.component('sensors-chart', {
             });
 
             Promise.all(this.promises).then(() => {
-                console.log("updateChart " + this.currentRequestIndex + " " + requestIndex);
                 if (this.currentRequestIndex == requestIndex) {
                     this.chartHelper.updateChart();
                 }
