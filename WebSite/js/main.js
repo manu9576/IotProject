@@ -337,7 +337,6 @@ Vue.component('last-values-presenter', {
     template: `
     <div class="item" id="last-value-list">
         <last-value v-for="(sensor) in sensors" :key="sensor.id" :sensor='sensor'></last-value>
-        <p>Mesures du {{minDate}} au </p>
     </div>
     `
 });
