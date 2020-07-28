@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IotWebApi.Models;
@@ -10,6 +9,9 @@ using Storage.Models;
 
 namespace IotWebApi.Controllers
 {
+    /// <summary>
+    /// Class that manage the requests to the DB for Sensor
+    /// </summary>
     [EnableCors("MyPolicy")]
     [Route("api/Sensor")]
     [ApiController]
@@ -17,6 +19,10 @@ namespace IotWebApi.Controllers
     {
         private readonly DbSensorsContext _context;
 
+        /// <summary>
+        /// Constructor 
+        /// </summary>
+        /// <param name="context">context of the DB</param>
         public SensorsController(DbSensorsContext context)
         {
             _context = context;
@@ -25,7 +31,7 @@ namespace IotWebApi.Controllers
         /// <summary>
         /// GET: api/Sensor
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of all sensors stored</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sensor>>> GetSensors()
         {
@@ -35,8 +41,8 @@ namespace IotWebApi.Controllers
         /// <summary>
         /// GET: api/Sensor/5
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">id of sensor</param>
+        /// <returns>Sensors corresponding to the id</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Sensor>> GetSensorById(int id)
         {
@@ -51,10 +57,10 @@ namespace IotWebApi.Controllers
         }
 
         /// <summary>
-        /// GET: api/Sensor/device/5
+        /// GET: api/Sensor/Device/5
         /// </summary>
-        /// <param name="deviceId"></param>
-        /// <returns></returns>
+        /// <param name="deviceId">device id</param>
+        /// <returns>all the sensor stored for a device</returns>
         [HttpGet("Device/{deviceId}")]
         public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorsByDeviceId(int deviceId)
         {

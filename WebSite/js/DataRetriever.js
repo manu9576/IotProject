@@ -91,7 +91,7 @@ class DataRetriever {
      * Return the last value of a sensor
      * @param {sensor} sensor 
      */
-    getLastValue(sensor) {
+    GetLastMeasure(sensor) {
         return new Promise((successCallback, failureCallback) => {
             try {
 
@@ -111,12 +111,12 @@ class DataRetriever {
                     }
                 };
 
-                xhr.open('GET', 'https://manu9576.net/api/Measure/Sensor/' + sensor.id + '/GetLastValue', true);
+                xhr.open('GET', 'https://manu9576.net/api/Measure/Sensor/' + sensor.id + '/GetLastMeasure', true);
                 xhr.setRequestHeader("Content-Type", 'text/plain');
                 xhr.send(null);
 
             } catch (ex) {
-                failureCallback("Exception during getLastValue: " + ex);
+                failureCallback("Exception during GetLastMeasure: " + ex);
             }
         });
     }

@@ -328,7 +328,7 @@ Vue.component('last-values-presenter', {
     methods: {
         refreshSensorsValue() {
             this.sensors.forEach(sensor => {
-                this.dataRetriever.getLastValue(sensor).then((mes) => {
+                this.dataRetriever.GetLastMeasure(sensor).then((mes) => {
                     sensor.lastMeasure = mes;
                 });
             });

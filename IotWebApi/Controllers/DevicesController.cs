@@ -9,6 +9,9 @@ using Storage.Models;
 
 namespace IotWebApi.Controllers
 {
+    /// <summary>
+    /// Class that manage the request about device to the DB
+    /// </summary>
     [EnableCors("MyPolicy")]
     [Route("api/Device")]
     [ApiController]
@@ -16,6 +19,10 @@ namespace IotWebApi.Controllers
     {
         private readonly DbSensorsContext _context;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="context">context of the DB</param>
         public DevicesController(DbSensorsContext context)
         {
             _context = context;
@@ -24,7 +31,7 @@ namespace IotWebApi.Controllers
         /// <summary>
         /// Return the devices list
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of existing devices</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Device>>> GetDevices()
         {
@@ -35,7 +42,7 @@ namespace IotWebApi.Controllers
         ///  GET: api/Device/5
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>Device corresponding to the id</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<IDtoDevice>> GetDevice(int id)
         {
@@ -52,8 +59,8 @@ namespace IotWebApi.Controllers
         /// <summary>
         /// GET: api/Device/Name/name
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">name of the device</param>
+        /// <returns>Device corresponding to the name</returns>
         [HttpGet("Name/{name}")]
         public async Task<ActionResult<IDtoDevice>> GetDeviceByName(string name)
         {
