@@ -10,10 +10,20 @@ using System.IO;
 
 namespace IotWebApi
 {
+    /// <summary>
+    /// Class that create the service
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Startup configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Construtor
+        /// </summary>
+        /// <param name="env"></param>
         public Startup(IHostEnvironment env)
         {
             var path = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
@@ -24,7 +34,11 @@ namespace IotWebApi
             Configuration = appSettings;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
+        /// <summary>
+        ///  This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             ConnectionStrings connectionStrings = new ConnectionStrings();
@@ -51,7 +65,11 @@ namespace IotWebApi
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
