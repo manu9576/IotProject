@@ -275,7 +275,7 @@ Vue.component('sensors-chart', {
             this.chartUpdating = true;
             let requestIndex = this.chartHelper.initializeChart();
             this.currentRequestIndex = requestIndex;
-            
+
             this.promises = [];
 
             this.sensors.forEach(sensor => {
@@ -328,8 +328,8 @@ Vue.component('last-values-presenter', {
     methods: {
         refreshSensorsValue() {
             this.sensors.forEach(sensor => {
-                this.dataRetriever.getLastValue(sensor).then((value) => {
-                    sensor.lastValue = value;
+                this.dataRetriever.getLastValue(sensor).then((mes) => {
+                    sensor.lastMeasure = mes;
                 });
             });
         }
@@ -337,7 +337,7 @@ Vue.component('last-values-presenter', {
     template: `
     <div class="item" id="last-value-list">
         <last-value v-for="(sensor) in sensors" :key="sensor.id" :sensor='sensor'></last-value>
-        <button class="button" @click="refreshSensorsValue">Rafraîchir</button>
+        <p>Mesures du {{minDate}} au </p>
     </div>
     `
 });
@@ -348,21 +348,27 @@ Vue.component('last-value', {
 
     computed: {
         getValue() {
-            if (this.sensor.lastValue == undefined) {
+            if (this.sensor.lastMeasure == undefined) {
                 return "-";
             }
             // to ensure things like 1.05 round correctly, we use 
-            return Math.round((this.sensor.lastValue + Number.EPSILON) * 10) / 10;
+            return Math.round((this.sensor.lastMeasure.value + Number.EPSILON) * 10) / 10;
+        },
+        lastValueDate() {
+            if (this.sensor.lastMeasure == undefined) {
+                return "Pas de mesure.";
+            }
+            return "Date de la dernière valeur :" + this.sensor.lastMeasure.dateTime;
         }
     },
 
     template: `
     <div>
-        <label>{{sensor.label}}: {{getValue}} {{sensor.unit}}</label>
+        <label :title="lastValueDate">{{sensor.label}}: {{getValue}} {{sensor.unit}}</label>
     </div>
     `
 });
 
-var lastValue = new Vue({
-    el: '#lastValuePresenter'
+var lastValues = new Vue({
+    el: '#lastValuesPresenter'
 });

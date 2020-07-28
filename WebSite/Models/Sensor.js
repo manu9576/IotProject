@@ -24,7 +24,7 @@ class Sensor {
         this.pointRadius = 3;
         this.pointStyle = 'crossRot';
         this.lineTension = 0;
-        this.lastValue = 0;
+        this.lastMeasure = 0;
 
         sensorCount++;
     }

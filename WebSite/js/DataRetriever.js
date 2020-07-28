@@ -101,8 +101,8 @@ class DataRetriever {
                     if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText !== "") {
                         try {
 
-                            let value = JSON.parse(xhr.responseText);
-                            successCallback(value);
+                            let measure = JSON.parse(xhr.responseText);
+                            successCallback(measure);
 
                         } catch (ex) {
                             failureCallback("Exception while getting last value: " + ex);
