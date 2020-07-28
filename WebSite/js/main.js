@@ -357,7 +357,7 @@ Vue.component('last-value', {
             if (this.sensor.lastMeasure == undefined) {
                 return "Pas de mesure.";
             }
-            return "Date de la dernière valeur :" + this.sensor.lastMeasure.dateTime;
+            return "Date de la dernière valeur : " + moment(this.sensor.lastMeasure.dateTime).format("lll");
         }
     },
 
