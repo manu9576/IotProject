@@ -1,15 +1,16 @@
 ﻿namespace Sensors.Weather
 {
-    internal class WeatherWindDirection: ISensor
+    internal class WeatherWindDirection : ISensor
     {
         private readonly WebWeather webWeather;
 
-        internal WeatherWindDirection(WebWeather webWeather)
+        internal WeatherWindDirection(WebWeather webWeather, string name)
         {
             this.webWeather = webWeather;
+            this.Name = name;
         }
 
-        public string Name => "Weather Wind Direction";
+        public string Name { get; }
 
         public double Value
         {

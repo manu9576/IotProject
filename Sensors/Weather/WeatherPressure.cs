@@ -4,12 +4,13 @@
     {
         private readonly WebWeather webWeather;
 
-        internal WeatherPressure(WebWeather webWeather)
+        internal WeatherPressure(WebWeather webWeather, string name)
         {
             this.webWeather = webWeather;
+            this.Name = name;
         }
 
-        public string Name => "Weather Pressure";
+        public string Name { get; }
 
         public double Value
         {

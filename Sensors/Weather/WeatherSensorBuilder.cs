@@ -7,7 +7,7 @@ namespace Sensors.Weather
         private static WebWeather webWeather = null;
         private static Refresher refresher = null;
 
-        public static ISensor GetSensor(SensorWeatherType sensorWeatherType)
+        public static ISensor GetSensor(SensorWeatherType sensorWeatherType, string name)
         {
             if (webWeather == null)
             {
@@ -20,19 +20,19 @@ namespace Sensors.Weather
             switch (sensorWeatherType)
             {
                 case SensorWeatherType.Temperature:
-                    return new WeatherTemperature(webWeather);
+                    return new WeatherTemperature(webWeather, name);
 
                 case SensorWeatherType.Humidity:
-                    return new WeatherHumidity(webWeather);
+                    return new WeatherHumidity(webWeather, name);
 
                 case SensorWeatherType.Pressure:
-                    return new WeatherPressure(webWeather);
+                    return new WeatherPressure(webWeather, name);
 
                 case SensorWeatherType.WindSpeed:
-                    return new WeatherWindSpeed(webWeather);
+                    return new WeatherWindSpeed(webWeather, name);
 
                 case SensorWeatherType.WindDirection:
-                    return new WeatherWindDirection(webWeather);
+                    return new WeatherWindDirection(webWeather, name);
 
                 default:
                     throw new Exception("The type <" + webWeather + "> is not manage by the WeatherSensorBuilder");
