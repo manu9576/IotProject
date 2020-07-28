@@ -132,5 +132,88 @@
             <param name="deviceId">device id</param>
             <returns>all the sensor stored for a device</returns>
         </member>
+        <member name="T:IotWebApi.Models.ConnectionStrings">
+            <summary>
+            Class that store the connection string to the BD
+            </summary>
+        </member>
+        <member name="P:IotWebApi.Models.ConnectionStrings.MySql">
+            <summary>
+            Connection string
+            </summary>
+        </member>
+        <member name="T:IotWebApi.Models.DbSensorsContext">
+            <summary>
+            Class for the DbContect
+            </summary>
+        </member>
+        <member name="M:IotWebApi.Models.DbSensorsContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{IotWebApi.Models.DbSensorsContext})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="options"></param>
+        </member>
+        <member name="P:IotWebApi.Models.DbSensorsContext.Devices">
+            <summary>
+            DbSet of the devices
+            </summary>
+        </member>
+        <member name="P:IotWebApi.Models.DbSensorsContext.Sensors">
+            <summary>
+            DbSet of the sensors
+            </summary>
+        </member>
+        <member name="P:IotWebApi.Models.DbSensorsContext.Measures">
+            <summary>
+            DbSet of the measures
+            </summary>
+        </member>
+        <member name="T:IotWebApi.Program">
+            <summary>
+            Main class who launche the WebApi
+            </summary>
+        </member>
+        <member name="M:IotWebApi.Program.Main(System.String[])">
+            <summary>
+            The create the host builder
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:IotWebApi.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            method that creates the host builder
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IotWebApi.Startup">
+            <summary>
+            Class that create the service
+            </summary>
+        </member>
+        <member name="P:IotWebApi.Startup.Configuration">
+            <summary>
+            Startup configuration
+            </summary>
+        </member>
+        <member name="M:IotWebApi.Startup.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment)">
+            <summary>
+            Construtor
+            </summary>
+            <param name="env"></param>
+        </member>
+        <member name="M:IotWebApi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+             This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:IotWebApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
     </members>
 </doc>
