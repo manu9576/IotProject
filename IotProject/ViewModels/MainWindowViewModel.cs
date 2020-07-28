@@ -1,4 +1,7 @@
-﻿using ReactiveUI;
+﻿using Avalonia;
+using Avalonia.Controls;
+using IotProject.Views;
+using ReactiveUI;
 using Sensors;
 using Storage;
 using System;
@@ -29,6 +32,8 @@ namespace IotProject.ViewModels
 
         public ReactiveCommand<Unit, Unit> Close { get; }
 
+        public ReactiveCommand<Window, Unit> DisplayConfig { get; }
+
         public MainWindowViewModel()
         {
             cancellationTokenSource = new CancellationTokenSource();
@@ -42,6 +47,7 @@ namespace IotProject.ViewModels
             Task.Run(() => UpdateValues(900, cancellationTokenSource.Token));
 
             Close = ReactiveCommand.Create(RunClose);
+            DisplayConfig = ReactiveCommand.Create<Window>(ShowConfig);
 
 #if DEBUG
             sensorsStorage = SensorsStorage.GetInstance();
@@ -75,11 +81,18 @@ namespace IotProject.ViewModels
             });
         }
 
-        void RunClose()
+        private void RunClose()
         {
             sensorsStorage.Stop();
             cancellationTokenSource.Cancel();
             Environment.Exit(0);
+        }
+
+        private void ShowConfig(Window mainWindow)
+        {
+            var window = new ConfigurationWindow();
+            window.ShowDialog(mainWindow);
+
         }
     }
 

@@ -13,14 +13,14 @@
 
   <Design.DataContext>
     <vm:MainWindowViewModel/>
-
   </Design.DataContext>
 
-  <Grid ColumnDefinitions="*" 
+  <Grid ColumnDefinitions="*,auto,auto" 
         RowDefinitions="auto,*,auto"
         Margin="10">
 
     <Button Grid.Row="0"
+            Grid.Column="2"
             Background="Red"
             Width="60"
             Height="30"
@@ -31,6 +31,7 @@
     </Button>
 
     <ListBox Grid.Row="1"
+             Grid.ColumnSpan="3"
              Items="{Binding SensorsViewModel}"
              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
              Margin="15,20">
@@ -48,7 +49,13 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-    <TextBlock Grid.Row="4" 
+    <Button Grid.Row="2" 
+            Grid.Column="1"
+            Command="{Binding DisplayConfig}"
+            CommandParameter="{StaticResource this}"
+            Margin="10,0,10,0">Config</Button>    
+
+    <TextBlock Grid.Row="2" 
                Grid.Column="2"
                TextAlignment="Right"
                Text="{Binding TimeOfDay}"

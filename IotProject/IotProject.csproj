@@ -21,6 +21,9 @@
     <None Remove="Models\**" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Remove="Views\ConfigurationWindow.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.4" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.4" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
@@ -28,5 +31,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Sensors\Sensors.csproj" />
     <ProjectReference Include="..\Storage\Storage.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Views\ConfigurationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 </Project>
