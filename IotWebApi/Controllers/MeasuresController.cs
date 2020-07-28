@@ -139,24 +139,16 @@ namespace IotWebApi.Controllers
 
 
         /// <summary>
-        /// GET: api/Sensor/26/Date/2020-05-26
+        /// GET: api/Sensor/18/GetLastValue
         /// </summary>
         /// <param name="sensorId"></param>
-        /// <param name="month"></param>
         /// <returns></returns>
         [HttpGet("Sensor/{sensorId}/GetLastValue")]
-        public double GetLastValue(int sensorId)
+        public async Task<ActionResult<IDtoMeasure>> GetLastValue(int sensorId)
         {
-            var sensorMeasures = _context.Measures.Where(mes => mes.SensorId == sensorId);
+            var sensorMeasures = _context.Measures.Where(mes => mes.SensorId == sensorId).OrderByDescending(mes => mes.DateTime);
 
-            var lastMeasure = sensorMeasures.OrderByDescending(mes => mes.DateTime).FirstOrDefault();
-
-            if(lastMeasure == null)
-            {
-                return 0.0;
-            }
-
-            return lastMeasure.Value;
+            return await sensorMeasures.FirstOrDefaultAsync();
         }
 
     }
