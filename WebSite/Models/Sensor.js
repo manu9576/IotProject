@@ -20,9 +20,10 @@ class Sensor {
         this.isSelected = false;
         this.borderColor = sensorColor[sensorCount % sensorColor.length];
         this.data = [];
-        this.fill = false;
+        this.fill = sensorColor[sensorCount % sensorColor.length];
+        this.borderWidth = 2;
         this.pointRadius = 3;
-        this.pointStyle = 'crossRot';
+        this.pointStyle = 'rectRounded';
         this.lineTension = 0;
         this.lastMeasure = 0;
 
