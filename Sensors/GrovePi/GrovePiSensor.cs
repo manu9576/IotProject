@@ -1,10 +1,8 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
-using Iot.Device.GrovePiDevice.Sensors;
-using Sensors.Weather;
 
 namespace Sensors.GrovePi
 {
-    public abstract class GrovePiSensor : ISensor
+    public abstract class GrovePiSensor
     {
         protected GrovePiSensor(string name, string unit, SensorType sensorType, GrovePort port)
         {

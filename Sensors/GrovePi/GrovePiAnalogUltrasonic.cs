@@ -1,11 +1,13 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
 using Iot.Device.GrovePiDevice.Sensors;
 using Sensors.Weather;
+using System.ComponentModel;
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiAnalogUltrasonic : GrovePiSensor, IRefresher
+    internal class GrovePiAnalogUltrasonic : GrovePiSensor, IRefresher, ISensor
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private readonly UltrasonicSensor _ultrasonicSensor;
         private double value;
 
@@ -20,6 +22,7 @@ namespace Sensors.GrovePi
         public override void Refresh()
         {
             value = _ultrasonicSensor.Value;
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
     }
 }
