@@ -35,7 +35,7 @@ namespace Sensors.Weather
             xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
 
-            PropertyChanged(this, new PropertyChangedEventArgs("Value"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
 
         private string GetNodeValue(string[] nodesName, string attribute)

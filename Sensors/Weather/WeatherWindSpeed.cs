@@ -16,7 +16,7 @@ namespace Sensors.Weather
 
         private void WebWeather_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.PropertyChanged(this, new PropertyChangedEventArgs("Value"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
 
         public string Name { get; }

@@ -22,7 +22,7 @@ namespace Sensors.GrovePi
         public override void Refresh()
         {
             value = _ultrasonicSensor.Value;
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Value"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
     }
 }
