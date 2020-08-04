@@ -4,14 +4,11 @@ using Avalonia.Markup.Xaml;
 
 namespace IotProject.Views
 {
-    public class ConfigurationWindow : Window
+    public class SensorsMeasureView : UserControl
     {
-        public ConfigurationWindow()
+        public SensorsMeasureView()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
 
         private void InitializeComponent()

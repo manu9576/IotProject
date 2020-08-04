@@ -1,0 +1,48 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="IotProject.Views.SensorsConfigurationView">
+
+  <Grid ColumnDefinitions="*" 
+        RowDefinitions="auto * auto auto"
+        Margin="15,20">
+
+    <TextBlock Grid.Column="0"
+               Grid.Row="0">
+      Configuration des voies
+    </TextBlock>
+
+    <ListBox Grid.Column="0"
+             Grid.Row="1"
+             Items="{Binding Sensors}"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Border BorderBrush="Red"
+                  BorderThickness="2"
+                  CornerRadius="4"
+                  Margin="10"
+                  Padding="4">
+            <TextBlock Text="Sensor: {Binding Name}"  FontSize="60" TextAlignment="Center"/>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <Button Grid.Column="0"
+            Grid.Row="2"  
+            Command="{Binding AddIotSensor}">
+      Ajouter une voie IOT
+    </Button>
+    
+    <Button Grid.Column="0"
+            Grid.Row="3" 
+            Command="{Binding AddWeatherSensor}">
+      Ajouter une voie Weather
+    </Button>
+
+  </Grid>
+
+</UserControl>

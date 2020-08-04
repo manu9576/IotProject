@@ -21,20 +21,21 @@
     <None Remove="Models\**" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Remove="Views\ConfigurationWindow.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.4" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.4" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
+    <PackageReference Include="Avalonia" Version="0.9.12" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.12" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.12" />
+    <PackageReference Include="System.Reactive" Version="4.4.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sensors\Sensors.csproj" />
     <ProjectReference Include="..\Storage\Storage.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Views\ConfigurationWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
+    <Compile Update="Views\SensorsConfigurationView.axaml.cs">
+      <DependentUpon>SensorsConfigurationView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SensorsMeasureView.axaml.cs">
+      <DependentUpon>SensorsMeasureView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

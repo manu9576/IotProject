@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="IotProject.Views.SensorsMeasureView">
+
+
+  <StackPanel Margin="15,20">
+
+    <TextBlock>Affichage des mesures</TextBlock>
+    <ListBox Grid.Row="1"
+           Grid.ColumnSpan="3"
+           Items="{Binding Sensors}"
+           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Border BorderBrush="Red"
+                  BorderThickness="2"
+                  CornerRadius="4"
+                  Margin="10"
+                  Padding="4">
+            <StackPanel Orientation="Horizontal" >
+              <TextBlock Text="{Binding Name}" TextAlignment="Center"  FontSize="60"/>
+              <TextBlock Text=" : " TextAlignment="Center"  FontSize="60"/>
+              <TextBlock Text="{Binding Value}" TextAlignment="Center"  FontSize="60"/>
+              <TextBlock Text="{Binding Unit}" TextAlignment="Center"  FontSize="60"/>
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+  </StackPanel>
+  
+</UserControl>
