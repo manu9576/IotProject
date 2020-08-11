@@ -5,16 +5,17 @@ using System.Xml.Serialization;
 
 namespace Sensors.Configuration
 {
+    [Serializable]
     public class SensorsConfiguration
     {
         private const string DEFAULT_CONFIGURATION_FILE = "DefaultConfiguration.xml";
         private const string CONFIGURATION_FILE = "Configuration.xml";
 
-        public List<ISensorConfiguration> Sensors { get; set; }
+        public List<SensorConfiguration> Sensors { get; set; }
 
         public SensorsConfiguration()
         {
-            Sensors = new List<ISensorConfiguration>();
+            Sensors = new List<SensorConfiguration>();
         }
 
 
