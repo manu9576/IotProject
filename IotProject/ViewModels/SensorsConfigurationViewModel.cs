@@ -1,7 +1,6 @@
 ﻿using ReactiveUI;
-using Sensors;
-using Sensors.GrovePi;
-using Sensors.Weather;
+using Sensors.Configuration;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 
@@ -11,26 +10,35 @@ namespace IotProject.ViewModels
     {
         public ReactiveCommand<Unit, Unit> AddIotSensor { get; }
         public ReactiveCommand<Unit, Unit> AddWeatherSensor { get; }
+        public ReactiveCommand<Unit, Unit> ApplyConfiguration { get; }
 
-        public ObservableCollection<ISensor> Sensors { get; private set; }
+        public SensorsConfiguration SensorsConfiguration { get; private set; }
+
+        public ObservableCollection<SensorConfiguration> Sensors { get; private set; }
 
         public SensorsConfigurationViewModel()
         {
-            Sensors = SensorsManager.Sensors;
+            SensorsConfiguration = SensorsConfiguration.Load();
+
+            Sensors = new ObservableCollection<SensorConfiguration>( SensorsConfiguration.Sensors);
 
             AddIotSensor = ReactiveCommand.Create(AddNewIotSensor);
             AddWeatherSensor = ReactiveCommand.Create(AddNewWeatherSensor);
+
+            ApplyConfiguration = ReactiveCommand.Create(ApplyNewConfiguration);
         }
 
-        private void AddNewIotSensor()
+        private void AddNewIotSensor() => Sensors.Add(new GrovePiSensorConfiguration()); 
+
+        private void AddNewWeatherSensor() => Sensors.Add(new OpenWeatherMapSensorConfiguration());
+
+        private void ApplyNewConfiguration()
         {
-            Sensors.Add(GrovePiSensorBuilder.CreateSensor(SensorType.DhtHumiditySensor, Iot.Device.GrovePiDevice.Models.GrovePort.DigitalPin2, "Nouvelle voie"));
+            SensorsConfiguration.Sensors = new List<SensorConfiguration>(Sensors);
+
+            SensorsConfiguration.Save();
         }
 
-        private void AddNewWeatherSensor()
-        {
-            Sensors.Add(WeatherSensorBuilder.GetSensor(SensorWeatherType.Temperature,"Température"));
-        }
 
     }
 }

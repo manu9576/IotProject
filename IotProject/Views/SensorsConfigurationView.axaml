@@ -2,11 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:configuration="clr-namespace:Sensors.Configuration;assembly=Sensors"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="IotProject.Views.SensorsConfigurationView">
 
   <Grid ColumnDefinitions="*" 
-        RowDefinitions="auto * auto auto"
+        RowDefinitions="auto * auto auto auto"
         Margin="15,20">
 
     <TextBlock Grid.Column="0"
@@ -18,17 +19,38 @@
              Grid.Row="1"
              Items="{Binding Sensors}"
              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-      <ListBox.ItemTemplate>
-        <DataTemplate>
+      
+      <ListBox.DataTemplates>
+        <DataTemplate DataType="{x:Type configuration:OpenWeatherMapSensorConfiguration}">
           <Border BorderBrush="Red"
                   BorderThickness="2"
                   CornerRadius="4"
                   Margin="10"
                   Padding="4">
-            <TextBlock Text="Sensor: {Binding Name}"  FontSize="60" TextAlignment="Center"/>
+            <StackPanel Orientation="Horizontal">
+              <TextBox Text="{Binding Name}"   />
+              <TextBlock Text="Sensor type : " />
+              <ComboBox SelectedItem="{Binding SensorWeatherType}" Items="{Binding SensorsType}"> </ComboBox>
+            </StackPanel>
           </Border>
         </DataTemplate>
-      </ListBox.ItemTemplate>
+
+        <DataTemplate DataType="{x:Type configuration:GrovePiSensorConfiguration}">
+          <Border BorderBrush="Red"
+                  BorderThickness="2"
+                  CornerRadius="4"
+                  Margin="10"
+                  Padding="4">
+            <StackPanel Orientation="Horizontal">
+              <TextBox Text="{Binding Name}"   />
+              <TextBlock Text="Sensor type :"/>
+              <ComboBox SelectedItem="{Binding GroveSensorType}" Items="{Binding SensorsType}"> </ComboBox>
+            <ComboBox SelectedItem="{Binding GrovePort}" Items="{Binding GrovePorts}"> </ComboBox>
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+        
+      </ListBox.DataTemplates>
     </ListBox>
 
     <Button Grid.Column="0"
@@ -41,6 +63,12 @@
             Grid.Row="3" 
             Command="{Binding AddWeatherSensor}">
       Ajouter une voie Weather
+    </Button>
+    
+     <Button Grid.Column="0"
+            Grid.Row="4" 
+            Command="{Binding ApplyConfiguration}">
+      Appliquer la configuration
     </Button>
 
   </Grid>
