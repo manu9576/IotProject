@@ -15,6 +15,12 @@ namespace Sensors
         static SensorsManager()
         {
             Sensors = new ObservableCollection<ISensor>();
+            ReloadConfiguration();
+        }
+
+        static public void ReloadConfiguration()
+        {
+            Sensors.Clear();
             SensorsConfiguration = SensorsConfiguration.Load();
 
             foreach (var sensorConfiguration in SensorsConfiguration.Sensors)
@@ -42,11 +48,11 @@ namespace Sensors
                         Sensors.Add
                             (
                                 WeatherSensorBuilder.GetSensor(
-                                    openWeatherMapSensorConfiguration.SensorWeatherType, 
+                                    openWeatherMapSensorConfiguration.SensorWeatherType,
                                     openWeatherMapSensorConfiguration.Name
                                     )
                             );
-                        
+
                         break;
 
                     default:

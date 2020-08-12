@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using Sensors;
 using Sensors.Configuration;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,6 +38,8 @@ namespace IotProject.ViewModels
             SensorsConfiguration.Sensors = new List<SensorConfiguration>(Sensors);
 
             SensorsConfiguration.Save();
+
+            SensorsManager.ReloadConfiguration();
         }
 
 
