@@ -62,11 +62,14 @@ namespace Iot.Device.GrovePiDevice.Sensors
 
             // Wait a little bit to read the result
             // Delay from source code, line 90 in the Grove Pi firmware repository
-            // This is needed for firmware 1.4.0 and also working for previous versions
-            Thread.Sleep(300);
+            // This is needed for firmware 1.4.0 and also working for prevThread.Sleep(500);
             var retArray = _grovePi.ReadCommand(GrovePiCommand.DhtTemp, _port);
-            _lastTemHum[0] = BitConverter.ToSingle(retArray.AsSpan(1, 4));
-            _lastTemHum[1] = BitConverter.ToSingle(retArray.AsSpan(5, 4));
+
+            var temp = BitConverter.ToSingle(retArray.AsSpan(1, 4));
+            if (Single.IsNormal(temp)) _lastTemHum[0] = temp;
+
+            var humidity = BitConverter.ToSingle(retArray.AsSpan(5, 4));
+            if (Single.IsNormal(humidity)) _lastTemHum[1] = humidity;
         }
 
         /// <summary>
