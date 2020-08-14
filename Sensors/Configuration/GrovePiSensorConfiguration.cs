@@ -40,5 +40,19 @@ namespace Sensors.Configuration
             }
         }
 
+        public override string HashCode
+        {
+            get
+            {
+                var hashCode = this.GrovePort.ToString().GetHashCode();
+                hashCode ^= this.GroveSensorType.ToString().GetHashCode();
+                hashCode ^= this.Name.ToString().GetHashCode();
+                hashCode ^= this.SensorId.ToString().GetHashCode();
+                hashCode ^= this.SensorType.ToString().GetHashCode();
+
+                return hashCode.ToString();
+            }
+        }
+
     }
 }

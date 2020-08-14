@@ -4,6 +4,7 @@ using Sensors.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 
 namespace IotProject.ViewModels
@@ -13,7 +14,7 @@ namespace IotProject.ViewModels
         public ReactiveCommand<Unit, Unit> AddIotSensor { get; }
         public ReactiveCommand<Unit, Unit> AddWeatherSensor { get; }
         public ReactiveCommand<Unit, Unit> ApplyConfiguration { get; }
-        public ReactiveCommand<SensorConfiguration, Unit > RemoveSensor { get; }
+        public ReactiveCommand<string, Unit > RemoveSensor { get; }
 
         public SensorsConfiguration SensorsConfiguration { get; private set; }
 
@@ -29,7 +30,7 @@ namespace IotProject.ViewModels
             AddWeatherSensor = ReactiveCommand.Create(AddNewWeatherSensor);
             ApplyConfiguration = ReactiveCommand.Create(ApplyNewConfiguration);
 
-            RemoveSensor = ReactiveCommand.Create<SensorConfiguration>(ApplyRemoveSensor);
+            RemoveSensor = ReactiveCommand.Create<string>(ApplyRemoveSensor);
         }
 
         private void AddNewIotSensor() => Sensors.Add(new GrovePiSensorConfiguration()); 
@@ -45,9 +46,15 @@ namespace IotProject.ViewModels
             SensorsManager.ReloadConfiguration();
         }
 
-        private void ApplyRemoveSensor(SensorConfiguration sensorConfiguration)
+        private void ApplyRemoveSensor(string sensorHashCode)
         {
-            Console.WriteLine("test");
+            var sensorConfigurationToRemove = Sensors.FirstOrDefault(sen => sen.HashCode == sensorHashCode);
+
+            if(sensorConfigurationToRemove != null)
+            {
+                Sensors.Remove(sensorConfigurationToRemove);
+            }
+
         }
     }
 }

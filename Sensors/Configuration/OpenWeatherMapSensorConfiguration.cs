@@ -30,5 +30,18 @@ namespace Sensors.Configuration
                 return (SensorWeatherType[])Enum.GetValues(typeof(SensorWeatherType)).Cast<SensorWeatherType>();
             }
         }
+
+        public override string HashCode
+        {
+            get
+            {
+                var hashCode = this.SensorWeatherType.ToString().GetHashCode();
+                hashCode ^= this.Name.ToString().GetHashCode();
+                hashCode ^= this.SensorId.ToString().GetHashCode();
+                hashCode ^= this.SensorType.ToString().GetHashCode();
+
+                return hashCode.ToString();
+            }
+        }
     }
 }

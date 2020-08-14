@@ -13,5 +13,6 @@ namespace Sensors.Configuration
         public int SensorId { get; set; }
         public string Name { get; set; }
         public abstract SensorType SensorType { get; }
+        public abstract string HashCode { get; }
     }
 }
