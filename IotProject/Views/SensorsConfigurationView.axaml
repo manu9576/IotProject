@@ -31,7 +31,12 @@
               <TextBox Text="{Binding Name}"   />
               <TextBlock Text="Sensor type : " />
               <ComboBox SelectedItem="{Binding SensorWeatherType}" Items="{Binding SensorsType}"> </ComboBox>
-              <Button Command="{Binding RemoveSensor, RelativeSource={RelativeSource TemplatedParent}}">X</Button>
+              <Button Command="{Binding $parent[ListBox].DataContext.RemoveSensor}">
+                <Button.CommandParameter>
+                  <configuration:SensorConfiguration>DataContext</configuration:SensorConfiguration>
+                </Button.CommandParameter>
+                X
+              </Button>
             </StackPanel>
           </Border>
         </DataTemplate>
