@@ -7,10 +7,11 @@ namespace Sensors.Weather
         private readonly WebWeather webWeather;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal WeatherWindDirection(WebWeather webWeather, string name)
+        internal WeatherWindDirection(WebWeather webWeather, string name, int sensorId)
         {
             this.webWeather = webWeather;
             this.Name = name;
+            SensorId = sensorId;
             this.webWeather.PropertyChanged += WebWeather_PropertyChanged;
         }
 
@@ -20,6 +21,7 @@ namespace Sensors.Weather
         }
 
         public string Name { get; }
+        public int SensorId { get; }
 
         public double Value
         {

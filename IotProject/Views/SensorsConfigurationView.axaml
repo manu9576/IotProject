@@ -28,8 +28,9 @@
                   Margin="10"
                   Padding="4">
             <StackPanel Orientation="Horizontal">
+              <TextBlock Text="Nom du capteur : " />
               <TextBox Text="{Binding Name}"   />
-              <TextBlock Text="Sensor type : " />
+              <TextBlock Text="Type de capteur : " />
               <ComboBox SelectedItem="{Binding SensorWeatherType}" Items="{Binding SensorsType}"> </ComboBox>
               <Button Command="{Binding $parent[ListBox].DataContext.RemoveSensor}" CommandParameter="{Binding HashCode}">
                 X
@@ -45,8 +46,9 @@
                   Margin="10"
                   Padding="4">
             <StackPanel Orientation="Horizontal">
+              <TextBlock Text="Nom du capteur : " />
               <TextBox Text="{Binding Name}"   />
-              <TextBlock Text="Sensor type :"/>
+              <TextBlock Text="Type de capteur : " />
               <ComboBox SelectedItem="{Binding GroveSensorType}" Items="{Binding SensorsType}"> </ComboBox>
               <ComboBox SelectedItem="{Binding GrovePort}" Items="{Binding GrovePorts}"> </ComboBox>
               <Button Command="{Binding $parent[ListBox].DataContext.RemoveSensor}" CommandParameter="{Binding HashCode}">

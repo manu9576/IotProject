@@ -9,8 +9,8 @@ namespace Sensors.GrovePi
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name, GrovePort port)
-            : base(name, "°C", SensorType.DhtTemperatureSensor, port)
+        public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name, int sensorId, GrovePort port)
+            : base(name, "°C", sensorId, SensorType.DhtTemperatureSensor, port)
         {
             this.DhtSensor = dhtSensor;
         }

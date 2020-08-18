@@ -12,10 +12,11 @@ namespace Sensors.GrovePi
         private readonly double maxValue;
         private double value;
         private string name;
+        private int sensorId;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public GrovePiFakeSensor(SensorType sensorType, string name)
+        public GrovePiFakeSensor(SensorType sensorType, string name, int sensorId)
         {
             this.sensorType = sensorType;
             Name = name;
@@ -99,6 +100,14 @@ namespace Sensors.GrovePi
                     default:
                         throw new Exception("Sensor type '" + sensorType + "' is not implemented");
                 }
+            }
+        }
+
+        public int SensorId
+        {
+            get
+            {
+                return sensorId;
             }
         }
 

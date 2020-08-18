@@ -11,8 +11,8 @@ namespace Sensors.GrovePi
         private readonly UltrasonicSensor _ultrasonicSensor;
         private double value;
 
-        internal GrovePiAnalogUltrasonic(UltrasonicSensor ultrasonicSensor, string name ,GrovePort port)
-            : base(name,"cm",SensorType.UltrasonicSensor, port)
+        internal GrovePiAnalogUltrasonic(UltrasonicSensor ultrasonicSensor, string name, int sensorId, GrovePort port)
+            : base(name, "cm", sensorId, SensorType.UltrasonicSensor, port)
         {
             _ultrasonicSensor = ultrasonicSensor;
         }

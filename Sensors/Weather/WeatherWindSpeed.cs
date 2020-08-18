@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Sensors.Weather
 {
@@ -7,10 +8,11 @@ namespace Sensors.Weather
         private readonly WebWeather webWeather;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal WeatherWindSpeed(WebWeather webWeather, string name)
+        internal WeatherWindSpeed(WebWeather webWeather, string name, int sensorId)
         {
             this.webWeather = webWeather;
             this.Name = name;
+            this.SensorId = sensorId;
             this.webWeather.PropertyChanged += WebWeather_PropertyChanged;
         }
 
@@ -30,5 +32,8 @@ namespace Sensors.Weather
         }
 
         public string Unit => "km/h";
+
+        public int SensorId { get; }
+      
     }
 }
