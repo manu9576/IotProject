@@ -235,7 +235,7 @@ Vue.component('sensors-chart', {
         }
     },
     template: `
-    <div class="container item">
+    <div class="item" style="padding: 10px;">
 
         <div id="chart-container" >
             <canvas ref=chart id="char"></canvas>
@@ -266,8 +266,9 @@ Vue.component('sensors-chart', {
                 <label>  au : </label>
                 <input type="date" v-model="endDate" :max="todayDate" :min="startDate">
             </fieldset>
- 
         </div>
+
+        <button @click='updateChart' class="button">Actualiser</button>
     </div>
     `,
     methods: {
@@ -337,6 +338,8 @@ Vue.component('last-values-presenter', {
     template: `
     <div class="item" id="last-value-list">
         <last-value v-for="(sensor) in sensors" :key="sensor.id" :sensor='sensor'></last-value>
+
+        <button @click='refreshSensorsValue' class="button">Actualiser</button>
     </div>
     `
 });
