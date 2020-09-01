@@ -4,7 +4,7 @@ namespace Sensors
 {
     public interface ISensor : INotifyPropertyChanged
     {
-        int SensorId { get; }
+        int SensorId { get; set; }
         string Name { get; }
         double Value { get; }
         string Unit { get; }

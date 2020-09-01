@@ -21,7 +21,7 @@ namespace Sensors.Weather
         }
 
         public string Name { get; }
-        public int SensorId { get; }
+        public int SensorId { get; set; }
 
         public double Value 
         {

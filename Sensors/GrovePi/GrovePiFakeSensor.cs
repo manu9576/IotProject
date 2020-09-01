@@ -12,7 +12,6 @@ namespace Sensors.GrovePi
         private readonly double maxValue;
         private double value;
         private string name;
-        private int sensorId;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -103,13 +102,7 @@ namespace Sensors.GrovePi
             }
         }
 
-        public int SensorId
-        {
-            get
-            {
-                return sensorId;
-            }
-        }
+        public int SensorId { get; set; }
 
         public void Refresh()
         {

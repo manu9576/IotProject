@@ -63,20 +63,20 @@ namespace Storage
             {
 
                 dbSensor = db.Sensors.FirstOrDefault(sens =>
-                sens.Name == sensor.Name &&
-                sens.Device == device);
+                    sens.SensorId == sensor.SensorId);
 
                 if (dbSensor == null)
                 {
-                    dbSensor = new Sensor
-                    {
-                        Name = sensor.Name,
-                        Unit = sensor.Unit
-                    };
-
+                    dbSensor = new Sensor();
                     device.Sensors.Add(dbSensor);
-                    db.SaveChanges();
+                    
                 }
+
+                dbSensor.Name = sensor.Name;
+                dbSensor.Unit = sensor.Unit;
+                db.SaveChanges();
+
+                sensor.SensorId = dbSensor.SensorId;
 
                 sensors.Add(dbSensor, sensor);
             }

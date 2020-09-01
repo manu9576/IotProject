@@ -16,7 +16,7 @@ namespace Sensors.GrovePi
         public GrovePort Port { get; }
         public string Name { get; }
         public string Unit { get; }
-        public int SensorId { get; }
+        public int SensorId { get; set; }
 
         public abstract double Value { get; }
         public abstract void Refresh();

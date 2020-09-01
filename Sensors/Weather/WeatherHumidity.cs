@@ -20,7 +20,7 @@ namespace Sensors.Weather
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
         public double Value
         {
@@ -32,6 +32,6 @@ namespace Sensors.Weather
 
         public string Unit => "%";
 
-        public int SensorId { get; }
+        public int SensorId { get; set; }
     }
 }

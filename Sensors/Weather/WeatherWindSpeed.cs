@@ -33,7 +33,7 @@ namespace Sensors.Weather
 
         public string Unit => "km/h";
 
-        public int SensorId { get; }
-      
-    }
+        public int SensorId { get; set; }
+
+        }
 }
