@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using Sensors;
 using Sensors.Configuration;
+using Storage;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,6 +40,14 @@ namespace IotProject.ViewModels
 
         private void ApplyNewConfiguration()
         {
+            foreach(var sensor in Sensors)
+            {
+                if(sensor.SensorId == -1)
+                {
+                    sensor.SensorId = SensorsStorage.GetNewSensorId(sensor.Name);
+                }
+            }
+
             SensorsConfiguration.Sensors = new List<SensorConfiguration>(Sensors);
 
             SensorsConfiguration.Save();

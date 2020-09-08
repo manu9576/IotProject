@@ -28,6 +28,39 @@ namespace Storage
             return sensorsStorage;
         }
 
+        public static int GetNewSensorId(string sensorName)
+        {
+
+            Sensor dbSensor = null;
+            Device device;
+            var db = new SensorsContext();
+            string deviceName = Environment.MachineName;
+
+            if (!db.Devices.Any(dev => dev.Name == deviceName))
+            {
+                device = new Device
+                {
+                    Name = deviceName,
+                    
+                };
+
+                db.Devices.Add(device);
+                db.SaveChanges();
+            }
+            else
+            {
+                device = db.Devices.FirstOrDefault(dev => dev.Name == deviceName);
+            }
+
+            dbSensor = new Sensor();
+            dbSensor.Name = sensorName;
+            device.Sensors.Add(dbSensor);
+
+            db.SaveChanges();
+
+            return dbSensor.SensorId;
+        }
+
         public void Start(int intervalInSeconds)
         {
             PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
@@ -67,16 +100,18 @@ namespace Storage
 
                 if (dbSensor == null)
                 {
-                    dbSensor = new Sensor();
-                    device.Sensors.Add(dbSensor);
-                    
+                    //TODO: improve error management
+                    Console.WriteLine("Error while reading sensor: sensor not found");
+                    continue;
                 }
 
-                dbSensor.Name = sensor.Name;
-                dbSensor.Unit = sensor.Unit;
-                db.SaveChanges();
+                if(dbSensor.Name != sensor.Name || dbSensor.Unit != sensor.Unit)
+                {
+                    dbSensor.Name = sensor.Name;
+                    dbSensor.Unit = sensor.Unit;
 
-                sensor.SensorId = dbSensor.SensorId;
+                    db.SaveChanges();
+                }
 
                 sensors.Add(dbSensor, sensor);
             }

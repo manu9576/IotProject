@@ -20,6 +20,7 @@ namespace Sensors.GrovePi
             this.sensorType = sensorType;
             Name = name;
             rand = new Random();
+            SensorId = sensorId;
 
             switch (sensorType)
             {
