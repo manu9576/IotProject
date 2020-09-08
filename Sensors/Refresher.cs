@@ -41,7 +41,6 @@ namespace Sensors
 
         private void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
         {
-
             Task.Run(async () =>
             {
                 while (true)

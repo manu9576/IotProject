@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 
 namespace Sensors
 {
-
     public static class SensorsManager
     {
         public static ObservableCollection<ISensor> Sensors { private set; get; }
@@ -31,30 +30,23 @@ namespace Sensors
 
                         var grovePiSensorConfiguration = sensorConfiguration as GrovePiSensorConfiguration;
 
-                        Sensors.Add
-                            (
-                                GrovePiSensorBuilder.CreateSensor(
-                                    grovePiSensorConfiguration.GroveSensorType,
-                                    grovePiSensorConfiguration.GrovePort,
-                                    grovePiSensorConfiguration.Name,
-                                    grovePiSensorConfiguration.SensorId)
-                            );
-
+                        Sensors.Add(GrovePiSensorBuilder.CreateSensor(
+                                            grovePiSensorConfiguration.GroveSensorType,
+                                            grovePiSensorConfiguration.GrovePort,
+                                            grovePiSensorConfiguration.Name,
+                                            grovePiSensorConfiguration.SensorId
+                                        ));
                         break;
 
                     case Configuration.SensorType.OpenWeatherMap:
 
                         var openWeatherMapSensorConfiguration = sensorConfiguration as OpenWeatherMapSensorConfiguration;
 
-                        Sensors.Add
-                            (
-                                WeatherSensorBuilder.GetSensor(
-                                    openWeatherMapSensorConfiguration.SensorWeatherType,
-                                    openWeatherMapSensorConfiguration.Name,
-                                    openWeatherMapSensorConfiguration.SensorId
-                                    )
-                            );
-
+                        Sensors.Add(WeatherSensorBuilder.GetSensor(
+                                            openWeatherMapSensorConfiguration.SensorWeatherType,
+                                            openWeatherMapSensorConfiguration.Name,
+                                            openWeatherMapSensorConfiguration.SensorId
+                                       ));
                         break;
 
                     default:

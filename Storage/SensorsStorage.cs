@@ -30,8 +30,6 @@ namespace Storage
 
         public static int GetNewSensorId(string sensorName)
         {
-
-            Sensor dbSensor = null;
             Device device;
             var db = new SensorsContext();
             string deviceName = Environment.MachineName;
@@ -40,8 +38,7 @@ namespace Storage
             {
                 device = new Device
                 {
-                    Name = deviceName,
-                    
+                    Name = deviceName           
                 };
 
                 db.Devices.Add(device);
@@ -52,8 +49,10 @@ namespace Storage
                 device = db.Devices.FirstOrDefault(dev => dev.Name == deviceName);
             }
 
-            dbSensor = new Sensor();
-            dbSensor.Name = sensorName;
+            var dbSensor = new Sensor
+            {
+                Name = sensorName
+            };
             device.Sensors.Add(dbSensor);
 
             db.SaveChanges();
@@ -66,35 +65,19 @@ namespace Storage
             PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
         }
 
+        public void Stop()
+        {
+            cancellationTokenSource.Cancel();
+        }
+
         private Dictionary<Sensor, ISensor> ReadSensors(SensorsContext db)
         {
             var sensors = new Dictionary<Sensor, ISensor>();
-
-            Device device;
-
-            string deviceName = Environment.MachineName;
-
-            if (!db.Devices.Any(dev => dev.Name == deviceName))
-            {
-                device = new Device
-                {
-                    Name = deviceName
-                };
-
-                db.Devices.Add(device);
-                db.SaveChanges();
-            }
-            else
-            {
-                device = db.Devices.FirstOrDefault(dev => dev.Name == deviceName);
-            }
-
             var deviceSensors = SensorsManager.Sensors.ToList();
             Sensor dbSensor = null;
 
             foreach (var sensor in deviceSensors)
             {
-
                 dbSensor = db.Sensors.FirstOrDefault(sens =>
                     sens.SensorId == sensor.SensorId);
 
@@ -119,12 +102,7 @@ namespace Storage
             return sensors;
         }
 
-        public void Stop()
-        {
-            cancellationTokenSource.Cancel();
-        }
-
-        void PeriodicMesureTask(int intervalInMS, CancellationToken cancellationToken)
+        private void PeriodicMesureTask(int intervalInMS, CancellationToken cancellationToken)
         {
 
             Task.Run(async () =>

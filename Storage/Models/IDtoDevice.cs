@@ -2,7 +2,7 @@
 {
     public interface IDtoDevice
     {
-        public int DeviceId { get; set; }
-        public string Name { get; set; }
+        int DeviceId { get; set; }
+        string Name { get; set; }
     }
 }

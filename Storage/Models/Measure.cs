@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace Storage.Models
 {
     public class Measure : IDtoMeasure
