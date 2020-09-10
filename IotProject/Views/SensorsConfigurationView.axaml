@@ -30,18 +30,35 @@
                   CornerRadius="4"
                   Margin="10"
                   Padding="4">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="Nom du capteur : "/>
-              <TextBox Text="{Binding Name}"/>
-              <TextBlock Text="Type de capteur : "/>
-              <ComboBox SelectedItem="{Binding SensorWeatherType}"
-                        Items="{Binding SensorsType}"></ComboBox>
-              <Button Command="{Binding $parent[ListBox].DataContext.RemoveSensor}" 
+            <Grid ColumnDefinitions="auto auto auto auto *">
+              <TextBlock Grid.Column="0" 
+                         Text="Nom du capteur : " 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
+              <TextBox Grid.Column="1" 
+                       Text="{Binding Name}" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       Margin="10 0"/>
+              <TextBlock Grid.Column="2" 
+                         Text="Type de capteur : " 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
+              <ComboBox Grid.Column="3"
+                        SelectedItem="{Binding SensorWeatherType}"
+                        Items="{Binding SensorsType}"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Margin="10 0"/>
+              <Button Grid.Column="4"
+                      Command="{Binding $parent[ListBox].DataContext.RemoveSensor}" 
                       CommandParameter="{Binding HashCode}"
                       Content="X"
                       Foreground="Red"
-                      HorizontalAlignment="Right"/>
-            </StackPanel>
+                      HorizontalAlignment="Right"
+                      Margin="0 0 3 0"
+                      Height="30" Width="30"/>
+            </Grid>
           </Border>
         </DataTemplate>
 
@@ -51,18 +68,42 @@
                   CornerRadius="4"
                   Margin="10"
                   Padding="4">
-            <StackPanel Orientation="Horizontal">
-              <TextBlock Text="Nom du capteur : " />
-              <TextBox Text="{Binding Name}"   />
-              <TextBlock Text="Type de capteur : " />
-              <ComboBox SelectedItem="{Binding GroveSensorType}" Items="{Binding SensorsType}"> </ComboBox>
-              <ComboBox SelectedItem="{Binding GrovePort}" Items="{Binding GrovePorts}"> </ComboBox>
-              <Button Command="{Binding $parent[ListBox].DataContext.RemoveSensor}"
+            <Grid ColumnDefinitions="auto auto auto auto auto *">
+              <TextBlock Grid.Column="0"
+                         Text="Nom du capteur : "
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+              <TextBox Grid.Column="1"
+                       Text="{Binding Name}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="10 0"/>
+              <TextBlock Grid.Column="2"
+                         Text="Type de capteur : "
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+              <ComboBox Grid.Column="3"
+                        SelectedItem="{Binding GroveSensorType}"
+                        Items="{Binding SensorsType}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="10 0"/>
+              <ComboBox Grid.Column="4"
+                        SelectedItem="{Binding GrovePort}"
+                        Items="{Binding GrovePorts}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="10 0"/>
+              <Button Grid.Column="5"
+                      Command="{Binding $parent[ListBox].DataContext.RemoveSensor}"
                       CommandParameter="{Binding HashCode}"
                       Content="X"
                       Foreground="Red"
-                      HorizontalAlignment="Right"/>
-            </StackPanel>
+                      HorizontalAlignment="Right"
+                      Margin="0 0 3 0"
+                      VerticalContentAlignment="Stretch"
+                      Height="30" Width="30"/>
+            </Grid>
           </Border>
         </DataTemplate>
 
