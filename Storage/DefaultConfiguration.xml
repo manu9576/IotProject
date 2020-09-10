@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SensorsConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Sensors>
+    <SensorConfiguration xsi:type="GrovePiSensorConfiguration">
+      <SensorId>18</SensorId>
+      <Name>Température</Name>
+      <GroveSensorType>DhtTemperatureSensor</GroveSensorType>
+      <GrovePort>DigitalPin7</GrovePort>
+    </SensorConfiguration>
+    <SensorConfiguration xsi:type="GrovePiSensorConfiguration">
+      <SensorId>19</SensorId>
+      <Name>Humidité</Name>
+      <GroveSensorType>DhtHumiditySensor</GroveSensorType>
+      <GrovePort>DigitalPin7</GrovePort>
+    </SensorConfiguration>
+    <SensorConfiguration xsi:type="OpenWeatherMapSensorConfiguration">
+      <SensorId>28</SensorId>
+      <Name>Météo: Température</Name>
+      <SensorWeatherType>Temperature</SensorWeatherType>
+    </SensorConfiguration>
+    <SensorConfiguration xsi:type="OpenWeatherMapSensorConfiguration">
+      <SensorId>29</SensorId>
+      <Name>Météo: Humidité</Name>
+      <SensorWeatherType>Humidity</SensorWeatherType>
+    </SensorConfiguration>
+    <SensorConfiguration xsi:type="OpenWeatherMapSensorConfiguration">
+      <SensorId>30</SensorId>
+      <Name>Météo: pression</Name>
+      <SensorWeatherType>Pressure</SensorWeatherType>
+    </SensorConfiguration>
+    <SensorConfiguration xsi:type="OpenWeatherMapSensorConfiguration">
+      <SensorId>31</SensorId>
+      <Name>Météo: Vent direct.</Name>
+      <SensorWeatherType>WindDirection</SensorWeatherType>
+    </SensorConfiguration>
+    <SensorConfiguration xsi:type="OpenWeatherMapSensorConfiguration">
+      <SensorId>32</SensorId>
+      <Name>Météo: Vent vit.</Name>
+      <SensorWeatherType>WindSpeed</SensorWeatherType>
+    </SensorConfiguration>
+  </Sensors>
+</SensorsConfiguration>
