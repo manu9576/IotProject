@@ -8,6 +8,7 @@ namespace Sensors.GrovePi
         {
             Name = name;
             Unit = unit;
+            SensorId = sensorId;
             SensorType = sensorType;
             Port = port;
         }

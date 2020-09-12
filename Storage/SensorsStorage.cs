@@ -84,7 +84,7 @@ namespace Storage
                 if (dbSensor == null)
                 {
                     //TODO: improve error management
-                    Console.WriteLine("Error while reading sensor: sensor not found");
+                    Console.WriteLine("Error while reading sensor: sensor not found " + sensor.SensorId);
                     continue;
                 }
 

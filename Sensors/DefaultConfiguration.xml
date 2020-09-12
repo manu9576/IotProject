@@ -25,7 +25,7 @@
     </SensorConfiguration>
     <SensorConfiguration xsi:type="OpenWeatherMapSensorConfiguration">
       <SensorId>30</SensorId>
-      <Name>Météo: pression</Name>
+      <Name>Météo: Pression</Name>
       <SensorWeatherType>Pressure</SensorWeatherType>
     </SensorConfiguration>
     <SensorConfiguration xsi:type="OpenWeatherMapSensorConfiguration">
