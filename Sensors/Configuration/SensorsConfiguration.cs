@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Sensors.Configuration
@@ -25,18 +26,20 @@ namespace Sensors.Configuration
 
             try
             {
+                var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(SensorsConfiguration));
 
                 if (File.Exists(CONFIGURATION_FILE))
                 {
-                    using (StreamReader streamReader = new StreamReader(CONFIGURATION_FILE))
+                    using (StreamReader streamReader = new StreamReader(Path.Combine(baseDir, CONFIGURATION_FILE)))
                     {
                         readedConfiguration = xmlSerializer.Deserialize(streamReader) as SensorsConfiguration;
                     }
                 }
                 else
                 {
-                    using (StreamReader streamReader = new StreamReader(DEFAULT_CONFIGURATION_FILE))
+                    using (StreamReader streamReader = new StreamReader(Path.Combine(baseDir, DEFAULT_CONFIGURATION_FILE)))
                     {
                         readedConfiguration = xmlSerializer.Deserialize(streamReader) as SensorsConfiguration;
                     }
@@ -49,6 +52,9 @@ namespace Sensors.Configuration
                 Console.WriteLine("Error while reading configuration file: " + ex.Message);
                 readedConfiguration = new SensorsConfiguration();
             }
+
+            Console.WriteLine("IotProject configuration");
+            Console.WriteLine(readedConfiguration);
 
             return readedConfiguration;
         }
@@ -73,5 +79,16 @@ namespace Sensors.Configuration
             return false;
         }
 
+        public override string ToString()
+        {
+            StringBuilder configuration = new StringBuilder();
+
+            foreach(var sensor in Sensors)
+            {
+                configuration.AppendLine(sensor.ToString());
+            }
+
+            return configuration.ToString();
+        }
     }
 }

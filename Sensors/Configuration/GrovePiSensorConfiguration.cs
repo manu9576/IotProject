@@ -40,6 +40,11 @@ namespace Sensors.Configuration
             }
         }
 
+        public override string ToString()
+        {
+            return "Name= " + Name + " -- id= " + SensorId + " -- SensorType= " + SensorType + " -- GrovePort= " + GrovePort + " -- GroveSensorType= " + GroveSensorType;
+        }
+
         public override string HashCode
         {
             get

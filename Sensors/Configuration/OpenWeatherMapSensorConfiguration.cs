@@ -31,6 +31,11 @@ namespace Sensors.Configuration
             }
         }
 
+        public override string ToString()
+        {
+            return "Name= " + Name + " -- id= " + SensorId + " -- SensorType= " + SensorType + " -- SensorWeatherType= " + SensorWeatherType;
+        }
+
         public override string HashCode
         {
             get
