@@ -1,0 +1,137 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:configuration="clr-namespace:Sensors.Configuration;assembly=Sensors"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="IotProject.Views.SensorsConfigurationView"
+             FontSize="20">
+
+  <Grid ColumnDefinitions="* *"
+        RowDefinitions="auto * auto auto"
+        Margin="15,20">
+
+    <TextBlock Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Grid.Row="0">
+      Configuration des voies
+    </TextBlock>
+
+    <ListBox Grid.Column="0"
+             Grid.ColumnSpan="2"
+             Grid.Row="1"
+             Items="{Binding Sensors}"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+      <ListBox.DataTemplates>
+        <DataTemplate DataType="{x:Type configuration:OpenWeatherMapSensorConfiguration}">
+          <Border BorderBrush="Red"
+                  BorderThickness="2"
+                  CornerRadius="4"
+                  Margin="10"
+                  Padding="4">
+            <Grid ColumnDefinitions="auto auto auto auto *">
+              <TextBlock Grid.Column="0" 
+                         Text="Nom du capteur : " 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
+              <TextBox Grid.Column="1" 
+                       Text="{Binding Name}" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       Margin="10 0"/>
+              <TextBlock Grid.Column="2" 
+                         Text="Type de capteur : " 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
+              <ComboBox Grid.Column="3"
+                        SelectedItem="{Binding SensorWeatherType}"
+                        Items="{Binding SensorsType}"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Margin="10 0"/>
+              <Button Grid.Column="4"
+                      Command="{Binding $parent[ListBox].DataContext.RemoveSensor}" 
+                      CommandParameter="{Binding HashCode}"
+                      Content="X"
+                      Foreground="Red"
+                      HorizontalAlignment="Right"
+                      Margin="0 0 3 0"
+                      Height="30" Width="30"/>
+            </Grid>
+          </Border>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type configuration:GrovePiSensorConfiguration}">
+          <Border BorderBrush="Red"
+                  BorderThickness="2"
+                  CornerRadius="4"
+                  Margin="10"
+                  Padding="4">
+            <Grid ColumnDefinitions="auto auto auto auto auto *">
+              <TextBlock Grid.Column="0"
+                         Text="Nom du capteur : "
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+              <TextBox Grid.Column="1"
+                       Text="{Binding Name}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="10 0"/>
+              <TextBlock Grid.Column="2"
+                         Text="Type de capteur : "
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+              <ComboBox Grid.Column="3"
+                        SelectedItem="{Binding GroveSensorType}"
+                        Items="{Binding SensorsType}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="10 0"/>
+              <ComboBox Grid.Column="4"
+                        SelectedItem="{Binding GrovePort}"
+                        Items="{Binding GrovePorts}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="10 0"/>
+              <Button Grid.Column="5"
+                      Command="{Binding $parent[ListBox].DataContext.RemoveSensor}"
+                      CommandParameter="{Binding HashCode}"
+                      Content="X"
+                      Foreground="Red"
+                      HorizontalAlignment="Right"
+                      Margin="0 0 3 0"
+                      VerticalContentAlignment="Stretch"
+                      Height="30" Width="30"/>
+            </Grid>
+          </Border>
+        </DataTemplate>
+
+      </ListBox.DataTemplates>
+    </ListBox>
+
+    <Button Grid.Column="0"
+            Grid.Row="2"
+            Margin="10"
+            Command="{Binding AddIotSensor}">
+      Ajouter une voie IOT
+    </Button>
+
+    <Button Grid.Column="1"
+            Grid.Row="2"
+            Margin="10"
+            Command="{Binding AddWeatherSensor}">
+      Ajouter une voie Weather
+    </Button>
+
+    <Button Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="3"
+            Margin="10"
+            Command="{Binding ApplyConfiguration}">
+      Appliquer la configuration
+    </Button>
+
+  </Grid>
+
+</UserControl>

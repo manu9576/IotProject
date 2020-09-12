@@ -13,14 +13,14 @@
 
   <Design.DataContext>
     <vm:MainWindowViewModel/>
-
   </Design.DataContext>
 
-  <Grid ColumnDefinitions="*" 
+  <Grid ColumnDefinitions="*,auto,auto" 
         RowDefinitions="auto,*,auto"
         Margin="10">
 
     <Button Grid.Row="0"
+            Grid.Column="2"
             Background="Red"
             Width="60"
             Height="30"
@@ -30,25 +30,24 @@
       X
     </Button>
 
-    <ListBox Grid.Row="1"
-             Items="{Binding SensorsViewModel}"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             Margin="15,20">
-      
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <Border BorderBrush="Red" 
-                  BorderThickness="2" 
-                  CornerRadius="4" 
-                  Margin="10"
-                  Padding="4">
-            <TextBlock Text="{Binding Text}"  FontSize="60" TextAlignment="Center"/>
-          </Border>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+    <ContentControl
+        Grid.Row="1"
+        Grid.Column="0"
+        Grid.ColumnSpan="3"
+        Content="{Binding Content}">
+    </ContentControl >
 
-    <TextBlock Grid.Row="4" 
+    <Button Grid.Row="2" 
+            Grid.Column="1"
+            Command="{Binding SwitchDisplay}"
+            Margin="10,0,10,0">
+      <Grid>
+        <Image Width="30" Height="30" IsVisible="{Binding !IsConfigMode}" Source="/Assets/config.png"></Image>
+        <Image Width="30" Height="30" IsVisible="{Binding IsConfigMode}"  Source="/Assets/values.png"></Image>
+      </Grid>
+    </Button>    
+
+    <TextBlock Grid.Row="2" 
                Grid.Column="2"
                TextAlignment="Right"
                Text="{Binding TimeOfDay}"

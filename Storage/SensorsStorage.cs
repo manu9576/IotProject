@@ -28,24 +28,17 @@ namespace Storage
             return sensorsStorage;
         }
 
-        public void Start(int intervalInSeconds)
+        public static int GetNewSensorId(string sensorName)
         {
-            PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
-        }
-
-        private Dictionary<Sensor, ISensor> ReadSensors(SensorsContext db)
-        {
-            var sensors = new Dictionary<Sensor, ISensor>();
-
             Device device;
-
+            var db = new SensorsContext();
             string deviceName = Environment.MachineName;
 
             if (!db.Devices.Any(dev => dev.Name == deviceName))
             {
                 device = new Device
                 {
-                    Name = deviceName
+                    Name = deviceName           
                 };
 
                 db.Devices.Add(device);
@@ -56,25 +49,50 @@ namespace Storage
                 device = db.Devices.FirstOrDefault(dev => dev.Name == deviceName);
             }
 
+            var dbSensor = new Sensor
+            {
+                Name = sensorName
+            };
+            device.Sensors.Add(dbSensor);
+
+            db.SaveChanges();
+
+            return dbSensor.SensorId;
+        }
+
+        public void Start(int intervalInSeconds)
+        {
+            PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
+        }
+
+        public void Stop()
+        {
+            cancellationTokenSource.Cancel();
+        }
+
+        private Dictionary<Sensor, ISensor> ReadSensors(SensorsContext db)
+        {
+            var sensors = new Dictionary<Sensor, ISensor>();
             var deviceSensors = SensorsManager.Sensors.ToList();
             Sensor dbSensor = null;
 
             foreach (var sensor in deviceSensors)
             {
-
                 dbSensor = db.Sensors.FirstOrDefault(sens =>
-                sens.Name == sensor.Name &&
-                sens.Device == device);
+                    sens.SensorId == sensor.SensorId);
 
                 if (dbSensor == null)
                 {
-                    dbSensor = new Sensor
-                    {
-                        Name = sensor.Name,
-                        Unit = sensor.Unit
-                    };
+                    //TODO: improve error management
+                    Console.WriteLine("Error while reading sensor: sensor not found " + sensor.SensorId);
+                    continue;
+                }
 
-                    device.Sensors.Add(dbSensor);
+                if(dbSensor.Name != sensor.Name || dbSensor.Unit != sensor.Unit)
+                {
+                    dbSensor.Name = sensor.Name;
+                    dbSensor.Unit = sensor.Unit;
+
                     db.SaveChanges();
                 }
 
@@ -84,12 +102,7 @@ namespace Storage
             return sensors;
         }
 
-        public void Stop()
-        {
-            cancellationTokenSource.Cancel();
-        }
-
-        void PeriodicMesureTask(int intervalInMS, CancellationToken cancellationToken)
+        private void PeriodicMesureTask(int intervalInMS, CancellationToken cancellationToken)
         {
 
             Task.Run(async () =>

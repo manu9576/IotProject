@@ -1,8 +1,6 @@
 ﻿using ReactiveUI;
-using Sensors;
 using Storage;
 using System;
-using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,14 +9,19 @@ namespace IotProject.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        ViewModelBase content;
         private readonly CancellationTokenSource cancellationTokenSource;
         private string _timeOfDay;
+        private string _iconPath;
         private readonly SensorsStorage sensorsStorage;
+        public SensorsConfigurationViewModel SensorsConfigurationViewModel { get; }
+        public SensorsMeasureViewModel SensorsMeasureViewModel {get;}
+        public bool _isConfigMode;
 
-        public ObservableCollection<SensorViewModel> SensorsViewModel
+        public ViewModelBase Content
         {
-            get;
-            private set;
+            get => content;
+            private set => this.RaiseAndSetIfChanged(ref content, value);
         }
 
         public string TimeOfDay
@@ -27,21 +30,31 @@ namespace IotProject.ViewModels
             set => this.RaiseAndSetIfChanged(ref _timeOfDay, value);
         }
 
-        public ReactiveCommand<Unit, Unit> Close { get; }
+        public bool IsConfigMode
+        {
+            get => _isConfigMode;
+            set => this.RaiseAndSetIfChanged(ref _isConfigMode, value);
+    }
+
+    public ReactiveCommand<Unit, Unit> Close { get; }
+
+        public ReactiveCommand<Unit, Unit> SwitchDisplay { get; }
 
         public MainWindowViewModel()
         {
             cancellationTokenSource = new CancellationTokenSource();
-            SensorsViewModel = new ObservableCollection<SensorViewModel>();
 
-            foreach (var sensor in SensorsManager.Sensors)
-            {
-                SensorsViewModel.Add(new SensorViewModel(sensor));
-            }
+            Close = ReactiveCommand.Create(RunClose);
+            SwitchDisplay = ReactiveCommand.Create(SwitchingDisplay);
+
+            SensorsConfigurationViewModel = new SensorsConfigurationViewModel();
+            SensorsMeasureViewModel = new SensorsMeasureViewModel();
+
+            Content = SensorsMeasureViewModel;
 
             Task.Run(() => UpdateValues(900, cancellationTokenSource.Token));
 
-            Close = ReactiveCommand.Create(RunClose);
+            IsConfigMode = false;
 
 #if DEBUG
             sensorsStorage = SensorsStorage.GetInstance();
@@ -50,9 +63,31 @@ namespace IotProject.ViewModels
 #else
             sensorsStorage = SensorsStorage.GetInstance();
             sensorsStorage.Start(1800);
-
 #endif
         }
+
+        private void SwitchingDisplay()
+        {
+            if (IsConfigMode)
+            {
+                Content = SensorsMeasureViewModel;
+                IsConfigMode = false;
+            }
+            else
+            {
+                Content = SensorsConfigurationViewModel;
+                IsConfigMode = true;
+            }
+        }
+
+
+        private void RunClose()
+        {
+            sensorsStorage.Stop();
+            cancellationTokenSource.Cancel();
+            Environment.Exit(0);
+        }
+
 
         private void UpdateValues(int intervalInMS, CancellationToken cancellationToken)
         {
@@ -60,12 +95,7 @@ namespace IotProject.ViewModels
             {
                 while (true)
                 {
-
                     TimeOfDay = DateTime.Now.ToString("dd/MM/yy HH:mm:ss");
-                    foreach (var vm in SensorsViewModel)
-                    {
-                        vm.Refresh();
-                    }
 
                     await Task.Delay(intervalInMS, cancellationToken);
 
@@ -73,13 +103,6 @@ namespace IotProject.ViewModels
                         break;
                 }
             });
-        }
-
-        void RunClose()
-        {
-            sensorsStorage.Stop();
-            cancellationTokenSource.Cancel();
-            Environment.Exit(0);
         }
     }
 

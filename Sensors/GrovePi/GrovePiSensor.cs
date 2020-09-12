@@ -1,15 +1,14 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
-using Iot.Device.GrovePiDevice.Sensors;
-using Sensors.Weather;
 
 namespace Sensors.GrovePi
 {
-    public abstract class GrovePiSensor : ISensor
+    public abstract class GrovePiSensor
     {
-        protected GrovePiSensor(string name, string unit, SensorType sensorType, GrovePort port)
+        protected GrovePiSensor(string name, string unit, int sensorId, SensorType sensorType, GrovePort port)
         {
             Name = name;
             Unit = unit;
+            SensorId = sensorId;
             SensorType = sensorType;
             Port = port;
         }
@@ -18,6 +17,7 @@ namespace Sensors.GrovePi
         public GrovePort Port { get; }
         public string Name { get; }
         public string Unit { get; }
+        public int SensorId { get; set; }
 
         public abstract double Value { get; }
         public abstract void Refresh();

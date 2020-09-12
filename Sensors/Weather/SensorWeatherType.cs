@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sensors.Weather
+﻿namespace Sensors.Weather
 {
     public enum SensorWeatherType 
     {

@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DefaultConfiguration.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DefaultConfiguration.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GrovePiDevice\GrovePiDevice.csproj" />
   </ItemGroup>
 

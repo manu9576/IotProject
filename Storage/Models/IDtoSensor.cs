@@ -2,8 +2,8 @@
 {
     public interface IDtoSensor
     {
-        public int SensorId { get; set; }
-        public string Name { get; set; }
-        public string Unit { get; set; }
+        int SensorId { get; set; }
+        string Name { get; set; }
+        string Unit { get; set; }
     }
 }

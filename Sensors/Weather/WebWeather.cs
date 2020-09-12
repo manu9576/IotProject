@@ -1,15 +1,18 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Net;
 using System.Xml;
 
 namespace Sensors.Weather
 {
-    internal class WebWeather : IRefresher
+    internal class WebWeather : IRefresher, INotifyPropertyChanged
     {
         private const string OpenWeatherKey = "adac93f3a057d268edd730c32733714e";
         private const string URL = "http://api.openweathermap.org/data/2.5/weather?q=@LOC@&mode=xml&units=metric&APPID=@API_KEY@";
 
         private XmlDocument xmlDocument;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         internal WebWeather()
         {
@@ -31,6 +34,8 @@ namespace Sensors.Weather
 
             xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xml);
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
 
         private string GetNodeValue(string[] nodesName, string attribute)

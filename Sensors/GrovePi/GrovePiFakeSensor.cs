@@ -1,20 +1,26 @@
 ﻿using Sensors.Weather;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Sensors.GrovePi
 {
-    public class GrovePiFakeSensor : ISensor, IRefresher
+    public class GrovePiFakeSensor : ISensor, IRefresher, INotifyPropertyChanged
     {
         private readonly SensorType sensorType;
         private readonly Random rand;
         private readonly double maxValue;
         private double value;
+        private string name;
 
-        public GrovePiFakeSensor(SensorType sensorType, string name)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public GrovePiFakeSensor(SensorType sensorType, string name, int sensorId)
         {
             this.sensorType = sensorType;
             Name = name;
             rand = new Random();
+            SensorId = sensorId;
 
             switch (sensorType)
             {
@@ -43,13 +49,29 @@ namespace Sensors.GrovePi
             }
         }
 
-        public string Name { get; private set; }
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                this.name = value;
+                OnPropertyChanged();
+            }
+        }
 
         public double Value
         {
             get
             {
                 return value;
+            }
+            private set
+            {
+                this.value = value;
+                OnPropertyChanged();
             }
         }
 
@@ -76,14 +98,21 @@ namespace Sensors.GrovePi
                     case SensorType.LightSensor:
                     case SensorType.SoundSensor:
                     default:
-                        throw new Exception("Sensor type '" + sensorType + "' is not implemented");   
+                        throw new Exception("Sensor type '" + sensorType + "' is not implemented");
                 }
             }
         }
 
+        public int SensorId { get; set; }
+
         public void Refresh()
         {
-            value = rand.NextDouble() * maxValue;
+            Value = rand.NextDouble() * maxValue;
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

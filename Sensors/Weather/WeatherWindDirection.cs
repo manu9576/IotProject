@@ -1,15 +1,27 @@
-﻿namespace Sensors.Weather
+﻿using System.ComponentModel;
+
+namespace Sensors.Weather
 {
-    internal class WeatherWindDirection: ISensor
+    internal class WeatherWindDirection : ISensor, INotifyPropertyChanged
     {
         private readonly WebWeather webWeather;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        internal WeatherWindDirection(WebWeather webWeather)
+        internal WeatherWindDirection(WebWeather webWeather, string name, int sensorId)
         {
             this.webWeather = webWeather;
+            this.Name = name;
+            SensorId = sensorId;
+            this.webWeather.PropertyChanged += WebWeather_PropertyChanged;
         }
 
-        public string Name => "Weather Wind Direction";
+        private void WebWeather_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
+        }
+
+        public string Name { get; }
+        public int SensorId { get; set; }
 
         public double Value
         {

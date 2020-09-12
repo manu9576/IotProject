@@ -1,13 +1,16 @@
 ﻿using Iot.Device.GrovePiDevice.Models;
 using Iot.Device.GrovePiDevice.Sensors;
 using Sensors.Weather;
+using System.ComponentModel;
 
 namespace Sensors.GrovePi
 {
-    internal class GrovePiDthTemperatureSensor : GrovePiSensor, IRefresher
+    internal class GrovePiDthTemperatureSensor : GrovePiSensor, IRefresher, ISensor
     {
-        public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name, GrovePort port)
-            : base(name, "°C", SensorType.DhtTemperatureSensor, port)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name, int sensorId, GrovePort port)
+            : base(name, "°C", sensorId, SensorType.DhtTemperatureSensor, port)
         {
             this.DhtSensor = dhtSensor;
         }
@@ -19,6 +22,7 @@ namespace Sensors.GrovePi
         public override void Refresh()
         {
             DhtSensor.Read();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
     }
 }
