@@ -12,13 +12,19 @@ namespace Sensors.Configuration
         private const string DEFAULT_CONFIGURATION_FILE = "DefaultConfiguration.xml";
         private const string CONFIGURATION_FILE = "Configuration.xml";
 
+        private readonly static string _configFolder;
+
         public List<SensorConfiguration> Sensors { get; set; }
+
+        static SensorsConfiguration()
+        {
+            _configFolder = AppDomain.CurrentDomain.BaseDirectory;
+        }
 
         public SensorsConfiguration()
         {
             Sensors = new List<SensorConfiguration>();
         }
-
 
         public static SensorsConfiguration Load()
         {
@@ -26,20 +32,18 @@ namespace Sensors.Configuration
 
             try
             {
-                var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(SensorsConfiguration));
 
                 if (File.Exists(CONFIGURATION_FILE))
                 {
-                    using (StreamReader streamReader = new StreamReader(Path.Combine(baseDir, CONFIGURATION_FILE)))
+                    using (StreamReader streamReader = new StreamReader(Path.Combine(_configFolder, CONFIGURATION_FILE)))
                     {
                         readedConfiguration = xmlSerializer.Deserialize(streamReader) as SensorsConfiguration;
                     }
                 }
                 else
                 {
-                    using (StreamReader streamReader = new StreamReader(Path.Combine(baseDir, DEFAULT_CONFIGURATION_FILE)))
+                    using (StreamReader streamReader = new StreamReader(Path.Combine(_configFolder, DEFAULT_CONFIGURATION_FILE)))
                     {
                         readedConfiguration = xmlSerializer.Deserialize(streamReader) as SensorsConfiguration;
                     }
@@ -64,7 +68,7 @@ namespace Sensors.Configuration
             try
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(SensorsConfiguration));
-                using (StreamWriter streamWriter = new StreamWriter(CONFIGURATION_FILE))
+                using (StreamWriter streamWriter = new StreamWriter(Path.Combine(_configFolder, CONFIGURATION_FILE)))
                 {
                     xmlSerializer.Serialize(streamWriter, this);
                 }
