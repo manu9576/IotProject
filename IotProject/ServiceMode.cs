@@ -49,7 +49,7 @@ namespace IotProject
             rgbDisplay.SetBacklightRgb(10, 10, 10);
             Task.Run(async () =>
             {
-                while (true)
+                while (!cancellationToken.IsCancellationRequested)
                 {
                     try
                     {
@@ -59,8 +59,6 @@ namespace IotProject
                             await Task.Delay(intervalInMS, cancellationToken);
                         }
 
-                        if (cancellationToken.IsCancellationRequested)
-                            break;
                     }
                     catch(Exception ex)
                     {
