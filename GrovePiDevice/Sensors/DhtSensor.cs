@@ -63,6 +63,7 @@ namespace Iot.Device.GrovePiDevice.Sensors
             // Wait a little bit to read the result
             // Delay from source code, line 90 in the Grove Pi firmware repository
             // This is needed for firmware 1.4.0 and also working for prevThread.Sleep(500);
+            Thread.Sleep(300);
             var retArray = _grovePi.ReadCommand(GrovePiCommand.DhtTemp, _port);
 
             var temp = BitConverter.ToSingle(retArray.AsSpan(1, 4));
