@@ -6,9 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="IotProject.Views.MainWindow"
         Icon="/Assets/WindIcon.ico"
-        WindowState="Maximized"
         Topmost="True"
-        HasSystemDecorations="False"
         Title="IotProject">
 
   <Design.DataContext>
@@ -16,28 +14,17 @@
   </Design.DataContext>
 
   <Grid ColumnDefinitions="*,auto,auto" 
-        RowDefinitions="auto,*,auto"
+        RowDefinitions="*,auto"
         Margin="10">
 
-    <Button Grid.Row="0"
-            Grid.Column="2"
-            Background="Red"
-            Width="60"
-            Height="30"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding Close}">
-      X
-    </Button>
-
     <ContentControl
-        Grid.Row="1"
+        Grid.Row="0"
         Grid.Column="0"
         Grid.ColumnSpan="3"
         Content="{Binding Content}">
     </ContentControl >
 
-    <Button Grid.Row="2" 
+    <Button Grid.Row="1" 
             Grid.Column="1"
             Command="{Binding SwitchDisplay}"
             Margin="10,0,10,0">
@@ -47,7 +34,7 @@
       </Grid>
     </Button>    
 
-    <TextBlock Grid.Row="2" 
+    <TextBlock Grid.Row="1" 
                Grid.Column="2"
                TextAlignment="Right"
                Text="{Binding TimeOfDay}"

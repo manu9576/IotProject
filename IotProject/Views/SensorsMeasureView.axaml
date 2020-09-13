@@ -6,13 +6,14 @@
              x:Class="IotProject.Views.SensorsMeasureView"
              FontSize="20">
 
-  <StackPanel Margin="15,20">
+  <Grid RowDefinitions="auto *"
+        Margin="15,20">
 
-    <TextBlock>Affichage des mesures</TextBlock>
+    <TextBlock Grid.Row="0">Affichage des mesures</TextBlock>
+    
     <ListBox Grid.Row="1"
-           Grid.ColumnSpan="3"
-           Items="{Binding Sensors}"
-           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+             Items="{Binding Sensors}"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -32,6 +33,6 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-  </StackPanel>
+  </Grid>
   
 </UserControl>
