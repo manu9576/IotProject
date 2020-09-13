@@ -26,7 +26,7 @@ class Sensor {
         this.pointStyle = 'rectRounded';
         this.lineTension = 0;
         this.lastMeasure = 0;
-
+        console.log('New sensor : ' + this.label + ' color ' + this.borderColor);
         sensorCount++;
     }
 }

@@ -44,42 +44,42 @@ namespace Sensors.Weather
 
             var node = xmlDocument.DocumentElement.SelectSingleNode(xpath);
 
-            return node.Attributes[attribute].Value;
+            return node.Attributes[attribute]?.Value;
         }
 
         public double GetTemperature()
         {
             var temperature = GetNodeValue(new string[] { "temperature" }, "value");
 
-            return double.Parse(temperature, CultureInfo.InvariantCulture);
+            return temperature != null ? double.Parse(temperature, CultureInfo.InvariantCulture) : double.NaN;
         }
 
         public double GetHumidity()
         {
             var humidity = GetNodeValue(new string[] { "humidity" }, "value");
 
-            return double.Parse(humidity, CultureInfo.InvariantCulture);
+            return humidity != null ? double.Parse(humidity, CultureInfo.InvariantCulture) : double.NaN;
         }
 
         public double GetPressure()
         {
             var pressure = GetNodeValue(new string[] { "pressure" }, "value");
 
-            return double.Parse(pressure, CultureInfo.InvariantCulture);
+            return pressure != null ? double.Parse(pressure, CultureInfo.InvariantCulture) : double.NaN;
         }
 
         public double GetWindSpeed()
         {
             var windSpeed = GetNodeValue(new string[] { "wind", "speed" }, "value");
 
-            return double.Parse(windSpeed, CultureInfo.InvariantCulture);
+            return windSpeed != null ? double.Parse(windSpeed, CultureInfo.InvariantCulture) : double.NaN;
         }
 
         public double GetWindDirection()
         {
             var windDirection = GetNodeValue(new string[] { "wind", "direction" }, "value");
 
-            return double.Parse(windDirection, CultureInfo.InvariantCulture);
+            return windDirection != null ? double.Parse(windDirection, CultureInfo.InvariantCulture) : double.NaN;
         }
     }
 }
