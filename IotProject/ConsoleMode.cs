@@ -51,15 +51,28 @@ namespace IotProject
             {
                 while (true)
                 {
-                    foreach (var sensor in sensors)
+                    try
                     {
-                        Console.WriteLine(sensor.Name + ": " + sensor.Value.ToString("0.0") + sensor.Unit);
-                        rgbDisplay.SetText(sensor.Name, sensor.Value.ToString("0.0") + " " + sensor.Unit);
-                        await Task.Delay(intervalInMS, cancellationToken);
-                    }
+                        foreach (var sensor in sensors)
+                        {
+                            rgbDisplay.SetText(sensor.Name, sensor.Value.ToString("0.0") + " " + sensor.Unit);
+                            if (!cancellationToken.IsCancellationRequested)
+                            {
+                                await Task.Delay(intervalInMS, cancellationToken);
+                            }
+                        }
 
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
+                        if (cancellationToken.IsCancellationRequested)
+                            break;
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        Console.WriteLine("IotProject PeriodicRefreshTask has been cancelled");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("IotProject error: " + ex.Message + " - " + ex.StackTrace);
+                    }
                 }
             });
         }
