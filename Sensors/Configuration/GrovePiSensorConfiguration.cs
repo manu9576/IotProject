@@ -42,7 +42,7 @@ namespace Sensors.Configuration
 
         public override string ToString()
         {
-            return "Name= " + Name + " -- id= " + SensorId + " -- SensorType= " + SensorType + " -- GrovePort= " + GrovePort + " -- GroveSensorType= " + GroveSensorType;
+            return "Name= " + Name + " -- id= " + SensorId + " -- SensorType= " + SensorType + " -- GrovePort= " + GrovePort + " -- GroveSensorType= " + GroveSensorType + " -- RgbDisplay " + RgbDisplay;
         }
 
         public override string HashCode

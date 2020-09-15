@@ -8,8 +8,8 @@ namespace Sensors.GrovePi
     internal class GrovePiAnalogTemperature : GrovePiAnalogSensor, IRefresher, ISensor
     {
 
-        internal GrovePiAnalogTemperature(GroveTemperatureSensor analogSensor, string name, int sensorId, GrovePort port)
-            : base(analogSensor, name, sensorId, port)
+        internal GrovePiAnalogTemperature(GroveTemperatureSensor analogSensor, string name, int sensorId, GrovePort port, bool rgbDisplay)
+            : base(analogSensor, name, sensorId, port, rgbDisplay)
         {
         }
         public event PropertyChangedEventHandler PropertyChanged;

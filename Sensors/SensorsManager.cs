@@ -34,7 +34,8 @@ namespace Sensors
                                             grovePiSensorConfiguration.GroveSensorType,
                                             grovePiSensorConfiguration.GrovePort,
                                             grovePiSensorConfiguration.Name,
-                                            grovePiSensorConfiguration.SensorId
+                                            grovePiSensorConfiguration.SensorId,
+                                            grovePiSensorConfiguration.RgbDisplay
                                         ));
                         break;
 
@@ -45,7 +46,8 @@ namespace Sensors
                         Sensors.Add(WeatherSensorBuilder.GetSensor(
                                             openWeatherMapSensorConfiguration.SensorWeatherType,
                                             openWeatherMapSensorConfiguration.Name,
-                                            openWeatherMapSensorConfiguration.SensorId
+                                            openWeatherMapSensorConfiguration.SensorId,
+                                            openWeatherMapSensorConfiguration.RgbDisplay
                                        ));
                         break;
 

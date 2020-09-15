@@ -30,7 +30,7 @@
                   CornerRadius="4"
                   Margin="10"
                   Padding="4">
-            <Grid ColumnDefinitions="auto auto auto auto *">
+            <Grid ColumnDefinitions="auto auto auto auto auto *">
               <TextBlock Grid.Column="0" 
                          Text="Nom du capteur : " 
                          HorizontalAlignment="Center" 
@@ -50,7 +50,10 @@
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"
                         Margin="10 0"/>
-              <Button Grid.Column="4"
+              <CheckBox Grid.Column="4"
+                        Content="Affichage RGB"
+                        IsChecked="{Binding RgbDisplay}"/>
+              <Button Grid.Column="5"
                       Command="{Binding $parent[ListBox].DataContext.RemoveSensor}" 
                       CommandParameter="{Binding HashCode}"
                       Content="X"
@@ -58,6 +61,7 @@
                       HorizontalAlignment="Right"
                       Margin="0 0 3 0"
                       Height="30" Width="30"/>
+
             </Grid>
           </Border>
         </DataTemplate>
@@ -68,7 +72,7 @@
                   CornerRadius="4"
                   Margin="10"
                   Padding="4">
-            <Grid ColumnDefinitions="auto auto auto auto auto *">
+            <Grid ColumnDefinitions="auto auto auto auto auto auto *">
               <TextBlock Grid.Column="0"
                          Text="Nom du capteur : "
                          HorizontalAlignment="Center"
@@ -94,7 +98,10 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Margin="10 0"/>
-              <Button Grid.Column="5"
+              <CheckBox Grid.Column="5"
+                        Content="Affichage RGB"
+                        IsChecked="{Binding RgbDisplay}"/>
+              <Button Grid.Column="6"
                       Command="{Binding $parent[ListBox].DataContext.RemoveSensor}"
                       CommandParameter="{Binding HashCode}"
                       Content="X"
@@ -103,6 +110,7 @@
                       Margin="0 0 3 0"
                       VerticalContentAlignment="Stretch"
                       Height="30" Width="30"/>
+
             </Grid>
           </Border>
         </DataTemplate>

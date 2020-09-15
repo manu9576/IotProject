@@ -7,8 +7,8 @@ namespace Sensors.GrovePi
 {
     internal class GrovePiDthHumiditySensor : GrovePiSensor, IRefresher, ISensor
     {
-        public GrovePiDthHumiditySensor(DhtSensor dhtSensor, string name, int sensorId, GrovePort port)
-            : base(name, "%", sensorId, SensorType.DhtHumiditySensor, port)
+        public GrovePiDthHumiditySensor(DhtSensor dhtSensor, string name, int sensorId, GrovePort port, bool rgbDisplay)
+            : base(name, "%", sensorId, SensorType.DhtHumiditySensor, port, rgbDisplay)
         {
             this.DhtSensor = dhtSensor;
         }

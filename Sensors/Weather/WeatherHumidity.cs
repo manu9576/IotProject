@@ -7,12 +7,13 @@ namespace Sensors.Weather
         private readonly WebWeather webWeather;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal WeatherHumidity(WebWeather webWeather, string name, int sensorId)
+        internal WeatherHumidity(WebWeather webWeather, string name, int sensorId, bool rgbDisplay)
         {
             this.webWeather = webWeather;
             this.Name = name;
             this.webWeather.PropertyChanged += WebWeather_PropertyChanged;
             this.SensorId = sensorId;
+            this.RgbDisplay = rgbDisplay;
         }
 
         private void WebWeather_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -29,6 +30,8 @@ namespace Sensors.Weather
                 return webWeather.GetHumidity();
             }
         }
+
+        public bool RgbDisplay { get; private set; }
 
         public string Unit => "%";
 

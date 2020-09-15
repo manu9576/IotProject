@@ -10,8 +10,8 @@ namespace Sensors.GrovePi
         protected AnalogSensor _analogSensor;
         protected double value;
 
-        internal GrovePiAnalogSensor(AnalogSensor analogSensor, string name, int sensorId, GrovePort port):
-            base(name,"V", sensorId, SensorType.AnalogSensor, port)
+        internal GrovePiAnalogSensor(AnalogSensor analogSensor, string name, int sensorId, GrovePort port, bool rgbDisplay) :
+            base(name, "V", sensorId, SensorType.AnalogSensor, port, rgbDisplay)
         {
             _analogSensor = analogSensor;
         }
@@ -25,6 +25,6 @@ namespace Sensors.GrovePi
             value = _analogSensor.Value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
-       
+
     }
 }

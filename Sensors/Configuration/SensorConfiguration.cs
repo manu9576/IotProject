@@ -14,5 +14,6 @@ namespace Sensors.Configuration
         public string Name { get; set; }
         public abstract SensorType SensorType { get; }
         public abstract string HashCode { get; }
+        public bool RgbDisplay { get; set; }
     }
 }

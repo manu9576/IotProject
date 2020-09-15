@@ -7,8 +7,8 @@ namespace Sensors.GrovePi
 {
     internal class GrovePiAnalogPotentiometer : GrovePiAnalogSensor, IRefresher, ISensor
     {
-        internal GrovePiAnalogPotentiometer(PotentiometerSensor analogSensor, string name, int sensorId, GrovePort port)
-            : base(analogSensor, name, sensorId, port)
+        internal GrovePiAnalogPotentiometer(PotentiometerSensor analogSensor, string name, int sensorId, GrovePort port, bool rgbDisplay)
+            : base(analogSensor, name, sensorId, port, rgbDisplay)
         {
         }
 

@@ -3,6 +3,7 @@ using Sensors.GrovePi;
 using Storage;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,11 +50,12 @@ namespace IotProject
             rgbDisplay.SetBacklightRgb(10, 10, 10);
             Task.Run(async () =>
             {
+
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     try
                     {
-                        foreach (var sensor in sensors)
+                        foreach (var sensor in sensors.Where(sen => sen.RgbDisplay))
                         {
                             rgbDisplay.SetText(sensor.Name, sensor.Value.ToString("0.0") + " " + sensor.Unit);
                             if (!cancellationToken.IsCancellationRequested)

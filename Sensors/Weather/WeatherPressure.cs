@@ -7,15 +7,17 @@ namespace Sensors.Weather
         private readonly WebWeather webWeather;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal WeatherPressure(WebWeather webWeather, string name, int sensorId)
+        internal WeatherPressure(WebWeather webWeather, string name, int sensorId, bool rgbDisplay)
         {
             this.webWeather = webWeather;
             this.Name = name;
             this.SensorId = sensorId;
             this.webWeather.PropertyChanged += WebWeather_PropertyChanged;
-        }
+            this.RgbDisplay = rgbDisplay;
 
-        private void WebWeather_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    }
+
+    private void WebWeather_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
@@ -30,6 +32,8 @@ namespace Sensors.Weather
                 return webWeather.GetPressure();
             }
         }
+
+        public bool RgbDisplay { get; private set; }
 
         public string Unit => "hPa";
     }

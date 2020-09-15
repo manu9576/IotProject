@@ -9,13 +9,13 @@ namespace Sensors.GrovePi
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name, int sensorId, GrovePort port)
-            : base(name, "°C", sensorId, SensorType.DhtTemperatureSensor, port)
+        public GrovePiDthTemperatureSensor(DhtSensor dhtSensor, string name, int sensorId, GrovePort port, bool rgbDisplay)
+            : base(name, "°C", sensorId, SensorType.DhtTemperatureSensor, port, rgbDisplay)
         {
             this.DhtSensor = dhtSensor;
         }
 
-        public override double Value =>DhtSensor.LastTemperature;
+        public override double Value => DhtSensor.LastTemperature;
 
         public DhtSensor DhtSensor { get; }
 

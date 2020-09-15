@@ -8,5 +8,6 @@ namespace Sensors
         string Name { get; }
         double Value { get; }
         string Unit { get; }
+        bool RgbDisplay { get; }
     }
 }

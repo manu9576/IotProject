@@ -105,6 +105,14 @@ namespace Sensors.GrovePi
 
         public int SensorId { get; set; }
 
+        public bool RgbDisplay
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public void Refresh()
         {
             Value = rand.NextDouble() * maxValue;
