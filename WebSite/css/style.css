@@ -754,31 +754,67 @@ input[type="reset"]:active,
 }
 
 #legend {
-  font-size: 70%;
-  line-height: 1.1em;
   width: 100%;
   display: grid;
   grid-gap: 10px;
 }
 
 #legend input {
-  font-size: 70%;
-  width: 100px;
+  width: auto;
 }
 
-#legend,
-button {
-  font-size: 70%;
+#legend, button {
   padding: 0.5em !important;
-}
-
-#legend select {
-  font-size: 70%;
 }
 
 #legend fieldset {
   border: solid 1px;
   border-radius: 3px;
+}
+
+#legend .y-axe {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-template-rows: 50% 50%;
+  padding: 5px 0;
+  grid-gap: 10px;
+  overflow: auto;
+  grid-template-areas:
+    ". axe-name axe-name axe-name axe-name axe-name ."
+    ". axe-visibility-checkbox axe-visibility-label axe-range-selection axe-min axe-max .";
+}
+
+#legend .y-axe .axe-name {
+  grid-area: axe-name;
+  font-weight: bold;
+}
+
+#legend .y-axe .axe-visibility-checkbox {
+  grid-area: axe-visibility-checkbox;
+  justify-self: end;
+}
+
+#legend .y-axe .axe-visibility-label {
+  grid-area: axe-visibility-label;
+  justify-self: start;
+  width: auto;
+  padding-top: 3px;
+}
+
+#legend .y-axe .axe-range-selection {
+  grid-area: axe-range-selection;
+}
+
+#legend .y-axe .axe-min {
+  grid-area: axe-min;
+  height: auto;
+  width: 4em;
+}
+
+#legend .y-axe .axe-max {
+  grid-area: axe-max;
+  height: auto;
+  width: 4em;
 }
 
 #sensors-table-content .yAxeColor {
@@ -823,49 +859,6 @@ button {
 #button {
   padding: 10px;
   margin-top: 10px;
-}
-
-#legend .y-axe {
-  display: grid;
-  grid-template-columns: 10px auto auto auto auto auto 10px;
-  grid-template-rows: 50% 50%;
-  padding: 5px 0;
-  grid-gap: 10px;
-  grid-template-areas:
-    ". axe-name axe-name axe-name axe-name axe-name ."
-    ". axe-visibility-checkbox axe-visibility-label axe-range-selection axe-min axe-max .";
-}
-
-#legend .y-axe .axe-name {
-  grid-area: axe-name;
-  font-weight: bold;
-}
-
-#legend .y-axe .axe-visibility-checkbox {
-  grid-area: axe-visibility-checkbox;
-  justify-self: end;
-  width: auto;
-}
-
-#legend .y-axe .axe-visibility-label {
-  grid-area: axe-visibility-label;
-  justify-self: start;
-  width: auto;
-  padding-top: 3px;
-}
-
-#legend .y-axe .axe-range-selection {
-  grid-area: axe-range-selection;
-}
-
-#legend .y-axe .axe-min {
-  grid-area: axe-min;
-  height: auto;
-}
-
-#legend .y-axe .axe-max {
-  grid-area: axe-max;
-  height: auto;
 }
 
 #char {
