@@ -735,20 +735,30 @@ input[type="reset"]:active,
 }
 
 #legend {
-  width: 100%;
-  display: grid;
   grid-template-columns: 60% 40%;
-  grid-template-rows: auto auto auto;
-  grid-gap: 10px;
+  grid-template-rows: auto  auto;
   grid-template-areas:
-    "legend-left legend-right1"
-    "legend-left legend-right2"
-    "legend-bottom legend-bottom";
+    "sensors-list axesY-configuration"
+    "sensors-list axeX-configuration";
+}
+
+@media screen and (max-width: 900px) {
+  #legend {
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "sensors-list"
+      "axesY-configuration"
+      "axeX-configuration";
+  }
 }
 
 #legend {
   font-size: 70%;
   line-height: 1.1em;
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
 }
 
 #legend input {
@@ -778,7 +788,7 @@ button {
 }
 
 #sensor-list {
-  grid-area: legend-left;
+  grid-area: sensors-list;
   padding: 5px 20px;
   overflow: auto;
 }
@@ -789,13 +799,13 @@ button {
 }
 
 #yAxes-config {
-  grid-area: legend-right1;
+  grid-area: axesY-configuration;
   width: 100%;
   padding: 5px 20px;
 }
 
 #xAxes-config {
-  grid-area: legend-right2;
+  grid-area: axeX-configuration;
   width: 100%;
   padding: 5px 20px;
 }
