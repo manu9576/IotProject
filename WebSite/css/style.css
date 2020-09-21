@@ -51,16 +51,6 @@ h6 {
   line-height: 1.5em;
 }
 
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
-  color: inherit;
-  text-decoration: none;
-}
-
 h1 strong,
 h2 strong,
 h3 strong,
@@ -750,6 +740,20 @@ input[type="reset"]:active,
       "sensors-list"
       "axesY-configuration"
       "axeX-configuration";
+    font-size: x-small;
+
+  }
+
+  #legend input{
+    font-size:  x-small;
+  }
+
+  #legend select{
+    font-size:  x-small;
+  }
+
+  #legend .y-axe {
+    grid-gap: 3px;
   }
 }
 
@@ -778,7 +782,6 @@ input[type="reset"]:active,
   grid-template-rows: 50% 50%;
   padding: 5px 0;
   grid-gap: 10px;
-  overflow: auto;
   grid-template-areas:
     ". axe-name axe-name axe-name axe-name axe-name ."
     ". axe-visibility-checkbox axe-visibility-label axe-range-selection axe-min axe-max .";
@@ -846,19 +849,8 @@ input[type="reset"]:active,
   padding: 5px 20px;
 }
 
-#update-chart {
-  grid-area: legend-bottom;
-  padding: 5px 20px;
-  width: 100%;
-}
-
 #last-value-list {
   padding: 10px;
-}
-
-#button {
-  padding: 10px;
-  margin-top: 10px;
 }
 
 #char {
