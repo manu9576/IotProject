@@ -20,21 +20,21 @@ Vue.component('sensor-list', {
         <div id="sensors-table">
             <table>
             
-            <tr>
-                <th>Nom du capteur</th>
-                <th>Unité</th>
-                <th>Affichage</th>
-                <th>Couleur</th>
-                <th>Axe-Y</th>
-            </tr>
+                <tr>
+                    <th>Nom du capteur</th>
+                    <th>Unité</th>
+                    <th>Affichage</th>
+                    <th>Couleur</th>
+                    <th>Axe-Y</th>
+                </tr>
 
-            <sensor-detail
-                id="sensors-table-content"
-                v-for="(sensor) in sensors" 
-                :key="sensor.id" :sensor="sensor" 
-                :yAxes="yAxes"
-                v-on:updateRequest="updateRequest">
-            </sensor-detail>
+                <sensor-detail
+                    id="sensors-table-content"
+                    v-for="(sensor) in sensors" 
+                    :key="sensor.id" :sensor="sensor" 
+                    :yAxes="yAxes"
+                    v-on:updateRequest="updateRequest">
+                </sensor-detail>
 
             </table>
         </div>    
