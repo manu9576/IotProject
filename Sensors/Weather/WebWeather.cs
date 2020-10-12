@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Net;
 using System.Xml;
@@ -27,15 +28,22 @@ namespace Sensors.Weather
         // Return the XML result of the URL.
         private void ReadWeather(string url)
         {
-            // Create a web client.
-            using WebClient client = new WebClient();
-            // Get the response string from the URL.
-            string xml = client.DownloadString(url);
+            try
+            {
+                // Create a web client.
+                using WebClient client = new WebClient();
+                // Get the response string from the URL.
+                string xml = client.DownloadString(url);
 
-            xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
+                xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(xml);
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("IOT: Exception during reading Weather: " + ex.Message);
+            }
         }
 
         private string GetNodeValue(string[] nodesName, string attribute)
