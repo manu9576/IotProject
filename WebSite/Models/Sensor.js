@@ -22,7 +22,7 @@ class Sensor {
         this.data = [];
         this.fill = sensorColor[sensorCount % sensorColor.length];
         this.borderWidth = 2;
-        this.pointRadius = 3;
+        this.pointRadius = 0;
         this.pointStyle = 'rectRounded';
         this.lineTension = 0;
         this.lastMeasure = 0;
