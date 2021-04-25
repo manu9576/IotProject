@@ -50,7 +50,6 @@ class ChartHelper {
             distribution: 'linear',
             time: {
                 unit: 'day',
-                unitStepSize: 1,
                 displayFormats: {
                     day: 'dddd DD MMM'
                 }
