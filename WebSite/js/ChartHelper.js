@@ -17,7 +17,7 @@ class ChartHelper {
         this.ctx = chart.getContext('2d');
 
         this.tooltips = {
-            mode: 'index',
+            mode: 'point',
             callbacks: {
                 label: function (tooltipItem, data) {
                     var label = data.datasets[tooltipItem.datasetIndex].label || '';
