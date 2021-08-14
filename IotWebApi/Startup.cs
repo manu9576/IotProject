@@ -45,14 +45,15 @@ namespace IotWebApi
             Configuration.Bind("ConnectionStrings", connectionStrings);
             services.AddSingleton(connectionStrings);
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "MyPolicy",
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost");
-                                  });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: "localhost",
+            //                      builder =>
+            //                      {
+            //                          builder.WithOrigins("http://localhost");
+            //                      });
+
+            //});
 
             services.AddControllers();
             services.AddMvc();

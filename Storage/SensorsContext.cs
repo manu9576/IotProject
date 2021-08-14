@@ -16,9 +16,9 @@ namespace Storage
         {
             // at startup the network should be not started
             // we wait to detect server before create 
-            WaitServerDetection("rasp4");
+            WaitServerDetection("Odroid");
 
-            options.UseMySql("Server=rasp4;User Id=SensorsUser;Password=15973;Database=Sensors");
+            options.UseMySql("Server=Odroid;User Id=SensorsUser;Password=cdsfdsfklhjlgd\"443_; Database=Sensors");
         }
 
         private void WaitServerDetection(string serverName)
