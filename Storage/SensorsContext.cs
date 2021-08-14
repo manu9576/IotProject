@@ -18,7 +18,7 @@ namespace Storage
             // we wait to detect server before create 
             WaitServerDetection("Odroid");
 
-            options.UseMySql("Server=Odroid;User Id=SensorsUser;Password=15973;Database=Sensors");
+            options.UseMySql("Server=Odroid;User Id=SensorsUser;Password=cdsfdsfklhjlgd\"443_; Database=Sensors");
         }
 
         private void WaitServerDetection(string serverName)
