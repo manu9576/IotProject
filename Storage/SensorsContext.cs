@@ -12,13 +12,14 @@ namespace Storage
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<Measure> Measures { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // at startup the network should be not started
             // we wait to detect server before create 
             WaitServerDetection("Odroid");
 
-            options.UseMySql("Server=Odroid;User Id=SensorsUser;Password=cdsfdsfklhjlgd\"443_; Database=Sensors");
+            optionsBuilder.UseMySql("Server=Odroid;User Id=SensorsUser;Password=cdsfdsfklhjlgd\"443_; Database=Sensors",
+                                options => options.EnableRetryOnFailure());
         }
 
         private void WaitServerDetection(string serverName)
