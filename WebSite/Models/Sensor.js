@@ -1,5 +1,5 @@
 let sensorCount = 0;
-sensorColor = [
+const sensorColor = [
     "#FF0000",
     "#00FF00",
     "#0000FF",
