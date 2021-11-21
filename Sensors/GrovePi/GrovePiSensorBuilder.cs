@@ -21,12 +21,12 @@ namespace Sensors.GrovePi
         {
 
 #if DEBUG
-            var fakeSensor = new GrovePiFakeSensor(sensorType, name, sensorId);
+            GrovePiFakeSensor fakeSensor = new GrovePiFakeSensor(sensorType, name, sensorId);
             refresher.AddSensor(fakeSensor);
             return fakeSensor;
 #endif
 
-            var grovePi = GrovePiDevice.GetGrovePi();
+            Iot.Device.GrovePiDevice.GrovePi grovePi = GrovePiDevice.GetGrovePi();
 
             switch (sensorType)
             {

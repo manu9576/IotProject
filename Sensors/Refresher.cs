@@ -19,6 +19,10 @@ namespace Sensors
             {
                 sensors.Add(sensor);
             }
+            else
+            {
+                Console.WriteLine("Refresher: Warning Adding already present sensor");
+            }
         }
 
         public void Start(int intervalInMs = 5000)
@@ -28,34 +32,34 @@ namespace Sensors
                 throw new Exception("The refresher is already running");
             }
 
-            isRunning = true;
             PeriodicRefreshTask(intervalInMs, cancellationTokenSource.Token);
         }
 
         public void Stop()
         {
-            isRunning = false;
             cancellationTokenSource.Cancel();
             cancellationTokenSource = new CancellationTokenSource();
         }
 
-        private void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
+        private async void PeriodicRefreshTask(int intervalInMS, CancellationToken cancellationToken)
         {
-            Task.Run(async () =>
+            isRunning = true;
+            while (!cancellationToken.IsCancellationRequested)
             {
-                while (true)
+                foreach (var sensor in sensors)
                 {
-                    foreach (var sensor in sensors)
+                    try
                     {
                         sensor.Refresh();
                     }
-
-                    await Task.Delay(intervalInMS, cancellationToken);
-
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error while refreshing sensor " + ex.Message);
+                    }
                 }
-            });
+                await Task.Delay(intervalInMS, cancellationToken);
+            }
+            isRunning = false;
         }
     }
 }

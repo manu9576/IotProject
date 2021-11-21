@@ -1,43 +1,17 @@
 ﻿using System.ComponentModel;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Sensors.Weather
 {
-    internal class WeatherWindSpeed : ISensor, INotifyPropertyChanged
+    internal class WeatherWindSpeed : WeatherSensor, INotifyPropertyChanged
     {
-        private readonly WebWeather webWeather;
-        public event PropertyChangedEventHandler PropertyChanged;
+        private const double CONVERT_MS_TO_KMH = 3.6;
 
-        internal WeatherWindSpeed(WebWeather webWeather, string name, int sensorId, bool rgbDisplay)
-        {
-            this.webWeather = webWeather;
-            this.Name = name;
-            this.SensorId = sensorId;
-            this.webWeather.PropertyChanged += WebWeather_PropertyChanged;
-            this.RgbDisplay = rgbDisplay;
-        }
+        internal WeatherWindSpeed(WebWeather webWeather, string name, int sensorId, bool rgbDisplay) 
+            : base(webWeather, name, sensorId, rgbDisplay)
+        { }
 
-        private void WebWeather_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
-        }
+        public override double Value => webWeather.GetWindSpeed() * CONVERT_MS_TO_KMH;
 
-        public string Name { get; }
-
-        public double Value
-        {
-            get
-            {
-                return webWeather.GetWindSpeed() * 3.6;
-            }
-        }
-
-        public string Unit => "km/h";
-
-        public int SensorId { get; set; }
-
-        public bool RgbDisplay { get; private set; }
-
-
+        public override string Unit => "km/h";
     }
 }

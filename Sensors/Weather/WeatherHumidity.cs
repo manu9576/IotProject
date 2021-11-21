@@ -2,39 +2,14 @@
 
 namespace Sensors.Weather
 {
-    internal class WeatherHumidity : ISensor, INotifyPropertyChanged
+    internal class WeatherHumidity : WeatherSensor, INotifyPropertyChanged
     {
-        private readonly WebWeather webWeather;
-        public event PropertyChangedEventHandler PropertyChanged;
-
         internal WeatherHumidity(WebWeather webWeather, string name, int sensorId, bool rgbDisplay)
-        {
-            this.webWeather = webWeather;
-            this.Name = name;
-            this.webWeather.PropertyChanged += WebWeather_PropertyChanged;
-            this.SensorId = sensorId;
-            this.RgbDisplay = rgbDisplay;
-        }
+            : base(webWeather, name, sensorId, rgbDisplay)
+        { }
 
-        private void WebWeather_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
-        }
+        public override double Value => webWeather.GetHumidity();
 
-        public string Name { get; set; }
-
-        public double Value
-        {
-            get
-            {
-                return webWeather.GetHumidity();
-            }
-        }
-
-        public bool RgbDisplay { get; private set; }
-
-        public string Unit => "%";
-
-        public int SensorId { get; set; }
+        public override string Unit => "%";
     }
 }

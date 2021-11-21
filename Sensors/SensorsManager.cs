@@ -1,15 +1,12 @@
 ﻿using Sensors.Configuration;
-using Sensors.GrovePi;
-using Sensors.Weather;
-using System;
 using System.Collections.ObjectModel;
 
 namespace Sensors
 {
     public static class SensorsManager
     {
-        public static ObservableCollection<ISensor> Sensors { private set; get; }
-        public static SensorsConfiguration SensorsConfiguration { private set; get; }
+        public static ObservableCollection<ISensor> Sensors { get; }
+        private static SensorsConfiguration _sensorsConfiguration;
 
         static SensorsManager()
         {
@@ -20,40 +17,13 @@ namespace Sensors
         static public void ReloadConfiguration()
         {
             Sensors.Clear();
-            SensorsConfiguration = SensorsConfiguration.Load();
+            _sensorsConfiguration = SensorsConfiguration.Load();
 
-            foreach (var sensorConfiguration in SensorsConfiguration.Sensors)
+            foreach (var sensorConfiguration in _sensorsConfiguration.Sensors)
             {
-                switch (sensorConfiguration.SensorType)
-                {
-                    case Configuration.SensorType.GrovePi:
+                var sensor = SensorsBuilder.GetSensor(sensorConfiguration);
 
-                        var grovePiSensorConfiguration = sensorConfiguration as GrovePiSensorConfiguration;
-
-                        Sensors.Add(GrovePiSensorBuilder.CreateSensor(
-                                            grovePiSensorConfiguration.GroveSensorType,
-                                            grovePiSensorConfiguration.GrovePort,
-                                            grovePiSensorConfiguration.Name,
-                                            grovePiSensorConfiguration.SensorId,
-                                            grovePiSensorConfiguration.RgbDisplay
-                                        ));
-                        break;
-
-                    case Configuration.SensorType.OpenWeatherMap:
-
-                        var openWeatherMapSensorConfiguration = sensorConfiguration as OpenWeatherMapSensorConfiguration;
-
-                        Sensors.Add(WeatherSensorBuilder.GetSensor(
-                                            openWeatherMapSensorConfiguration.SensorWeatherType,
-                                            openWeatherMapSensorConfiguration.Name,
-                                            openWeatherMapSensorConfiguration.SensorId,
-                                            openWeatherMapSensorConfiguration.RgbDisplay
-                                       ));
-                        break;
-
-                    default:
-                        throw new Exception("Unsupported SensorType in SensorsManager");
-                }
+                Sensors.Add(sensor);
             }
         }
     }

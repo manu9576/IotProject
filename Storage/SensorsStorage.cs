@@ -38,7 +38,7 @@ namespace Storage
             {
                 device = new Device
                 {
-                    Name = deviceName           
+                    Name = deviceName    
                 };
 
                 db.Devices.Add(device);

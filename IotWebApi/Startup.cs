@@ -45,20 +45,18 @@ namespace IotWebApi
             Configuration.Bind("ConnectionStrings", connectionStrings);
             services.AddSingleton(connectionStrings);
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy(name: "localhost",
-            //                      builder =>
-            //                      {
-            //                          builder.WithOrigins("http://localhost");
-            //                      });
-
-            //});
 
             services.AddControllers();
             services.AddMvc();
 
-            services.AddDbContext<DbSensorsContext>(opt => opt.UseMySql(connectionStrings.MySql));
+            services.AddDbContext<DbSensorsContext>
+            (
+                opt => opt.UseMySql
+                (
+                    connectionStrings.MySql,
+                    options => options.EnableRetryOnFailure()
+                )
+            );
 
 #if DEBUG
 

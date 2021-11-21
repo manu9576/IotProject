@@ -8,7 +8,7 @@ namespace Sensors.Weather
 {
     internal class WebWeather : IRefresher, INotifyPropertyChanged
     {
-        private const string OpenWeatherKey = "adac93f3a057d268edd730c32733714e";
+        private const string OPEN_WEATHER_KEY = "adac93f3a057d268edd730c32733714e";
         private const string URL = "http://api.openweathermap.org/data/2.5/weather?q=@LOC@&mode=xml&units=metric&APPID=@API_KEY@";
 
         private XmlDocument xmlDocument;
@@ -22,10 +22,9 @@ namespace Sensors.Weather
 
         public void Refresh()
         {
-            ReadWeather(URL.Replace("@LOC@", "Paris").Replace("@API_KEY@", OpenWeatherKey));
+            ReadWeather(URL.Replace("@LOC@", "Paris").Replace("@API_KEY@", OPEN_WEATHER_KEY));
         }
 
-        // Return the XML result of the URL.
         private void ReadWeather(string url)
         {
             try
@@ -48,44 +47,44 @@ namespace Sensors.Weather
 
         private string GetNodeValue(string[] nodesName, string attribute)
         {
-            var xpath = string.Join('/', nodesName);
+            string xpath = string.Join('/', nodesName);
 
-            var node = xmlDocument.DocumentElement.SelectSingleNode(xpath);
+            XmlNode node = xmlDocument.DocumentElement.SelectSingleNode(xpath);
 
             return node.Attributes[attribute]?.Value;
         }
 
         public double GetTemperature()
         {
-            var temperature = GetNodeValue(new string[] { "temperature" }, "value");
+            string temperature = GetNodeValue(new string[] { "temperature" }, "value");
 
             return temperature != null ? double.Parse(temperature, CultureInfo.InvariantCulture) : double.NaN;
         }
 
         public double GetHumidity()
         {
-            var humidity = GetNodeValue(new string[] { "humidity" }, "value");
+            string humidity = GetNodeValue(new string[] { "humidity" }, "value");
 
             return humidity != null ? double.Parse(humidity, CultureInfo.InvariantCulture) : double.NaN;
         }
 
         public double GetPressure()
         {
-            var pressure = GetNodeValue(new string[] { "pressure" }, "value");
+            string pressure = GetNodeValue(new string[] { "pressure" }, "value");
 
             return pressure != null ? double.Parse(pressure, CultureInfo.InvariantCulture) : double.NaN;
         }
 
         public double GetWindSpeed()
         {
-            var windSpeed = GetNodeValue(new string[] { "wind", "speed" }, "value");
+            string windSpeed = GetNodeValue(new string[] { "wind", "speed" }, "value");
 
             return windSpeed != null ? double.Parse(windSpeed, CultureInfo.InvariantCulture) : double.NaN;
         }
 
         public double GetWindDirection()
         {
-            var windDirection = GetNodeValue(new string[] { "wind", "direction" }, "value");
+            string windDirection = GetNodeValue(new string[] { "wind", "direction" }, "value");
 
             return windDirection != null ? double.Parse(windDirection, CultureInfo.InvariantCulture) : double.NaN;
         }
