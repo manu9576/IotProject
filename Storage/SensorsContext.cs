@@ -16,9 +16,9 @@ namespace Storage
         {
             // at startup the network should be not started
             // we wait to detect server before create 
-            WaitServerDetection("Odroid");
+            WaitServerDetection("192.168.1.23");
 
-            optionsBuilder.UseMySql("Server=Odroid;User Id=SensorsUser;Password=cdsfdsfklhjlgd\"443_; Database=Sensors",
+            optionsBuilder.UseMySql("Server=192.168.1.23;User Id=SensorsUser;Password=cdsfdsfklhjlgd\"443_; Database=Sensors",
                                 options => options.EnableRetryOnFailure());
         }
 
