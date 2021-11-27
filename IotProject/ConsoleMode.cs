@@ -12,7 +12,7 @@ namespace IotProject
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly ObservableCollection<ISensor> sensors;
-        private SensorsStorage sensorsStorage;
+        private ISensorsStorage sensorsStorage;
 
         public ConsoleMode()
         {
@@ -26,7 +26,7 @@ namespace IotProject
         {
             IsRunning = true;
             PeriodicRefreshTask(2000, cancellationTokenSource.Token);
-            sensorsStorage = SensorsStorage.GetInstance();
+            sensorsStorage = SensorsStorage.Instance;
             sensorsStorage.Start(30 * 60);
         }
 

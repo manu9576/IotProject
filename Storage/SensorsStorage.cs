@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Storage
 {
-    public class SensorsStorage
+    public class SensorsStorage : ISensorsStorage
     {
-        private static SensorsStorage sensorsStorage = null;
+        private static ISensorsStorage sensorsStorage = null;
         private readonly CancellationTokenSource cancellationTokenSource = null;
 
         private SensorsStorage()
@@ -18,36 +18,25 @@ namespace Storage
             cancellationTokenSource = new CancellationTokenSource();
         }
 
-        public static SensorsStorage GetInstance()
+        public static ISensorsStorage Instance
         {
-            if (sensorsStorage == null)
+            get
             {
-                sensorsStorage = new SensorsStorage();
-            }
+                if (sensorsStorage == null)
+                {
+                    sensorsStorage = new SensorsStorage();
+                }
 
-            return sensorsStorage;
+                return sensorsStorage;
+            }
         }
 
         public static int GetNewSensorId(string sensorName)
         {
-            Device device;
             var db = new SensorsContext();
             string deviceName = Environment.MachineName;
 
-            if (!db.Devices.Any(dev => dev.Name == deviceName))
-            {
-                device = new Device
-                {
-                    Name = deviceName    
-                };
-
-                db.Devices.Add(device);
-                db.SaveChanges();
-            }
-            else
-            {
-                device = db.Devices.FirstOrDefault(dev => dev.Name == deviceName);
-            }
+            IDtoDevice device = GetOrCreateDeviceByName(deviceName, db);
 
             var dbSensor = new Sensor
             {
@@ -60,6 +49,36 @@ namespace Storage
             return dbSensor.SensorId;
         }
 
+        private static IDtoDevice GetOrCreateDeviceByName(string deviceName, SensorsContext dataBase)
+        {
+            if (DeviceNameExistInDataBase(deviceName, dataBase))
+            {
+                return dataBase.Devices.FirstOrDefault(dev => dev.Name == deviceName);
+            }
+            else
+            {
+                return CreateDeviceInDataBase(deviceName, dataBase);
+            }
+        }
+
+        private static IDtoDevice CreateDeviceInDataBase(string deviceName, SensorsContext dataBase)
+        {
+            var device = new Device
+            {
+                Name = deviceName
+            };
+
+            dataBase.Devices.Add(device);
+            dataBase.SaveChanges();
+
+            return device;
+        }
+
+        private static bool DeviceNameExistInDataBase(string deviceName, SensorsContext dataBase)
+        {
+            return !dataBase.Devices.Any(dev => dev.Name == deviceName);
+        }
+
         public void Start(int intervalInSeconds)
         {
             PeriodicMesureTask(intervalInSeconds * 1000, cancellationTokenSource.Token);
@@ -70,11 +89,12 @@ namespace Storage
             cancellationTokenSource.Cancel();
         }
 
-        private Dictionary<Sensor, ISensor> ReadSensors(SensorsContext db)
+        private Dictionary<IDtoSensor, ISensor> ReadSensors(SensorsContext db)
         {
-            var sensors = new Dictionary<Sensor, ISensor>();
+            var sensors = new Dictionary<IDtoSensor, ISensor>();
+            // TODO remove static call !!
             var deviceSensors = SensorsManager.Sensors.ToList();
-            Sensor dbSensor = null;
+            IDtoSensor dbSensor = null;
 
             foreach (var sensor in deviceSensors)
             {
@@ -83,12 +103,11 @@ namespace Storage
 
                 if (dbSensor == null)
                 {
-                    //TODO: improve error management
                     Console.WriteLine("Error while reading sensor: sensor not found " + sensor.SensorId);
                     continue;
                 }
 
-                if(dbSensor.Name != sensor.Name || dbSensor.Unit != sensor.Unit)
+                if (dbSensor.Name != sensor.Name || dbSensor.Unit != sensor.Unit)
                 {
                     dbSensor.Name = sensor.Name;
                     dbSensor.Unit = sensor.Unit;
@@ -125,7 +144,7 @@ namespace Storage
             });
         }
 
-        private void Measurement(SensorsContext db, Dictionary<Sensor, ISensor> sensors)
+        private void Measurement(SensorsContext db, Dictionary<IDtoSensor, ISensor> sensors)
         {
             var dateTime = DateTime.Now;
 
@@ -149,15 +168,6 @@ namespace Storage
             catch (Exception ex)
             {
                 Console.WriteLine("Error while saving new values: " + ex.Message);
-                Console.WriteLine("Values saved: ");
-                foreach (var sensor in sensors.Keys)
-                {
-                    var value = sensors[sensor].Value;
-                    if (double.IsNormal(value))
-                    {
-                        Console.WriteLine("\t--Value: " + value + " / DateTime: " + dateTime);
-                    }
-                }
             }
         }
     }

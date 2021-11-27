@@ -12,8 +12,7 @@ namespace IotProject.ViewModels
         ViewModelBase content;
         private readonly CancellationTokenSource cancellationTokenSource;
         private string _timeOfDay;
-        private string _iconPath;
-        private readonly SensorsStorage sensorsStorage;
+        private readonly ISensorsStorage sensorsStorage;
         public SensorsConfigurationViewModel SensorsConfigurationViewModel { get; }
         public SensorsMeasureViewModel SensorsMeasureViewModel {get;}
         public bool _isConfigMode;
@@ -57,11 +56,11 @@ namespace IotProject.ViewModels
             IsConfigMode = false;
 
 #if DEBUG
-            sensorsStorage = SensorsStorage.GetInstance();
+            sensorsStorage = SensorsStorage.Instance;
             sensorsStorage.Start(10);
 
 #else
-            sensorsStorage = SensorsStorage.GetInstance();
+            sensorsStorage = SensorsStorage.Instance;
             sensorsStorage.Start(1800);
 #endif
         }

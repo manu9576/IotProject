@@ -9,6 +9,6 @@ namespace Storage.Models
         public int DeviceId { get; set; }
         public string Name { get; set; }
 
-        public ICollection<Sensor> Sensors { get; } = new List<Sensor>();
+        public IList<IDtoSensor> Sensors { get; } = new List<IDtoSensor>();
     }
 }

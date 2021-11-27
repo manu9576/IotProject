@@ -6,11 +6,11 @@ using System.Threading;
 
 namespace Storage
 {
-    public class SensorsContext : DbContext
+    public class SensorsContext : DbContext, ISensorsContext
     {
-        public DbSet<Device> Devices { get; set; }
-        public DbSet<Sensor> Sensors { get; set; }
-        public DbSet<Measure> Measures { get; set; }
+        public DbSet<IDtoDevice> Devices { get; set; }
+        public DbSet<IDtoSensor> Sensors { get; set; }
+        public DbSet<IDtoMeasure> Measures { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,7 +24,7 @@ namespace Storage
 
         private void WaitServerDetection(string serverName)
         {
-            while(!ServerIsPresent(serverName))
+            while (!ServerIsPresent(serverName))
             {
                 Thread.Sleep(5000);
             }
