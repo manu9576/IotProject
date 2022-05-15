@@ -6,6 +6,7 @@ using Storage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace IotWebApi.Controllers
@@ -14,7 +15,9 @@ namespace IotWebApi.Controllers
     /// Class that manage requests about measure to the DB
     /// </summary>
     [EnableCors("MyPolicy")]
-    [Route("api/Measure")]
+	[Produces(MediaTypeNames.Application.Json)]
+	[Consumes(MediaTypeNames.Application.Json)]
+	[Route("api/Measure")]
     [ApiController]
     public class MeasuresController : ControllerBase
     {

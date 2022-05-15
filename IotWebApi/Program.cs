@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 namespace IotWebApi
 {
     /// <summary>
-    /// Main class who launche the WebApi
+    /// Main class who launch the WebApi
     /// </summary>
     public class Program
     {
@@ -28,6 +28,6 @@ namespace IotWebApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+				});
     }
 }

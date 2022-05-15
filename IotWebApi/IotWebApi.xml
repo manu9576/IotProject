@@ -23,9 +23,9 @@
         </member>
         <member name="M:IotWebApi.Controllers.DevicesController.GetDevice(System.Int32)">
             <summary>
-             GET: api/Device/5
+            Gets a device by its Id.
             </summary>
-            <param name="id"></param>
+            <param name="id">Device's Id.</param>
             <returns>Device corresponding to the id</returns>
         </member>
         <member name="M:IotWebApi.Controllers.DevicesController.GetDeviceByName(System.String)">
@@ -170,7 +170,7 @@
         </member>
         <member name="T:IotWebApi.Program">
             <summary>
-            Main class who launche the WebApi
+            Main class who launch the WebApi
             </summary>
         </member>
         <member name="M:IotWebApi.Program.Main(System.String[])">

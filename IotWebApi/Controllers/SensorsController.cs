@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Cors;
@@ -13,7 +14,9 @@ namespace IotWebApi.Controllers
     /// Class that manage the requests to the DB for Sensor
     /// </summary>
     [EnableCors("MyPolicy")]
-    [Route("api/Sensor")]
+	[Produces(MediaTypeNames.Application.Json)]
+	[Consumes(MediaTypeNames.Application.Json)]
+	[Route("api/Sensor")]
     [ApiController]
     public class SensorsController : ControllerBase
     {
