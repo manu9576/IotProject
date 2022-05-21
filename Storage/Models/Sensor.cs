@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage.Models
 {
-    public class Sensor : IDtoSensor
+    public class Sensor
     {
         [Key]
         public int SensorId { get; set; }
@@ -11,8 +11,8 @@ namespace Storage.Models
         public string Unit { get; set; }
 
         public int DeviceId { get; set; }
-        public IDtoDevice Device { get; set; }
+        public Device Device { get; set; }
 
-        public IList<IDtoMeasure> Measures { get; } = new List<IDtoMeasure>();
+        public List<Measure> Measures { get; } = new List<Measure>();
     }
 }

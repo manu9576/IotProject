@@ -8,9 +8,9 @@ namespace Storage
 {
     public class SensorsContext : DbContext, ISensorsContext
     {
-        public DbSet<IDtoDevice> Devices { get; set; }
-        public DbSet<IDtoSensor> Sensors { get; set; }
-        public DbSet<IDtoMeasure> Measures { get; set; }
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<Sensor> Sensors { get; set; }
+        public DbSet<Measure> Measures { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

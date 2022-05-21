@@ -5,8 +5,8 @@ namespace Storage
 {
     public interface ISensorsContext
     {
-        DbSet<IDtoDevice> Devices { get; set; }
-        DbSet<IDtoMeasure> Measures { get; set; }
-        DbSet<IDtoSensor> Sensors { get; set; }
+        DbSet<Device> Devices { get; set; }
+        DbSet<Measure> Measures { get; set; }
+        DbSet<Sensor> Sensors { get; set; }
     }
 }

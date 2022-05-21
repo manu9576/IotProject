@@ -36,7 +36,7 @@ namespace Storage
             var db = new SensorsContext();
             string deviceName = Environment.MachineName;
 
-            IDtoDevice device = GetOrCreateDeviceByName(deviceName, db);
+            Device device = GetOrCreateDeviceByName(deviceName, db);
 
             var dbSensor = new Sensor
             {
@@ -49,7 +49,7 @@ namespace Storage
             return dbSensor.SensorId;
         }
 
-        private static IDtoDevice GetOrCreateDeviceByName(string deviceName, SensorsContext dataBase)
+        private static Device GetOrCreateDeviceByName(string deviceName, SensorsContext dataBase)
         {
             if (DeviceNameExistInDataBase(deviceName, dataBase))
             {
@@ -61,7 +61,7 @@ namespace Storage
             }
         }
 
-        private static IDtoDevice CreateDeviceInDataBase(string deviceName, SensorsContext dataBase)
+        private static Device CreateDeviceInDataBase(string deviceName, SensorsContext dataBase)
         {
             var device = new Device
             {
@@ -89,12 +89,12 @@ namespace Storage
             cancellationTokenSource.Cancel();
         }
 
-        private Dictionary<IDtoSensor, ISensor> ReadSensors(SensorsContext db)
+        private Dictionary<Sensor, ISensor> ReadSensors(SensorsContext db)
         {
-            var sensors = new Dictionary<IDtoSensor, ISensor>();
+            var sensors = new Dictionary<Sensor, ISensor>();
             // TODO remove static call !!
             var deviceSensors = SensorsManager.Sensors.ToList();
-            IDtoSensor dbSensor = null;
+            Sensor dbSensor = null;
 
             foreach (var sensor in deviceSensors)
             {
@@ -144,7 +144,7 @@ namespace Storage
             });
         }
 
-        private void Measurement(SensorsContext db, Dictionary<IDtoSensor, ISensor> sensors)
+        private void Measurement(SensorsContext db, Dictionary<Sensor, ISensor> sensors)
         {
             var dateTime = DateTime.Now;
 

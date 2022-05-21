@@ -33,12 +33,12 @@ namespace IotWebApi.Controllers
 		}
 
 		/// <summary>
-		/// Return the devices list
+		/// Gets all devices.
 		/// </summary>
 		/// <returns>List of existing devices</returns>
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<ActionResult<IEnumerable<Device>>> GetDevices()
+		public async Task<IActionResult> GetDevices()
 		{
 			return Ok(await _context.Devices.ToListAsync());
 		}
@@ -51,9 +51,9 @@ namespace IotWebApi.Controllers
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<IDtoDevice>> GetDevice(int id)
+		public async Task<IActionResult> GetDevice(int id)
 		{
-			IDtoDevice device = await _context.Devices
+			Device device = await _context.Devices
 				.Include(d => d.Sensors)
 				.FirstAsync(d => d.DeviceId == id);
 
@@ -73,9 +73,9 @@ namespace IotWebApi.Controllers
 		[HttpGet("Name/{name}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<IDtoDevice>> GetDeviceByName(string name)
+		public async Task<IActionResult> GetDeviceByName(string name)
 		{
-			IDtoDevice device = await _context.Devices
+			Device device = await _context.Devices
 				.Include(d => d.Sensors)
 				.FirstAsync(dev => dev.Name == name);
 

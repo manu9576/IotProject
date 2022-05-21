@@ -17,7 +17,7 @@
         </member>
         <member name="M:IotWebApi.Controllers.DevicesController.GetDevices">
             <summary>
-            Return the devices list
+            Gets all devices.
             </summary>
             <returns>List of existing devices</returns>
         </member>
@@ -46,7 +46,7 @@
             </summary>
             <param name="context">context of the DB</param>
         </member>
-        <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasures">
+        <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasures(System.Int32,System.Int32)">
             <summary>
             GET: api/Measure
             Return the measures list
@@ -82,7 +82,7 @@
             return measure for a sensor for an interval (the dates are included)
             </summary>
             <param name="sensorId">sensor id</param>
-            <param name="startDate">date of begining</param>
+            <param name="startDate">date of beginning</param>
             <param name="endDate">date of end</param>
             <returns>List of measures for the interval</returns>
         </member>
@@ -91,7 +91,7 @@
             GET: api/Measure/Sensor/26/Date/2020-05-26
             </summary>
             <param name="sensorId">sensor id</param>
-            <param name="month">indice of the month (1: Juanary ..)</param>
+            <param name="month">indice of the month (1: January ..)</param>
             <returns>List of measure for a sensor during a month</returns>
         </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetLastMeasure(System.Int32)">
