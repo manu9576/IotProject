@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using System.Threading.Tasks;
 using IotWebApi.Models;
 using Microsoft.AspNetCore.Cors;
@@ -17,16 +15,16 @@ namespace IotWebApi.Controllers
 	[EnableCors("MyPolicy")]
 	[Produces(MediaTypeNames.Application.Json)]
 	[Consumes(MediaTypeNames.Application.Json)]
-	[Route("api/Device")]
+	[Route("api/devices")]
 	[ApiController]
 	public class DevicesController : ControllerBase
 	{
 		private readonly DbSensorsContext _context;
 
 		/// <summary>
-		/// Constructor
+		/// Creates a new instance of <see cref="DevicesController"./>
 		/// </summary>
-		/// <param name="context">context of the DB</param>
+		/// <param name="context">Context of the DB</param>
 		public DevicesController(DbSensorsContext context)
 		{
 			_context = context;
@@ -35,7 +33,7 @@ namespace IotWebApi.Controllers
 		/// <summary>
 		/// Gets all devices.
 		/// </summary>
-		/// <returns>List of existing devices</returns>
+		/// <returns>List of devices.</returns>
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetDevices()
@@ -66,11 +64,11 @@ namespace IotWebApi.Controllers
 		}
 
 		/// <summary>
-		/// GET: api/Device/Name/name
+		/// Gets a device by name.
 		/// </summary>
-		/// <param name="name">name of the device</param>
-		/// <returns>Device corresponding to the name</returns>
-		[HttpGet("Name/{name}")]
+		/// <param name="name">Name of the requested device.</param>
+		/// <returns>Device corresponding to the name.</returns>
+		[HttpGet("name/{name}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> GetDeviceByName(string name)

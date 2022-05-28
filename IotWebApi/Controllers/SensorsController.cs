@@ -16,16 +16,16 @@ namespace IotWebApi.Controllers
     [EnableCors("MyPolicy")]
 	[Produces(MediaTypeNames.Application.Json)]
 	[Consumes(MediaTypeNames.Application.Json)]
-	[Route("api/Sensor")]
+	[Route("api/sensors")]
     [ApiController]
     public class SensorsController : ControllerBase
     {
         private readonly DbSensorsContext _context;
 
         /// <summary>
-        /// Constructor 
+        /// Creates a new instance of <see cref="SensorsController"./> 
         /// </summary>
-        /// <param name="context">context of the DB</param>
+        /// <param name="context">Context of the DB.</param>
         public SensorsController(DbSensorsContext context)
         {
             _context = context;
@@ -42,9 +42,9 @@ namespace IotWebApi.Controllers
         }
 
         /// <summary>
-        /// GET: api/Sensor/5
+        /// Gets a sensor details from its id.
         /// </summary>
-        /// <param name="id">id of sensor</param>
+        /// <param name="id">Id of sensor.</param>
         /// <returns>Sensors corresponding to the id</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Sensor>> GetSensorById(int id)

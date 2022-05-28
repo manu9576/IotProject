@@ -17,27 +17,25 @@ namespace IotWebApi.Controllers
 	[EnableCors("MyPolicy")]
 	[Produces(MediaTypeNames.Application.Json)]
 	[Consumes(MediaTypeNames.Application.Json)]
-	[Route("api/Measure")]
+	[Route("api/measures")]
 	[ApiController]
 	public class MeasuresController : ControllerBase
 	{
 		private readonly DbSensorsContext _context;
 
 		/// <summary>
-		/// Constructor
+		/// Creates a new instance of <see cref="MeasuresController"./>
 		/// </summary>
-		/// <param name="context">context of the DB</param>
+		/// <param name="context">Context of the DB.</param>
 		public MeasuresController(DbSensorsContext context)
 		{
 			_context = context;
 		}
 
 		/// <summary>
-		/// GET: api/Measure
-		/// Return the measures list
-		/// ALL MEASURES!! SHOULD BE LONG
+		/// Returns the measures list.
 		/// </summary>
-		/// <returns>List of all stored measures</returns>
+		/// <returns>List of stored measures</returns>
 		[HttpGet("skip/{skip}/take/{take}")]
 		public async Task<IActionResult> GetMeasures(int skip, int take)
 		{
@@ -52,21 +50,21 @@ namespace IotWebApi.Controllers
 		}
 
 		/// <summary>
-		/// GET: api/Measure/5
+		/// Gets a measure by its id.
 		/// </summary>
-		/// <param name="id">id of a measure</param>
-		/// <returns>measure with the corresponding id</returns>
+		/// <param name="id">Id of a measure.</param>
+		/// <returns>Measure with the corresponding id.</returns>
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Measure>> GetMeasure(int id)
+		public async Task<IActionResult> GetMeasure(int id)
 		{
-			ActionResult<Measure> sensor = await _context.Measures.FindAsync(id);
-
-			if (sensor == null)
+			Measure sensor = await _context.Measures.FirstOrDefaultAsync(m => m.MeasureId == id);
+			 
+			if (sensor is null)
 			{
 				return NotFound();
 			}
 
-			return sensor;
+			return Ok(sensor);
 		}
 
 		/// <summary>
@@ -75,16 +73,16 @@ namespace IotWebApi.Controllers
 		/// <param name="sensorId"></param>
 		/// <returns></returns>
 		[HttpGet("sensor/{sensorId}")]
-		public async Task<ActionResult<IEnumerable<Measure>>> GetMeasureBySensorId(int sensorId)
+		public async Task<IActionResult> GetMeasureBySensorId(int sensorId)
 		{
-			IQueryable<Measure> measures = _context.Measures.Where(mes => mes.SensorId == sensorId);
+			List<Measure> measures = await _context.Measures.Where(mes => mes.SensorId == sensorId).ToListAsync();
 
-			if (measures == null)
+			if (measures is null || measures.Count == 0)
 			{
 				return NotFound();
 			}
 
-			return await measures.ToListAsync();
+			return Ok(measures);
 		}
 
 		/// <summary>
@@ -97,13 +95,13 @@ namespace IotWebApi.Controllers
 		public async Task<ActionResult<IEnumerable<Measure>>> GetSensorsBySensorIdAndDate(int sensorId, DateTime date)
 		{
 
-			IEnumerable<Measure> measures = await _context.Measures
+			List<Measure> measures = await _context.Measures
 				.Where(
 					mes => mes.SensorId == sensorId &&
 					mes.DateTime.Date == date.Date)
 				.ToListAsync();
 
-			if (measures == null)
+			if (measures is  null || measures.Count == 0)
 			{
 				return NotFound();
 			}
@@ -112,12 +110,11 @@ namespace IotWebApi.Controllers
 		}
 
 		/// <summary>
-		/// GET: api/Measure/Sensor/26/From/2020-05-26/To/2020-06-01
-		/// return measure for a sensor for an interval (the dates are included)
+		/// Returns measures for a sensor for an interval (the dates are included).
 		/// </summary>
-		/// <param name="sensorId">sensor id</param>
-		/// <param name="startDate">date of beginning</param>
-		/// <param name="endDate">date of end</param>
+		/// <param name="sensorId">Sensor id</param>
+		/// <param name="startDate">Start date.</param>
+		/// <param name="endDate">End date.</param>
 		/// <returns>List of measures for the interval</returns>
 		[HttpGet("sensor/{sensorId}/from/{startDate}/to/{endDate}")]
 		public async Task<IActionResult> GetSensorsBySensorIdFromDateToDate(int sensorId, DateTime startDate, DateTime endDate)
@@ -140,10 +137,10 @@ namespace IotWebApi.Controllers
 		}
 
 		/// <summary>
-		/// GET: api/Measure/Sensor/26/Date/2020-05-26
+		/// Gets the measure of a sensor during a mouth.
 		/// </summary>
-		/// <param name="sensorId">sensor id</param>
-		/// <param name="month">indice of the month (1: January ..)</param>
+		/// <param name="sensorId">Sensor id.</param>
+		/// <param name="month">Indice of the month (1: January ..)</param>
 		/// <returns>List of measure for a sensor during a month</returns>
 		[HttpGet("sensor/{sensorId}/month/{month}")]
 		public async Task<IActionResult> GetSensorsBySensorIdAndMonth(int sensorId, int month)
@@ -165,10 +162,10 @@ namespace IotWebApi.Controllers
 
 
 		/// <summary>
-		/// GET: api/Measure/Sensor/18/GetLastMeasure
+		/// Gets the last measure of a sensor.
 		/// </summary>
-		/// <param name="sensorId">sensor id</param>
-		/// <returns>the last measure of a sensor</returns>
+		/// <param name="sensorId">Sensor id.</param>
+		/// <returns>Last measure of a sensor.</returns>
 		[HttpGet("sensor/{sensorId}/getLastMeasure")]
 		public async Task<IActionResult> GetLastMeasure(int sensorId)
 		{
@@ -184,6 +181,5 @@ namespace IotWebApi.Controllers
 
 			return Ok(sensorMeasure);
 		}
-
 	}
 }
