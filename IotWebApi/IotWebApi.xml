@@ -9,17 +9,12 @@
             Class that manage the request about device to the DB
             </summary>
         </member>
-        <member name="M:IotWebApi.Controllers.DevicesController.#ctor(IotWebApi.Models.DbSensorsContext)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="context">context of the DB</param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:IotWebApi.Controllers.DevicesController.#ctor(IotWebApi.Models.DbSensorsContext)" -->
         <member name="M:IotWebApi.Controllers.DevicesController.GetDevices">
             <summary>
             Gets all devices.
             </summary>
-            <returns>List of existing devices</returns>
+            <returns>List of devices.</returns>
         </member>
         <member name="M:IotWebApi.Controllers.DevicesController.GetDevice(System.Int32)">
             <summary>
@@ -30,36 +25,29 @@
         </member>
         <member name="M:IotWebApi.Controllers.DevicesController.GetDeviceByName(System.String)">
             <summary>
-            GET: api/Device/Name/name
+            Gets a device by name.
             </summary>
-            <param name="name">name of the device</param>
-            <returns>Device corresponding to the name</returns>
+            <param name="name">Name of the requested device.</param>
+            <returns>Device corresponding to the name.</returns>
         </member>
         <member name="T:IotWebApi.Controllers.MeasuresController">
             <summary>
             Class that manage requests about measure to the DB
             </summary>
         </member>
-        <member name="M:IotWebApi.Controllers.MeasuresController.#ctor(IotWebApi.Models.DbSensorsContext)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="context">context of the DB</param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:IotWebApi.Controllers.MeasuresController.#ctor(IotWebApi.Models.DbSensorsContext)" -->
         <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasures(System.Int32,System.Int32)">
             <summary>
-            GET: api/Measure
-            Return the measures list
-            ALL MEASURES!! SHOULD BE LONG
+            Returns the measures list.
             </summary>
-            <returns>List of all stored measures</returns>
+            <returns>List of stored measures</returns>
         </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasure(System.Int32)">
             <summary>
-            GET: api/Measure/5
+            Gets a measure by its id.
             </summary>
-            <param name="id">id of a measure</param>
-            <returns>measure with the corresponding id</returns>
+            <param name="id">Id of a measure.</param>
+            <returns>Measure with the corresponding id.</returns>
         </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasureBySensorId(System.Int32)">
             <summary>
@@ -78,40 +66,34 @@
         </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetSensorsBySensorIdFromDateToDate(System.Int32,System.DateTime,System.DateTime)">
             <summary>
-            GET: api/Measure/Sensor/26/From/2020-05-26/To/2020-06-01
-            return measure for a sensor for an interval (the dates are included)
+            Returns measures for a sensor for an interval (the dates are included).
             </summary>
-            <param name="sensorId">sensor id</param>
-            <param name="startDate">date of beginning</param>
-            <param name="endDate">date of end</param>
+            <param name="sensorId">Sensor id</param>
+            <param name="startDate">Start date.</param>
+            <param name="endDate">End date.</param>
             <returns>List of measures for the interval</returns>
         </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetSensorsBySensorIdAndMonth(System.Int32,System.Int32)">
             <summary>
-            GET: api/Measure/Sensor/26/Date/2020-05-26
+            Gets the measure of a sensor during a mouth.
             </summary>
-            <param name="sensorId">sensor id</param>
-            <param name="month">indice of the month (1: January ..)</param>
+            <param name="sensorId">Sensor id.</param>
+            <param name="month">Indice of the month (1: January ..)</param>
             <returns>List of measure for a sensor during a month</returns>
         </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetLastMeasure(System.Int32)">
             <summary>
-            GET: api/Measure/Sensor/18/GetLastMeasure
+            Gets the last measure of a sensor.
             </summary>
-            <param name="sensorId">sensor id</param>
-            <returns>the last measure of a sensor</returns>
+            <param name="sensorId">Sensor id.</param>
+            <returns>Last measure of a sensor.</returns>
         </member>
         <member name="T:IotWebApi.Controllers.SensorsController">
             <summary>
             Class that manage the requests to the DB for Sensor
             </summary>
         </member>
-        <member name="M:IotWebApi.Controllers.SensorsController.#ctor(IotWebApi.Models.DbSensorsContext)">
-            <summary>
-            Constructor 
-            </summary>
-            <param name="context">context of the DB</param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:IotWebApi.Controllers.SensorsController.#ctor(IotWebApi.Models.DbSensorsContext)" -->
         <member name="M:IotWebApi.Controllers.SensorsController.GetSensors">
             <summary>
             GET: api/Sensor
@@ -120,16 +102,16 @@
         </member>
         <member name="M:IotWebApi.Controllers.SensorsController.GetSensorById(System.Int32)">
             <summary>
-            GET: api/Sensor/5
+            Gets a sensor details from its id.
             </summary>
-            <param name="id">id of sensor</param>
+            <param name="id">Id of sensor.</param>
             <returns>Sensors corresponding to the id</returns>
         </member>
         <member name="M:IotWebApi.Controllers.SensorsController.GetSensorsByDeviceId(System.Int32)">
             <summary>
-            GET: api/Sensor/Device/5
+            Gets all sensors of a device.
             </summary>
-            <param name="deviceId">device id</param>
+            <param name="deviceId">Device id.</param>
             <returns>all the sensor stored for a device</returns>
         </member>
         <member name="T:IotWebApi.Models.ConnectionStrings">

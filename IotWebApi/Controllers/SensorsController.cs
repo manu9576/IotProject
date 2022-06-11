@@ -59,12 +59,12 @@ namespace IotWebApi.Controllers
             return sensor;
         }
 
-        /// <summary>
-        /// GET: api/Sensor/Device/5
-        /// </summary>
-        /// <param name="deviceId">device id</param>
-        /// <returns>all the sensor stored for a device</returns>
-        [HttpGet("Device/{deviceId}")]
+		/// <summary>
+		/// Gets all sensors of a device.
+		/// </summary>
+		/// <param name="deviceId">Device id.</param>
+		/// <returns>all the sensor stored for a device</returns>
+		[HttpGet("device/{deviceId}")]
         public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorsByDeviceId(int deviceId)
         {
             if (!_context.Sensors.Any(sen => sen.DeviceId == deviceId))
