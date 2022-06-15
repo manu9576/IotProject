@@ -12,11 +12,12 @@ namespace Sensors.GrovePi
             : base(analogSensor, name, sensorId, port, rgbDisplay)
         {
         }
-        public event PropertyChangedEventHandler PropertyChanged;
+        
+        public override event PropertyChangedEventHandler PropertyChanged;
 
         public override double Value => value;
 
-        public override void Refresh()
+        public override void RefreshValues()
         {
             value = (_analogSensor as GroveTemperatureSensor).Temperature;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));

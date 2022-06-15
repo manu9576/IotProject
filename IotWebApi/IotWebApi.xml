@@ -9,7 +9,12 @@
             Class that manage the request about device to the DB
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:IotWebApi.Controllers.DevicesController.#ctor(IotWebApi.Models.DbSensorsContext)" -->
+        <member name="M:IotWebApi.Controllers.DevicesController.#ctor(IotWebApi.Models.DbSensorsContext)">
+            <summary>
+            Creates a new instance of  <see ref="DevicesController"/>.
+            </summary>
+            <param name="context">Context of the DB</param>
+        </member>
         <member name="M:IotWebApi.Controllers.DevicesController.GetDevices">
             <summary>
             Gets all devices.
@@ -35,7 +40,12 @@
             Class that manage requests about measure to the DB
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:IotWebApi.Controllers.MeasuresController.#ctor(IotWebApi.Models.DbSensorsContext)" -->
+        <member name="M:IotWebApi.Controllers.MeasuresController.#ctor(IotWebApi.Models.DbSensorsContext)">
+            <summary>
+            Creates a new instance of <see cref="T:IotWebApi.Controllers.MeasuresController"/>.
+            </summary>
+            <param name="context">Context of the DB.</param>
+        </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetMeasures(System.Int32,System.Int32)">
             <summary>
             Returns the measures list.
@@ -78,7 +88,7 @@
             Gets the measure of a sensor during a mouth.
             </summary>
             <param name="sensorId">Sensor id.</param>
-            <param name="month">Indice of the month (1: January ..)</param>
+            <param name="month">Index of the month (1: January ..)</param>
             <returns>List of measure for a sensor during a month</returns>
         </member>
         <member name="M:IotWebApi.Controllers.MeasuresController.GetLastMeasure(System.Int32)">
@@ -93,7 +103,12 @@
             Class that manage the requests to the DB for Sensor
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:IotWebApi.Controllers.SensorsController.#ctor(IotWebApi.Models.DbSensorsContext)" -->
+        <member name="M:IotWebApi.Controllers.SensorsController.#ctor(IotWebApi.Models.DbSensorsContext)">
+            <summary>
+            Creates a new instance of <see cref="T:IotWebApi.Controllers.SensorsController"/>. 
+            </summary>
+            <param name="context">Context of the DB.</param>
+        </member>
         <member name="M:IotWebApi.Controllers.SensorsController.GetSensors">
             <summary>
             GET: api/Sensor

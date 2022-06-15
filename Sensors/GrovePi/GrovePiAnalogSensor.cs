@@ -20,7 +20,7 @@ namespace Sensors.GrovePi
 
         public virtual event PropertyChangedEventHandler PropertyChanged;
 
-        public override void Refresh()
+        public override void RefreshValues()
         {
             value = _analogSensor.Value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));

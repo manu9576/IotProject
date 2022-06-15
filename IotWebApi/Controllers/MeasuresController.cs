@@ -24,7 +24,7 @@ namespace IotWebApi.Controllers
 		private readonly DbSensorsContext _context;
 
 		/// <summary>
-		/// Creates a new instance of <see cref="MeasuresController"./>
+		/// Creates a new instance of <see cref="MeasuresController"/>.
 		/// </summary>
 		/// <param name="context">Context of the DB.</param>
 		public MeasuresController(DbSensorsContext context)
@@ -140,7 +140,7 @@ namespace IotWebApi.Controllers
 		/// Gets the measure of a sensor during a mouth.
 		/// </summary>
 		/// <param name="sensorId">Sensor id.</param>
-		/// <param name="month">Indice of the month (1: January ..)</param>
+		/// <param name="month">Index of the month (1: January ..)</param>
 		/// <returns>List of measure for a sensor during a month</returns>
 		[HttpGet("sensor/{sensorId}/month/{month}")]
 		public async Task<IActionResult> GetSensorsBySensorIdAndMonth(int sensorId, int month)

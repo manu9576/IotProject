@@ -22,7 +22,7 @@ namespace Sensors.GrovePi
         public bool RgbDisplay { get; }
 
         public abstract double Value { get; }
-        public abstract void Refresh();
+        public abstract void RefreshValues();
 
     }
 }

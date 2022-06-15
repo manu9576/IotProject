@@ -28,7 +28,7 @@ namespace Sensors.GrovePi
                     maxValue = 5.0;
                     break;
 
-                case SensorType.GrooveTemperartureSensor:
+                case SensorType.GrooveHeatSensor:
                 case SensorType.DhtTemperatureSensor:
                     maxValue = 40.0;
                     break;
@@ -45,7 +45,7 @@ namespace Sensors.GrovePi
                 case SensorType.LightSensor:
                 case SensorType.SoundSensor:
                 default:
-                    throw new Exception("Sensor type '" + sensorType + "' is not implemented");
+                    throw new Exception($"Sensor type '{sensorType}' is not implemented");
             }
         }
 
@@ -84,7 +84,7 @@ namespace Sensors.GrovePi
                     case SensorType.AnalogSensor:
                         return "V";
 
-                    case SensorType.GrooveTemperartureSensor:
+                    case SensorType.GrooveHeatSensor:
                     case SensorType.DhtTemperatureSensor:
                         return "°C";
 
@@ -113,7 +113,7 @@ namespace Sensors.GrovePi
             }
         }
 
-        public void Refresh()
+        public void RefreshValues()
         {
             Value = rand.NextDouble() * maxValue;
         }

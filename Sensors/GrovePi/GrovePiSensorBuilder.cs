@@ -45,10 +45,10 @@ namespace Sensors.GrovePi
 
                 case SensorType.PotentiometerSensor:
                     ThrowExceptionIfPortIsUsed(port);
-                    var potentiometreSensor = new GrovePiAnalogPotentiometer(new PotentiometerSensor(grovePi, port), name, sensorId, port, rgbDisplay);
-                    refresher.AddSensor(potentiometreSensor);
-                    _sensors.Add(potentiometreSensor);
-                    return potentiometreSensor;
+                    var potentiometerSensor = new GrovePiAnalogPotentiometer(new PotentiometerSensor(grovePi, port), name, sensorId, port, rgbDisplay);
+                    refresher.AddSensor(potentiometerSensor);
+                    _sensors.Add(potentiometerSensor);
+                    return potentiometerSensor;
 
                 case SensorType.UltrasonicSensor:
                     ThrowExceptionIfPortIsUsed(port);
@@ -58,7 +58,7 @@ namespace Sensors.GrovePi
 
                     return ultrasonicSensor;
 
-                case SensorType.GrooveTemperartureSensor:
+                case SensorType.GrooveHeatSensor:
                     ThrowExceptionIfPortIsUsed(port);
                     var temperatureSensor = new GrovePiAnalogTemperature(new GroveTemperatureSensor(grovePi, port), name, sensorId, port, rgbDisplay);
                     refresher.AddSensor(temperatureSensor);
@@ -106,7 +106,7 @@ namespace Sensors.GrovePi
                 }
 
                 var dhtHumiditySensor = new GrovePiDthHumiditySensor(new DhtSensor(grovePi, port, DhtType.Dht22), name, sensorId, port, rgbDisplay);
-                dhtHumiditySensor.Refresh();
+                dhtHumiditySensor.RefreshValues();
                 refresher.AddSensor(dhtHumiditySensor);
                 _sensors.Add(dhtHumiditySensor);
                 return dhtHumiditySensor;
@@ -129,7 +129,7 @@ namespace Sensors.GrovePi
                 }
 
                 var dhtTemperatureSensor = new GrovePiDthTemperatureSensor(new DhtSensor(grovePi, port, DhtType.Dht22), name, sensorId, port, rgbDisplay);
-                dhtTemperatureSensor.Refresh();
+                dhtTemperatureSensor.RefreshValues();
                 refresher.AddSensor(dhtTemperatureSensor);
                 _sensors.Add(dhtTemperatureSensor);
 

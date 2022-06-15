@@ -14,7 +14,7 @@ namespace Sensors.GrovePi
 
         public override event PropertyChangedEventHandler PropertyChanged;
 
-        public override void Refresh()
+        public override void RefreshValues()
         {
             value = (_analogSensor as PotentiometerSensor).ValueAsPercent;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));

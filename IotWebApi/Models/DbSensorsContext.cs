@@ -4,7 +4,7 @@ using Storage.Models;
 namespace IotWebApi.Models
 {
     /// <summary>
-    /// Class for the DbContect
+    /// Class for the DbContext
     /// </summary>
     public class DbSensorsContext : DbContext
     {

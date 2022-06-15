@@ -1,8 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.ComponentModel;
 using System.Globalization;
+using System.Threading.Tasks;
 using System.Net;
+using System.Net.Http;
 using System.Xml;
+
 
 namespace Sensors.Weather
 {
@@ -11,54 +15,87 @@ namespace Sensors.Weather
         private const string OPEN_WEATHER_KEY = "adac93f3a057d268edd730c32733714e";
         private const string URL = "http://api.openweathermap.org/data/2.5/weather?q=@LOC@&mode=xml&units=metric&APPID=@API_KEY@";
 
-        private XmlDocument xmlDocument;
+        private XmlElement _xmlWeather;
+        private double _temperature;
+        private double _humidity;
+        private double _pressure;
+        private double _windSpeed;
+        private double _windDirection;
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         internal WebWeather()
         {
-            Refresh();
+            RefreshValues();
         }
 
-        public void Refresh()
+        public void RefreshValues()
         {
-            ReadWeather(URL.Replace("@LOC@", "Paris").Replace("@API_KEY@", OPEN_WEATHER_KEY));
+            RequestWeather()
+                .ContinueWith((result) => ReadValues(result.Result)
+                .ContinueWith((result) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value")));
         }
 
-        private void ReadWeather(string url)
+        private async Task RequestWeather()
         {
             try
             {
-                // Create a web client.
-                using WebClient client = new WebClient();
-                // Get the response string from the URL.
-                string xml = client.DownloadString(url);
+                string requestUrl = URL.Replace("@LOC@", "Paris").Replace("@API_KEY@", OPEN_WEATHER_KEY);
 
-                xmlDocument = new XmlDocument();
-                xmlDocument.LoadXml(xml);
+                HttpClient client = new();
+                HttpResponseMessage response = await client.GetAsync(url);
 
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
+                if(response.StatusCode == HttpStatusCode.OK)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    
+                    XmlDocument xmlDocument = new();
+                    xmlDocument.LoadXml(content);
+                    _xmlWeather = xmlDocument.DocumentElement;
+                }
+                else
+                {
+                    Console.WriteLine($"IOT: error while get weather : {response.ReasonPhrase}");
+                    return null;
+                }                
             }
             catch(Exception ex)
             {
                 Console.WriteLine("IOT: Exception during reading Weather: " + ex.Message);
+                return null;
             }
         }
 
-        private string GetNodeValue(string[] nodesName, string attribute)
+        private double ReadNodeValue(string nodeName)
         {
-            string xpath = string.Join('/', nodesName);
+            XmlNode node = _xmlWeather.SelectSingleNode(nodeName);
 
-            XmlNode node = xmlDocument.DocumentElement.SelectSingleNode(xpath);
+            string? stringValue =  node.Attributes["value"].Value;
 
-            return node.Attributes[attribute]?.Value;
+            double value = double.NaN;
+
+            double.TryParse(stringValue, out value);
+
+            return  value; 
+        }
+
+        
+        private Task ReadValues()
+        {
+            _temperature = ReadNodeValue("temperature");
+            _humidity = ReadNodeValue("humidity");
+            _pressure = ReadNodeValue("pressure");
+            _windSpeed = ReadNodeValue("wind/speed");
+            _windDirection = ReadNodeValue("wind/direction");
+
+            return Task.CompletedTask;
         }
 
         public double GetTemperature()
         {
-            string temperature = GetNodeValue(new string[] { "temperature" }, "value");
-
-            return temperature != null ? double.Parse(temperature, CultureInfo.InvariantCulture) : double.NaN;
+            return _temperature;
         }
 
         public double GetHumidity()
@@ -70,23 +107,17 @@ namespace Sensors.Weather
 
         public double GetPressure()
         {
-            string pressure = GetNodeValue(new string[] { "pressure" }, "value");
-
-            return pressure != null ? double.Parse(pressure, CultureInfo.InvariantCulture) : double.NaN;
+            return _pressure;
         }
 
         public double GetWindSpeed()
         {
-            string windSpeed = GetNodeValue(new string[] { "wind", "speed" }, "value");
-
-            return windSpeed != null ? double.Parse(windSpeed, CultureInfo.InvariantCulture) : double.NaN;
+            return _windSpeed;
         }
 
         public double GetWindDirection()
         {
-            string windDirection = GetNodeValue(new string[] { "wind", "direction" }, "value");
-
-            return windDirection != null ? double.Parse(windDirection, CultureInfo.InvariantCulture) : double.NaN;
+            return _windDirection;
         }
     }
 }

@@ -5,7 +5,7 @@
         AnalogSensor,
         DhtTemperatureSensor,
         DhtHumiditySensor,
-        GrooveTemperartureSensor,
+        GrooveHeatSensor,
         LightSensor,
         PotentiometerSensor,
         SoundSensor,

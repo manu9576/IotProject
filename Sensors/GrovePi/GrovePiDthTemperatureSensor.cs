@@ -19,7 +19,7 @@ namespace Sensors.GrovePi
 
         public DhtSensor DhtSensor { get; }
 
-        public override void Refresh()
+        public override void RefreshValues()
         {
             DhtSensor.Read();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));

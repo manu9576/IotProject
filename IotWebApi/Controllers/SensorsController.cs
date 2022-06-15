@@ -23,7 +23,7 @@ namespace IotWebApi.Controllers
         private readonly DbSensorsContext _context;
 
         /// <summary>
-        /// Creates a new instance of <see cref="SensorsController"./> 
+        /// Creates a new instance of <see cref="SensorsController"/>. 
         /// </summary>
         /// <param name="context">Context of the DB.</param>
         public SensorsController(DbSensorsContext context)

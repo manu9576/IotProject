@@ -2,6 +2,6 @@
 {
     internal interface IRefresher
     {
-        void Refresh();
+        void RefreshValues();
     }
 }

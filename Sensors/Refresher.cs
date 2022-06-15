@@ -50,7 +50,7 @@ namespace Sensors
                 {
                     try
                     {
-                        sensor.Refresh();
+                        sensor.RefreshValues();
                     }
                     catch (Exception ex)
                     {
